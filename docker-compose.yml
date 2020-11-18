@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  backend:
+    build: ./backend
+    restart: always
+    container_name: jumbaliar-backend
+    environment:
+      - COUCHDB_URL=couchdb:5984
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=admin
+    volumes:
+      - ./backend/uploads:/node/uploads
+    depends_on:
+      - couchdb
+    links:
+      - "couchdb"
+    ports:
+      - 80:80
+  frontend:
+    build: ./frontend
+    restart: always
+    container_name: jumbaliar-frontend
+    environment:
+      - BACKEND_URL=http://localhost
+    depends_on:
+      - couchdb
+    ports:
+      - 8086:80
+  couchdb:
+    image: couchdb
+    restart: always
+    container_name: couchdb
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=admin
+    ports:
+      - "5984:5984"
+    volumes:
+      - couchdb:/opt/couchdb/data
+volumes:
+  couchdb:

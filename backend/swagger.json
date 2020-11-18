@@ -1,0 +1,23 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "A Swagger representation of the endpoints that JumbaLiar is currently serving.",
+    "title": "JumbaLiar"
+  },
+  "host": "localhost",
+  "basePath": "/services",
+  "tags": [],
+  "schemes": [
+    "http"
+  ],
+  "paths": {},
+  "securityDefinitions": {
+    "BearerAuth": {
+      "description": "Auth using the Authorization Header",
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "definitions": {}
+}

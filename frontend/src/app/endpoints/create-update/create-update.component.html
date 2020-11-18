@@ -1,0 +1,70 @@
+<app-navbar></app-navbar>
+<div class="wrapper">
+  <h2 class="heading">New Endpoint</h2>
+
+  <div class="p-grid">
+    <p-panel class="p-col-8">
+      <p-header>
+        <div class="p-pb-1">
+          Configuration
+        </div>
+      </p-header>
+
+      <span class="p-input-icon-left services-placeholder full-width">
+        <i class="pi pi-user"></i>
+        <span>/services/</span>
+        <input style="width: 100%" type="text" pInputText placeholder="path" [(ngModel)]="endpointForm['path']" />
+      </span><br><br>
+
+      <span class="p-input-icon-left full-width">
+        <i class="pi pi-user"></i>
+        <p-dropdown [placeholder]="'Method'" [options]="methodOptions" [(ngModel)]="endpointForm['method']"></p-dropdown>
+      </span><br><br>
+
+      <span class="p-input-icon-left full-width">
+        <i class="pi pi-tag"></i>
+        <p-dropdown [placeholder]="'Type'" [options]="typeOptions" [(ngModel)]="endpointForm['typeId']"></p-dropdown>
+      </span><br><br>
+
+      <span class="p-input-icon-left full-width">
+        <i class="pi pi-folder"></i>
+        <p-multiSelect placeholder="Used By" [options]="applicationOptions" [(ngModel)]="endpointForm['usedByIds']"></p-multiSelect>
+      </span><br><br>
+
+      <p-button [disabled]="isValid()" (onClick)="submit()" label="Submit" icon="pi pi-check" iconPos="left"></p-button>
+<!--      <pre>{{endpointForm | json}}</pre>-->
+    </p-panel>
+
+    <div class="p-col-4">
+      <p-panel>
+        <p-header>
+          <div class="p-pb-1">
+            Settings
+          </div>
+        </p-header>
+        <p-toggleButton [(ngModel)]="endpointForm['visibility']" onLabel="Visibility: Visible" offLabel="Visibility: Hidden" onIcon="pi pi-check" offIcon="pi pi-times"></p-toggleButton><br><br>
+        <p-toggleButton [(ngModel)]="endpointForm['authorization']" onLabel="Authorization: Required" offLabel="Authorization: None" onIcon="pi pi-check" offIcon="pi pi-times"></p-toggleButton>
+      </p-panel>
+
+      <br>
+
+      <p-panel>
+        <p-header>
+          <div class="p-pb-1">
+            Help
+          </div>
+        </p-header>
+        <ul class="help">
+          <li>Use path params with <code>/:paramName</code></li>
+        </ul>
+      </p-panel>
+    </div>
+
+  </div>
+
+  <h2 class="heading">Conditionals</h2>
+
+  <app-conditional></app-conditional>
+
+</div>
+

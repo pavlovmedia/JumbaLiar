@@ -1,0 +1,116 @@
+<app-navbar></app-navbar>
+<div class="wrapper">
+  <h2 class="heading">Endpoints</h2>
+  <p-panel class="{{types.length === 0 ? 'bar' : ''}}">
+    <p-header>
+      <div class="p-grid">
+        <div class="p-col-6 p-p-0 p-d-flex p-ai-center p-jc-start">
+          Total Endpoints: {{endpoints.length}}
+        </div>
+        <div class="p-col-6 p-p-0 p-d-flex p-ai-center p-jc-end">
+          <p-button [pTooltip]="'New Type'" tooltipPosition="bottom" (click)="displayTypeModal = true" label="" icon="pi pi-plus" iconPos="left"></p-button>
+        </div>
+      </div>
+    </p-header>
+    <p-table [value]="types" styleClass="p-datatable-striped" [dataKey]="'id'">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 3rem"></th>
+          <th>Type</th>
+          <th>Created</th>
+          <th>Endpoints</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-type let-expanded="expanded">
+        <tr>
+          <td>
+            <button type="button" pButton [pRowToggler]="type" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+          </td>
+          <td>{{type.name}}</td>
+          <td>{{type.createdOn | date}}</td>
+          <td>{{typeMap[type.id] ? typeMap[type.id].length : 0}}</td>
+          <td>
+            <p-button [pTooltip]="'New Endpoint'" tooltipPosition="bottom" [routerLink]="'/endpoints/new'" label="" icon="pi pi-plus" iconPos="left"></p-button> &nbsp;
+            <button [pTooltip]="'Update Type'" tooltipPosition="bottom" (click)="updateType(type)" pButton type="button" icon="pi pi-pencil" label="" class="p-button-secondary"></button> &nbsp;
+            <button [pTooltip]="'View Data'" tooltipPosition="bottom" (click)="viewType(type)" pButton type="button" icon="pi pi-search" label="" class="p-button-secondary"></button> &nbsp;
+            <button [pTooltip]="'Generate Endpoints'" tooltipPosition="bottom" (click)="generateType(type)" pButton type="button" icon="pi pi-star" label="" class="p-button-secondary"></button> &nbsp;
+            <button [pTooltip]="'Delete Type'" tooltipPosition="bottom" [disabled]="typeMap[type.id]" (click)="deleteType(type)" pButton type="button" icon="pi pi-trash" label="" class="p-button-danger"></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="rowexpansion" let-type>
+        <tr>
+          <td colspan="5">
+            <div class="p-p-3">
+              <p *ngIf="!typeMap[type.id]">No endpoints of type {{type.name}}.</p>
+              <p-table *ngIf="typeMap[type.id]" [value]="typeMap[type.id]" styleClass="p-datatable-striped">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th width="50"></th>
+                    <th pSortableColumn="path" style="width: 350px">Path <p-sortIcon field="path"></p-sortIcon></th>
+                    <th pSortableColumn="owner">Owner <p-sortIcon field="owner"></p-sortIcon></th>
+                    <th pSortableColumn="usedByIds">Used By <p-sortIcon field="usedByIds"></p-sortIcon></th>
+                    <th pSortableColumn="createdOn">Created <p-sortIcon field="createdOn"></p-sortIcon></th>
+                    <th>Conditionals</th>
+                    <th>Actions</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-endpoint>
+                  <tr>
+                    <td><span class="p-badge p-badge-{{endpoint.visibility ? 'success' : 'danger'}}"></span></td>
+                    <td>
+                      <span *ngIf="endpoint.method === 'DYNAMIC'" class="p-tag p-tag-rounded">DYNAMIC</span>
+                      <span *ngIf="endpoint.method === 'GET'" class="p-tag p-tag-rounded p-tag-success">GET</span>
+                      <span *ngIf="endpoint.method === 'PUT'" class="p-tag p-tag-rounded p-tag-info">PUT</span>
+                      <span *ngIf="endpoint.method === 'POST'" class="p-tag p-tag-rounded p-tag-warning">POST</span>
+                      <span *ngIf="endpoint.method === 'DELETE'" class="p-tag p-tag-rounded p-tag-danger">DELETE</span>
+                      /{{endpoint.path}}
+                    </td>
+                    <td>
+                      <app-user [user]="getUser(endpoint.owner)"></app-user>
+                    </td>
+                    <td>
+                      <span *ngFor="let app of getApplications(endpoint.usedByIds)" class="p-tag p-tag-rounded" style="background-color: {{app.colorHex}}; width: auto;">{{app.name}}</span>
+                    </td>
+                    <td>{{endpoint.createdOn | date}}</td>
+                    <td>{{endpoint.conditionals ? endpoint.conditionals.length : 0}}</td>
+                    <td>
+                      <button [routerLink]="'/endpoints/' + endpoint.id" pButton type="button" icon="pi pi-pencil" label="" class="p-button-secondary"></button> &nbsp;
+                      <button (click)="deleteEndpoint(endpoint)" pButton type="button" icon="pi pi-trash" label="" class="p-button-danger"></button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-panel>
+</div>
+
+<p-dialog class="large" [modal]="true" header="{{isUpdatingTypes ? 'Update' : 'New'}} Type Definition" [(visible)]="displayTypeModal" *ngIf="displayTypeModal">
+  <span class="p-input-icon-left">
+    <i class="pi pi-tag"></i>
+    <input size="50" type="text" pInputText placeholder="Name" [(ngModel)]="typeForm['name']" />
+  </span>
+  <br><br>
+  <div class="p-grid">
+    <div class="p-col-8">
+      <ngx-monaco-editor style="width: 100%" [options]="editorOptions" [(ngModel)]="typeForm['definition']"></ngx-monaco-editor>
+    </div>
+    <div class="p-col-4">
+      <b>Example:</b>
+      <pre>{{this.example | json}}</pre>
+    </div>
+  </div>
+  <br>
+  <p-button (click)="submitTypes()" label="{{isUpdatingTypes ? 'Update' : 'Create'}}" icon="pi pi-check" iconPos="left"></p-button>
+</p-dialog>
+
+<p-dialog class="large" [modal]="true" header="View Data" [(visible)]="viewData" *ngIf="viewData">
+  <pre>{{dataForm | json}}</pre>
+</p-dialog>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

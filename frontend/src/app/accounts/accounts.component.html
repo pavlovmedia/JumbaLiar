@@ -1,0 +1,46 @@
+<app-navbar></app-navbar>
+<div class="wrapper">
+  <h2 class="heading">Accounts</h2>
+
+  <p-panel>
+    <p-header>
+      <div class="p-grid" style="height: 36px;">
+        <div class="p-col-6 p-p-0 p-d-flex p-ai-center p-jc-start">
+          Total Accounts: {{accounts.length}}
+        </div>
+        <div class="p-col-6 p-p-0 p-d-flex p-ai-center p-jc-end">
+<!--          <p-button label="" icon="pi pi-plus" iconPos="left"></p-button>-->
+        </div>
+      </div>
+    </p-header>
+    <p-table [value]="accounts" styleClass="p-datatable-striped">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Gravatar</th>
+          <th pSortableColumn="firstName">First Name <p-sortIcon field="firstName"></p-sortIcon></th>
+          <th pSortableColumn="lastName">Last Name <p-sortIcon field="lastName"></p-sortIcon></th>
+          <th pSortableColumn="email">Email Address <p-sortIcon field="email"></p-sortIcon></th>
+          <th pSortableColumn="role">Role <p-sortIcon field="role"></p-sortIcon></th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-account>
+        <tr>
+          <td><img ngxGravatar [email]="account.email" height="40" class="p-p-1 grav"></td>
+          <td>{{account.firstName}}</td>
+          <td>{{account.lastName}}</td>
+          <td>{{account.email}}</td>
+          <td>{{account.role}}</td>
+          <td>
+<!--            <button pButton type="button" icon="pi pi-pencil" label="" class="p-button-secondary"></button> &nbsp;-->
+            <button (click)="delete(account)" pButton type="button" icon="pi pi-trash" label="" class="p-button-danger"></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-panel>
+</div>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+
+
