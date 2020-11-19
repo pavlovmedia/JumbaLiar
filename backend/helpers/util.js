@@ -60,7 +60,6 @@ class Util {
   }
 
   filter(arr, jsonFilter) {
-    console.log(jsonFilter);
     switch (jsonFilter['filterType']) {
       case 'StartsWith':
         return arr.filter(i => i[jsonFilter['fieldName']].startsWith(jsonFilter['check']));
