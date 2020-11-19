@@ -6,13 +6,6 @@ class Util {
 
   constructor() {}
 
-  uuid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
-  }
-
   generateToken(id) {
     return this.jwt.sign({ id: id }, this.secret, { expiresIn: 86400 });
   }
@@ -59,7 +52,7 @@ class Util {
   }
 
   id(string) {
-    return { selector: { "id": string } };
+    return { selector: { "_id": string } };
   }
 
   email(string) {
@@ -67,6 +60,7 @@ class Util {
   }
 
   filter(arr, jsonFilter) {
+    console.log(jsonFilter);
     switch (jsonFilter['filterType']) {
       case 'StartsWith':
         return arr.filter(i => i[jsonFilter['fieldName']].startsWith(jsonFilter['check']));
@@ -98,9 +92,10 @@ class Util {
   formatSingleReturn(object, allowMeta = false) {
     let docs = object.docs;
     docs = docs.filter(i => !i.language || i.language !== 'query');
+    docs.forEach(i => i.id = i._id);
     if (!allowMeta) {
       docs.forEach(i => { 
-        delete i._id; 
+        delete i._id;
         delete i._rev;
         delete i.password;
       });
@@ -112,9 +107,10 @@ class Util {
     let docs = object.rows;
     docs = docs.map(i => i.doc);
     docs = docs.filter(i => !i.language || i.language !== 'query');
+    docs.forEach(i => i.id = i._id);
     if (!allowMeta) {
       docs.forEach(i => { 
-        delete i._id; 
+        delete i._id;
         delete i._rev;
         delete i.password;
       });

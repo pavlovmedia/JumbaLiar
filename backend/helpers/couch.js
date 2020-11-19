@@ -41,7 +41,6 @@ class Couch {
   }
 
   create(database, object) {
-    object['id'] = this.util.uuid();
     object['createdOn'] = new Date();
     object['updatedOn'] = new Date();
     const db = this.couch.use(database);

@@ -9,6 +9,7 @@ const Swagger = require('./helpers/swagger');
 const Types = require('./helpers/types');
 const Media = require('./helpers/media');
 const Proxy = require('./helpers/proxy');
+const Sse = require('./helpers/sse');
 
 
 const util = new Util();
@@ -22,6 +23,7 @@ const applications = new Applications(couch, express, util, generic);
 const endpoints = new Endpoints(couch, express, util, generic);
 const types = new Types(couch, express, util, generic);
 const proxy = new Proxy(couch, express, util, generic);
+const sse = new Sse(couch, express, util, generic);
 
 
 setTimeout(() => express.listen(), 1500);

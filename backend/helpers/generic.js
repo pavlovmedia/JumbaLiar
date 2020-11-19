@@ -31,7 +31,7 @@ class Generic {
       if (payload) {
         this.couch.create(database, payload).then(couchResponse => {
           if (res) {
-            this.couch.read(database, { selector: { "_id": couchResponse.id } }).then(couchResponse2 => {
+            this.couch.read(database, this.util.id(couchResponse.id)).then(couchResponse2 => {
               res.send(this.util.formatSingleReturn(couchResponse2));
             });
           }
@@ -75,8 +75,9 @@ class Generic {
     const validity = auth ? this.util.validateToken(req) : {status: 'success', id: 'NO_AUTH'};
     if (validity.status === 'success') {
       this.couch.read(database).then(couchReturn => {
-        const filtered = this.util.filter(this.util.formatArrayReturn(couchReturn), filter);
-        if (filter.fieldName === 'id' && filter.filterType === 'Equals') {
+        let filtered = this.util.formatArrayReturn(couchReturn);
+        filter.forEach(i => filtered = this.util.filter(filtered, i) );
+        if (filter.length === 0 && filter[0].fieldName === 'id' && filter[0].filterType === 'Equals') {
           if (filtered.length === 1) {
             res.send( filtered[0] );
           } else if (filtered.length === 0) {
@@ -105,7 +106,7 @@ class Generic {
           if (r) {
             this.couch.update(database, payload, r).then(couchResponse => {
               if (res) {
-                this.couch.read(database, { selector: { "_id": couchResponse.id } }).then(couchResponse2 => {
+                this.couch.read(database, this.util.id(couchResponse.id)).then(couchResponse2 => {
                   res.send(this.util.formatSingleReturn(couchResponse2));
                 });
               }
