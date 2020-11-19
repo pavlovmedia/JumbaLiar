@@ -67,9 +67,7 @@ Example docker-compose.yml
 - `BACKEND_URL` must match the URL of the backend.
 
 ## TODO
-- SSE events when data is manipulated
 - Required and optional fields
-- Additional Swagger UI entries
 - Ability to configure additional metadata fields on data
 - Ask for "used by" when generating endpoints
 
