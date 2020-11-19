@@ -75,7 +75,6 @@ class Swagger {
               this.setResponse(endpoint.conditionals[0].then[0].type, types, endpoint, paths);
               
             });
-            // this.swaggerDocument.paths = paths;
           });
         });
       });

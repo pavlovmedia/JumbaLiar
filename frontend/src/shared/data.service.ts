@@ -43,7 +43,7 @@ export class DataService {
   public getData(): void {
     window.setTimeout(() => {
       combineLatest(
-        this.http.get(this.backendUrl + '/services/authorization/principal', this.options),
+        this.http.get(this.backendUrl + '/services/authorization/me', this.options),
         this.http.get(this.backendUrl + '/services/accounts', this.options),
         this.http.get(this.backendUrl + '/services/applications', this.options),
         this.http.get(this.backendUrl + '/services/endpoints', this.options),

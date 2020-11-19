@@ -13,10 +13,10 @@ class Util {
   validateToken(req) {
     const header = req.headers.authorization;
     if (header) {
-      const auth = header.split(' ');
-      if (auth[0] === 'access_token' && auth[1] && auth[1] !== '') {
+      const auth = header.replace('access_token ', '');
+      if (auth && auth !== '') {
         try {
-          const decoded = this.jwt.verify(auth[1], this.secret);
+          const decoded = this.jwt.verify(auth, this.secret);
           var current_time = new Date().getTime() / 1000;
           if (decoded && (current_time < decoded.exp)) {
             return {status: 'success', id: decoded.id};

@@ -43,7 +43,7 @@ class Accounts {
     });
 
     // ME
-    this.express.app.get('/services/authorization/principal', (req, res) => {
+    this.express.app.get('/services/authorization/me', (req, res) => {
       const validity = this.util.validateToken(req);
       if (validity.status === 'success') {
         this.couch.read('accounts', this.util.id(validity.id)).then(account => {
