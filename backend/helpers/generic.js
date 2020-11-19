@@ -165,6 +165,12 @@ class Generic {
       });
     }
 
+    if (ignore.indexOf('query') === -1) {
+      this.express.app.post('/services/' + database + '/query', (req, res) => {
+        this.filter(database.toLowerCase(), req.body, req, res);
+      });
+    }
+
     if (ignore.indexOf('update') === -1) {
       this.express.app.put('/services/' + database + '/:id', (req, res) => {
         this.update(database.toLowerCase(), req, res, type);

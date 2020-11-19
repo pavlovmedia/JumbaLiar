@@ -113,7 +113,7 @@
          }
       }
    },
-   "/account":{
+   "/accounts":{
     "post":{
        "responses":{
           "200":{
@@ -180,7 +180,7 @@
        ]
     }
  },
- "/account/{id}":{
+ "/accounts/{id}":{
     "delete":{
        "responses":{
           "200":{
@@ -291,7 +291,7 @@
        ]
     }
  },
- "/account/query":{
+ "/accounts/query":{
     "post":{
        "responses":{
           "200":{
