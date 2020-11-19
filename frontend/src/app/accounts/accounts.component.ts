@@ -9,6 +9,14 @@ import {ConfirmationService, MessageService} from 'primeng/api';
 })
 export class AccountsComponent {
   public accounts = [];
+  public display = false;
+  public accountForm = {};
+  public isUpdating = false;
+
+  public roles = [
+    {label: 'USER', value: 'user'},
+    {label: 'ADMIN', value: 'admin'}
+  ];
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -18,6 +26,38 @@ export class AccountsComponent {
     this.data.usersSubject.subscribe(accounts => {
       this.accounts = accounts;
     });
+  }
+
+  public submit(): void {
+    if (this.isUpdating) {
+      this.data.update('accounts', this.accountForm).subscribe(res => {
+        this.display = false;
+        this.accountForm = {};
+        this.data.getData();
+      }, error => {
+        this.messageService.add({severity: 'error', detail: error.statusText});
+      });
+    } else {
+      this.data.create('accounts', this.accountForm).subscribe(res => {
+        this.display = false;
+        this.accountForm = {};
+        this.data.getData();
+      }, error => {
+        this.messageService.add({severity: 'error', detail: error.statusText});
+      });
+    }
+  }
+
+  public create(): void {
+    this.accountForm = {};
+    this.isUpdating = false;
+    this.display = true;
+  }
+
+  public update(account): void {
+    this.accountForm = {...account};
+    this.isUpdating = true;
+    this.display = true;
   }
 
   public delete(account): void {

@@ -13,9 +13,12 @@ export class EndpointsComponent {
   public isUpdatingTypes = false;
   public typeMap = {};
   public editorOptions = {theme: 'vs-dark', language: 'json'};
+  public applicationOptions = [];
   public example = {person: 'string', place: 'Place', 'thing?': 'number', time: 'boolean'};
   public displayTypeModal = false;
   public typeForm = {};
+  public displayGenerateModal = false;
+  public generateForm = {};
   public user;
   public users;
   public endpoints = [];
@@ -41,6 +44,8 @@ export class EndpointsComponent {
       this.endpoints = endpoints;
       this.types = types;
       this.applications = applications;
+      this.applicationOptions = [];
+      this.applications.forEach(i => this.applicationOptions.push({label: i.name, value: i.id}));
 
       this.mapTypes();
     });
@@ -132,110 +137,112 @@ export class EndpointsComponent {
     this.viewData = true;
   }
 
-  public generateType(type): void {
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to generate generic endpoints for ' + type.name + '?',
-      accept: () => {
-        const payload = [
+  public generate(): void {
+    const payload = [
+      {
+        owner: this.user.id,
+        method: 'GET',
+        typeId: this.generateForm['type'].id,
+        path: this.camelize(this.generateForm['type'].name),
+        authorization: false,
+        visibility: true,
+        usedByIds: [this.generateForm['application']],
+        conditionals: [
           {
-            owner: this.user.id,
-            method: 'GET',
-            typeId: type.id,
-            path: this.camelize(type.name),
-            authorization: false,
-            visibility: true,
-            usedByIds: [],
-            conditionals: [
-              {
-                if: [ { type: '*', checkType: '', config: '', body: ''}],
-                then: [ { type: 'returnData', checkType: '', config: '', body: '' }]
-              }
-            ]
-          },
-          {
-            owner: this.user.id,
-            method: 'GET',
-            typeId: type.id,
-            path: this.camelize(type.name) + '/:id',
-            authorization: false,
-            visibility: true,
-            usedByIds: [],
-            conditionals: [
-              {
-                if: [ { type: '*', checkType: '', config: '', body: ''}],
-                then: [ { type: 'returnDataWhereKey', checkType: 'Equals', config: 'id', body: ':id' }]
-              }
-            ]
-          },
-          {
-            owner: this.user.id,
-            method: 'POST',
-            typeId: type.id,
-            path: this.camelize(type.name) + '/query',
-            authorization: false,
-            visibility: true,
-            usedByIds: [],
-            conditionals: [
-              {
-                if: [ { type: '*', checkType: '', config: '', body: ''}],
-                then: [ { type: 'returnDataWhereQuery', checkType: '', config: '', body: '' }]
-              }
-            ]
-          },
-          {
-            owner: this.user.id,
-            method: 'POST',
-            typeId: type.id,
-            path: this.camelize(type.name),
-            authorization: false,
-            visibility: true,
-            usedByIds: [],
-            conditionals: [
-              {
-                if: [ { type: '*', checkType: '', config: '', body: ''}],
-                then: [ { type: 'pushBody', checkType: '', config: '', body: '' }]
-              }
-            ]
-          },
-          {
-            owner: this.user.id,
-            method: 'PUT',
-            typeId: type.id,
-            path: this.camelize(type.name) + '/:id',
-            authorization: false,
-            visibility: true,
-            usedByIds: [],
-            conditionals: [
-              {
-                if: [ { type: '*', checkType: '', config: '', body: ''}],
-                then: [ { type: 'updateData', checkType: '', config: '', body: '' }]
-              }
-            ]
-          },
-          {
-            owner: this.user.id,
-            method: 'DELETE',
-            typeId: type.id,
-            path: this.camelize(type.name) + '/:id',
-            authorization: false,
-            visibility: true,
-            usedByIds: [],
-            conditionals: [
-              {
-                if: [ { type: '*', checkType: '', config: '', body: ''}],
-                then: [ { type: 'deleteData', checkType: '', config: '', body: '' }]
-              }
-            ]
+            if: [ { type: '*', checkType: '', config: '', body: ''}],
+            then: [ { type: 'returnData', checkType: '', config: '', body: '' }]
           }
-        ];
-        this.data.create('endpoints/bulk', payload).subscribe(res => {
-          this.data.getData();
-          this.data.restartSubject.next(true);
-        }, error => {
-          this.messageService.add({severity: 'error', detail: error.statusText});
-        });
+        ]
+      },
+      {
+        owner: this.user.id,
+        method: 'GET',
+        typeId: this.generateForm['type'].id,
+        path: this.camelize(this.generateForm['type'].name) + '/:id',
+        authorization: false,
+        visibility: true,
+        usedByIds: [this.generateForm['application']],
+        conditionals: [
+          {
+            if: [ { type: '*', checkType: '', config: '', body: ''}],
+            then: [ { type: 'returnDataWhereKey', checkType: 'Equals', config: 'id', body: ':id' }]
+          }
+        ]
+      },
+      {
+        owner: this.user.id,
+        method: 'POST',
+        typeId: this.generateForm['type'].id,
+        path: this.camelize(this.generateForm['type'].name) + '/query',
+        authorization: false,
+        visibility: true,
+        usedByIds: [this.generateForm['application']],
+        conditionals: [
+          {
+            if: [ { type: '*', checkType: '', config: '', body: ''}],
+            then: [ { type: 'returnDataWhereQuery', checkType: '', config: '', body: '' }]
+          }
+        ]
+      },
+      {
+        owner: this.user.id,
+        method: 'POST',
+        typeId: this.generateForm['type'].id,
+        path: this.camelize(this.generateForm['type'].name),
+        authorization: false,
+        visibility: true,
+        usedByIds: [this.generateForm['application']],
+        conditionals: [
+          {
+            if: [ { type: '*', checkType: '', config: '', body: ''}],
+            then: [ { type: 'pushBody', checkType: '', config: '', body: '' }]
+          }
+        ]
+      },
+      {
+        owner: this.user.id,
+        method: 'PUT',
+        typeId: this.generateForm['type'].id,
+        path: this.camelize(this.generateForm['type'].name) + '/:id',
+        authorization: false,
+        visibility: true,
+        usedByIds: [this.generateForm['application']],
+        conditionals: [
+          {
+            if: [ { type: '*', checkType: '', config: '', body: ''}],
+            then: [ { type: 'updateData', checkType: '', config: '', body: '' }]
+          }
+        ]
+      },
+      {
+        owner: this.user.id,
+        method: 'DELETE',
+        typeId: this.generateForm['type'].id,
+        path: this.camelize(this.generateForm['type'].name) + '/:id',
+        authorization: false,
+        visibility: true,
+        usedByIds: [this.generateForm['application']],
+        conditionals: [
+          {
+            if: [ { type: '*', checkType: '', config: '', body: ''}],
+            then: [ { type: 'deleteData', checkType: '', config: '', body: '' }]
+          }
+        ]
       }
+    ];
+    this.displayGenerateModal = false;
+    this.data.create('endpoints/bulk', payload).subscribe(res => {
+      this.data.getData();
+      window.setTimeout(() => this.data.getData(), 7000);
+      this.data.restartSubject.next(true);
+    }, error => {
+      this.messageService.add({severity: 'error', detail: error.statusText});
     });
+  }
+
+  public generateType(type): void {
+    this.generateForm = {type, application: this.applications[0].id};
+    this.displayGenerateModal = true;
   }
 
   private camelize(str): string {

@@ -34,7 +34,7 @@
             <p-button [pTooltip]="'New Endpoint'" tooltipPosition="bottom" [routerLink]="'/endpoints/new'" label="" icon="pi pi-plus" iconPos="left"></p-button> &nbsp;
             <button [pTooltip]="'Update Type'" tooltipPosition="bottom" (click)="updateType(type)" pButton type="button" icon="pi pi-pencil" label="" class="p-button-secondary"></button> &nbsp;
             <button [pTooltip]="'View Data'" tooltipPosition="bottom" (click)="viewType(type)" pButton type="button" icon="pi pi-search" label="" class="p-button-secondary"></button> &nbsp;
-            <button [pTooltip]="'Generate Endpoints'" tooltipPosition="bottom" (click)="generateType(type)" pButton type="button" icon="pi pi-star" label="" class="p-button-secondary"></button> &nbsp;
+            <button [disabled]="applications.length === 0" [pTooltip]="'Generate Endpoints'" tooltipPosition="bottom" (click)="generateType(type)" pButton type="button" icon="pi pi-star" label="" class="p-button-secondary"></button> &nbsp;
             <button [pTooltip]="'Delete Type'" tooltipPosition="bottom" [disabled]="typeMap[type.id]" (click)="deleteType(type)" pButton type="button" icon="pi pi-trash" label="" class="p-button-danger"></button>
           </td>
         </tr>
@@ -111,6 +111,17 @@
 
 <p-dialog class="large" [modal]="true" header="View Data" [(visible)]="viewData" *ngIf="viewData">
   <pre>{{dataForm | json}}</pre>
+</p-dialog>
+
+<p-dialog class="large" [modal]="true" header="Generate Endpoints" [(visible)]="displayGenerateModal" *ngIf="displayGenerateModal">
+  <p>Which application is using the endpoints generated for {{generateForm['type'].name}}?</p>
+
+  <span class="p-input-icon-left full-width">
+    <i class="pi pi-cog"></i>
+    <p-dropdown [placeholder]="'Method'" [options]="applicationOptions" [(ngModel)]="generateForm['application']"></p-dropdown>
+  </span><br><br>
+
+  <p-button (click)="generate()" label="Generate" icon="pi pi-check" iconPos="left"></p-button>
 </p-dialog>
 
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

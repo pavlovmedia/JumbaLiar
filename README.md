@@ -69,5 +69,4 @@ Example docker-compose.yml
 ## TODO
 - Required and optional fields
 - Ability to configure additional metadata fields on data
-- Ask for "used by" when generating endpoints
 

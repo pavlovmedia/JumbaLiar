@@ -32,7 +32,7 @@
           <td>{{account.email}}</td>
           <td>{{account.role}}</td>
           <td>
-<!--            <button pButton type="button" icon="pi pi-pencil" label="" class="p-button-secondary"></button> &nbsp;-->
+            <button (click)="update(account)" pButton type="button" icon="pi pi-pencil" label="" class="p-button-secondary"></button> &nbsp;
             <button (click)="delete(account)" pButton type="button" icon="pi pi-trash" label="" class="p-button-danger"></button>
           </td>
         </tr>
@@ -40,6 +40,26 @@
     </p-table>
   </p-panel>
 </div>
+
+<p-dialog [modal]="true" header="{{isUpdating ? 'Update' : 'New'}} Account" [(visible)]="display" *ngIf="display">
+  <span class="p-input-icon-left">
+    <i class="pi pi-user"></i>
+    <input size="44" type="text" pInputText placeholder="Name" [(ngModel)]="accountForm['firstName']" />
+  </span><br><br>
+  <span class="p-input-icon-left">
+    <i class="pi pi-user"></i>
+    <input size="44" type="text" pInputText placeholder="Name" [(ngModel)]="accountForm['lastName']" />
+  </span><br><br>
+  <span class="p-input-icon-left">
+    <i class="pi pi-envelope"></i>
+    <input size="44" type="text" pInputText placeholder="Name" [(ngModel)]="accountForm['email']" />
+  </span><br><br>
+  <span class="p-input-icon-left full-width">
+    <i class="pi pi-cog"></i>
+    <p-dropdown [placeholder]="'Method'" [options]="roles" [(ngModel)]="accountForm['role']"></p-dropdown>
+  </span><br><br>
+  <p-button (click)="submit()" label="{{isUpdating ? 'Update' : 'Create'}}" icon="pi pi-check" iconPos="left"></p-button>
+</p-dialog>
 
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
 
