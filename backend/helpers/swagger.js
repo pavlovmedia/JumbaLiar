@@ -11,7 +11,6 @@ class Swagger {
     this.couch = couch;
     this.util = util;
     this.express = express;
-    this.wipe();
     setTimeout(() => this.init(), 2000);
   }
 
@@ -36,7 +35,7 @@ class Swagger {
               this.swaggerDocument.definitions[type.name]['properties']['updatedOn'] = { type: 'string', format: "date-time", readOnly: true };
             });
             
-            let paths = {};
+            let paths = this.swaggerDocument.paths;
             endpoints.forEach(endpoint => {
               let pathParams = endpoint.path.match(/:([a-z_]+)/gi);
               pathParams = pathParams ? pathParams.map(i => i.replace(':', '')) : [];
@@ -76,7 +75,7 @@ class Swagger {
               this.setResponse(endpoint.conditionals[0].then[0].type, types, endpoint, paths);
               
             });
-            this.swaggerDocument.paths = paths;
+            // this.swaggerDocument.paths = paths;
           });
         });
       });
@@ -109,12 +108,6 @@ class Swagger {
         this.swaggerDocument.definitions[name]['properties'][i] = { type: types[i] };
       }
     })
-  }
-
-  wipe() {
-    this.swaggerDocument.tags = [];
-    this.swaggerDocument.paths = {};
-    this.swaggerDocument.definitions = {};
   }
 
   setResponse(type, types, endpoint, paths) {
@@ -159,6 +152,17 @@ class Swagger {
         }
         return;
       case 'returnDataWhereQuery':
+        paths['/' + endpoint.path][endpoint.method.toLowerCase()]['parameters'].push({
+          "in": "body",
+          "name": "body",
+          "required": true,
+          "schema": {
+            type: "array",
+            items: {
+              "$ref": "#/definitions/JsonFilter"
+            }
+          }
+        });
         paths['/' + endpoint.path][endpoint.method.toLowerCase()]['responses']['200'] = {
           description: 'Success',
           schema: {

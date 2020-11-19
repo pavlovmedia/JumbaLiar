@@ -6,11 +6,76 @@
   },
   "host": "localhost",
   "basePath": "/services",
-  "tags": [],
+  "tags": [
+    {
+      "name": "allsse"
+    }
+  ],
   "schemes": [
     "http"
   ],
-  "paths": {},
+  "paths": {
+    "/allsse":{
+      "get":{
+         "tags":[
+            "allsse"
+         ],
+         "summary":"Get remote connections",
+         "description":"",
+         "operationId":"getRemoteConnections",
+         "produces":[
+            "application/json"
+         ],
+         "parameters":[
+            
+         ],
+         "responses":{
+            "200":{
+               "description":"Success",
+               "schema":{
+                  "type":"array",
+                  "items":{
+                     "type":"string"
+                  }
+               }
+            }
+         }
+      },
+      "post":{
+         "tags":[
+            "allsse"
+         ],
+         "summary":"SSE",
+         "description":"",
+         "operationId":"getSse",
+         "consumes":[
+            "application/json"
+         ],
+         "produces":[
+            "text/event-stream"
+         ],
+         "parameters":[
+            {
+               "in":"body",
+               "name":"body",
+               "description":"List of of DTOs",
+               "required":true,
+               "schema":{
+                  "$ref":"#/definitions/ChannelList"
+               }
+            }
+         ],
+         "responses":{
+            "200":{
+               "description":"Success",
+               "schema":{
+                  "$ref":"#/definitions/EventOutput"
+               }
+            }
+         }
+      }
+   }
+  },
   "securityDefinitions": {
     "BearerAuth": {
       "description": "Auth using the Authorization Header",
@@ -19,5 +84,63 @@
       "in": "header"
     }
   },
-  "definitions": {}
+  "definitions": {
+    "ChannelList":{
+      "type":"object",
+      "properties":{
+         "dtoList":{
+            "type":"array",
+            "items":{
+               "type":"string"
+            }
+         }
+      }
+   },
+   "EventOutput": {
+    "type": "object",
+      "properties": {
+        "changeType": {
+          "type": "string",
+          "enum": [
+            "CREATED",
+            "UPDATED",
+            "DELETED"
+          ]
+        },
+        "dtoName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "JsonFilter": {
+      "type": "object",
+      "properties": {
+        "fieldName": {
+          "type": "string"
+        },
+        "filterType": {
+          "type": "string",
+          "enum": [
+            "StartsWith",
+            "EndsWith",
+            "Contains",
+            "Regex",
+            "Equals",
+            "In",
+            "LongEquals",
+            "LongGreaterThan",
+            "LongGreaterThanOrEqual",
+            "LongLessThan",
+            "LongLessThanOrEqual"
+          ]
+        },
+        "check": {
+          "type": "string"
+        }
+      }
+    }
+  }
 }
