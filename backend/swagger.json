@@ -23,6 +23,7 @@
         "tags": [
           "Authorization"
         ],
+        "summary": "Log in to JumbaLiar",
         "parameters":[
           {
              "in":"body",
@@ -48,6 +49,7 @@
         "tags": [
           "Authorization"
         ],
+        "summary":"Get Account associated with your token",
        "responses":{
             "200":{
               "description":"Success",
@@ -139,6 +141,7 @@
        "tags":[
           "Account"
        ],
+       "summary":"Used by JumbaLiar",
        "description": "Default endpoint for JumbaLiar",
        "produces":[
           "application/json"
@@ -170,6 +173,7 @@
           "Account"
        ],
        "description": "Default endpoint for JumbaLiar",
+       "summary":"Used by JumbaLiar",
        "produces":[
           "application/json"
        ],
@@ -202,6 +206,7 @@
           "Account"
        ],
        "description": "Default endpoint for JumbaLiar",
+       "summary":"Used by JumbaLiar",
        "produces":[
           "application/json"
        ],
@@ -245,6 +250,7 @@
           "Account"
        ],
        "description": "Default endpoint for JumbaLiar",
+       "summary":"Used by JumbaLiar",
        "produces":[
           "application/json"
        ],
@@ -280,6 +286,7 @@
        "tags":[
           "Account"
        ],
+       "summary":"Used by JumbaLiar",
        "description": "Default endpoint for JumbaLiar",
        "produces":[
           "application/json"
@@ -324,6 +331,7 @@
           "Account"
        ],
        "description": "Default endpoint for JumbaLiar",
+       "summary":"Used by JumbaLiar",
        "produces":[
           "application/json"
        ],

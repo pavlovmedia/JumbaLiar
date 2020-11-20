@@ -18,7 +18,7 @@ class Swagger {
   init() {
     console.log('Initializing Swagger JSON');
 
-    this.swaggerDocument['host'] = process.env.BACKEND_URL;
+    this.swaggerDocument['host'] = process.env.BACKEND_URL.replace('http://', '').replace('https://', '');
 
     this.couch.read('accounts').then(u => {
       this.couch.read('applications').then(a => {
@@ -47,8 +47,10 @@ class Swagger {
               const usedBy = [];
               endpoint.usedByIds.forEach(i => usedBy.push(applications.find(j => j.id === i)['name']));    
               const owner = accounts.find(i => i.id === endpoint.owner)['firstName'] + ' ' + accounts.find(i => i.id === endpoint.owner)['lastName'];
+              let summary = '';
               let description = 'Created by ' + owner;
               if (usedBy.length > 0) {
+                summary = "Used by " + usedBy.join(', ');
                 description = description + "\nUsed by " + usedBy.join(', ');
               }
 
@@ -66,6 +68,7 @@ class Swagger {
                 paths['/' + endpoint.path][endpoint.method.toLowerCase()]['parameters'] = [];
               }
               paths['/' + endpoint.path][endpoint.method.toLowerCase()]['tags'] = [types.find(i => i.id === endpoint.typeId).name];
+              paths['/' + endpoint.path][endpoint.method.toLowerCase()]['summary'] = summary;
               paths['/' + endpoint.path][endpoint.method.toLowerCase()]['description'] = description;
               paths['/' + endpoint.path][endpoint.method.toLowerCase()]['produces'] = ["application/json"];
               paths['/' + endpoint.path][endpoint.method.toLowerCase()]['security'] = [{BearerAuth: []}];
