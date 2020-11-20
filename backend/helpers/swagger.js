@@ -73,14 +73,14 @@ class Swagger {
               });
 
               this.setResponse(endpoint.conditionals[0].then[0].type, types, endpoint, paths);
-              
             });
           });
         });
       });
     });
-
-    this.express.app.use('/swagger-ui', this.swagger.serve, this.swagger.setup(this.swaggerDocument));
+    setTimeout(() => {
+      this.express.app.use('/swagger-ui', this.swagger.serve, this.swagger.setup(this.swaggerDocument));
+    }, 0);
   }
 
   initializeDefinition(name) {
