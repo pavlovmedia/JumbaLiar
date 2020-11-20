@@ -78,9 +78,13 @@ class Swagger {
         });
       });
     });
-    setTimeout(() => {
-      this.express.app.use('/swagger-ui', this.swagger.serve, this.swagger.setup(this.swaggerDocument));
-    }, 0);
+
+    this.express.app.get('/swagger.json', (req, res) => {
+      res.send(this.swaggerDocument);
+    });
+
+    var options = { swaggerOptions: { url: '/swagger.json'} }
+    this.express.app.use('/swagger-ui', this.swagger.serve, this.swagger.setup(null, options));
   }
 
   initializeDefinition(name) {
