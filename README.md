@@ -26,10 +26,8 @@ Example docker-compose.yml
         build: ./backend
         restart: always
         container_name: jumbaliar-backend
-        environment:
-          - COUCHDB_URL=couchdb:5984
-          - COUCHDB_USER=admin
-          - COUCHDB_PASSWORD=admin
+        env_file:
+          - .env
         volumes:
           - ./uploads:/node/uploads
         depends_on:
@@ -42,8 +40,8 @@ Example docker-compose.yml
         build: ./frontend
         restart: always
         container_name: jumbaliar-frontend
-        environment:
-          - BACKEND_URL=http://localhost
+        env_file:
+          - .env
         depends_on:
           - couchdb
         ports:
@@ -52,15 +50,21 @@ Example docker-compose.yml
         image: couchdb
         restart: always
         container_name: couchdb
-        environment:
-          - COUCHDB_USER=admin
-          - COUCHDB_PASSWORD=admin
+        env_file:
+          - .env
         ports:
           - "5984:5984"
         volumes:
           - couchdb:/opt/couchdb/data
     volumes:
       couchdb:
+
+Example .env file
+
+    BACKEND_URL=http://localhost
+    COUCHDB_URL=couchdb:5984
+    COUCHDB_USER=admin
+    COUCHDB_PASSWORD=admin
 
 **Note**
 - `restart:always` on the backend is essential to how the system works. Express must be restarted when new endpoints are added.

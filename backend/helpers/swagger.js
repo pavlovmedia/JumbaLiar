@@ -1,5 +1,6 @@
 const {application} = require('express');
 
+
 class Swagger {
   swagger = require('swagger-ui-express');
   couch;
@@ -16,6 +17,9 @@ class Swagger {
 
   init() {
     console.log('Initializing Swagger JSON');
+
+    this.swaggerDocument['host'] = process.env.BACKEND_URL;
+
     this.couch.read('accounts').then(u => {
       this.couch.read('applications').then(a => {
         this.couch.read('types').then(t => {

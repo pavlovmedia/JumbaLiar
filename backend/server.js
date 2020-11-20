@@ -1,3 +1,5 @@
+const DotEnv = require('dotenv').config({ path: '../.env' });
+
 const Accounts = require('./helpers/accounts');
 const Couch = require('./helpers/couch');
 const Express = require('./helpers/express');
