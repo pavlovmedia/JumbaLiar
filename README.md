@@ -67,6 +67,5 @@ Example docker-compose.yml
 - `BACKEND_URL` must match the URL of the backend.
 
 ## TODO
-- Required and optional fields
-- Ability to configure additional metadata fields on data
+- Refer to [Projects](https://github.com/pavlovmedia/JumbaLiar/projects/1) page for open issues and features
 
