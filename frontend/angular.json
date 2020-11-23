@@ -27,7 +27,7 @@
             "styles": [
               "src/styles.css",
               "node_modules/primeicons/primeicons.css",
-              "node_modules/primeng/resources/themes/vela-purple/theme.css",
+              "src/assets/vela-purple-alt.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeflex/primeflex.css"
             ],
