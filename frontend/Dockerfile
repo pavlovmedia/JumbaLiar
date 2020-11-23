@@ -14,6 +14,8 @@ RUN mv ./dist/frontend/* /usr/share/nginx/html
 
 RUN rm -rf /tmp/builder
 
+RUN apk del npm
+
 WORKDIR /usr/share/nginx/html
 
 RUN ls /usr/share/nginx/html
