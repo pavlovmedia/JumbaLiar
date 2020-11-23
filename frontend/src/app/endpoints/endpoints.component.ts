@@ -14,7 +14,15 @@ export class EndpointsComponent {
   public typeMap = {};
   public editorOptions = {theme: 'vs-dark', language: 'json'};
   public applicationOptions = [];
-  public example = {person: 'string', place: 'Place', 'thing?': 'number', time: 'boolean'};
+  public example = {
+    person: 'string', 
+    place: 'Place', 
+    thing: 'number', 
+    time: 'boolean[]',
+    dimension: {
+      galaxy: "Universe[]"
+    }
+  };
   public displayTypeModal = false;
   public typeForm = {};
   public displayGenerateModal = false;

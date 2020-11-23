@@ -104,7 +104,20 @@ class Swagger {
 
   generateDefinitions(name, types) {
     Object.keys(types).forEach(i => {
-      if (typeof types[i] === 'object' && types[i] !== null) {
+      if (Array.isArray(types[i]) && types[i] !== null) {
+        let generatedName = i.toPascalCase();
+        if (this.swaggerDocument.definitions[generatedName]) {
+          generatedName = name + "-" + generatedName
+        }
+        this.initializeDefinition(generatedName);
+        this.generateDefinitions(generatedName, types[i][0]);
+        this.swaggerDocument.definitions[name]['properties'][i] = {
+          "type": "array",
+          "items": {
+             "$ref": "#/definitions/" + generatedName
+          }
+        };
+      } else if (typeof types[i] === 'object' && types[i] !== null) {
         let generatedName = i.toPascalCase();
         if (this.swaggerDocument.definitions[generatedName]) {
           generatedName = name + "-" + generatedName
@@ -112,12 +125,31 @@ class Swagger {
         this.initializeDefinition(generatedName);
         this.generateDefinitions(generatedName, types[i]);
         this.swaggerDocument.definitions[name]['properties'][i] = { "$ref": "#/definitions/" + generatedName};
-      } else if (types[i] !== 'string' && types[i] !== 'number' && types[i] !== 'boolean') {
-        this.swaggerDocument.definitions[name]['properties'][i] = { "$ref": "#/definitions/" + types[i]};
-      } else {
+      } else if (types[i] === 'string' || types[i] === 'number' || types[i] === 'boolean') {
         this.swaggerDocument.definitions[name]['properties'][i] = { type: types[i] };
+      } else if (types[i] === 'string[]' || types[i] === 'number[]' || types[i] === 'boolean[]') {
+        this.swaggerDocument.definitions[name]['properties'][i] = { 
+          "type": "array",
+          "items": {
+            "type": types[i].replace('[]', '')
+          } 
+        };
+      } else {
+        if (types[i].indexOf('[]') === -1) {
+          // is not an array
+          this.swaggerDocument.definitions[name]['properties'][i] = { "$ref": "#/definitions/" + types[i]};
+        } else {
+          // is an array
+          this.swaggerDocument.definitions[name]['properties'][i] = 
+          { 
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/" + types[i].replace('[]', '')
+            } 
+          }
+        }
       }
-    })
+    });
   }
 
   setResponse(type, types, endpoint, paths) {
