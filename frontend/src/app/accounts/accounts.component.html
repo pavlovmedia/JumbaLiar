@@ -16,10 +16,10 @@
     <p-table [value]="accounts" styleClass="p-datatable-striped">
       <ng-template pTemplate="header">
         <tr>
-          <th>Gravatar</th>
-          <th pSortableColumn="firstName">First Name <p-sortIcon field="firstName"></p-sortIcon></th>
-          <th pSortableColumn="lastName">Last Name <p-sortIcon field="lastName"></p-sortIcon></th>
-          <th pSortableColumn="email">Email Address <p-sortIcon field="email"></p-sortIcon></th>
+          <th style="width: 6rem">Gravatar</th>
+          <th style="width: 12rem"  pSortableColumn="firstName">First Name <p-sortIcon field="firstName"></p-sortIcon></th>
+          <th style="width: 12rem"  pSortableColumn="lastName">Last Name <p-sortIcon field="lastName"></p-sortIcon></th>
+          <th style="width: 20rem" pSortableColumn="email">Email Address <p-sortIcon field="email"></p-sortIcon></th>
           <th pSortableColumn="role">Role <p-sortIcon field="role"></p-sortIcon></th>
           <th>Actions</th>
         </tr>
