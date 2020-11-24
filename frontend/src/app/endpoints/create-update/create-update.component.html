@@ -44,6 +44,16 @@
         </p-header>
         <p-toggleButton [(ngModel)]="endpointForm['visibility']" onLabel="Visibility: Visible" offLabel="Visibility: Hidden" onIcon="pi pi-check" offIcon="pi pi-times"></p-toggleButton><br><br>
         <p-toggleButton [(ngModel)]="endpointForm['authorization']" onLabel="Authorization: Required" offLabel="Authorization: None" onIcon="pi pi-check" offIcon="pi pi-times"></p-toggleButton>
+        <ng-container *ngIf="endpointForm['method'] === 'POST' || endpointForm['method'] === 'PUT'">
+          <br><br>
+          <p-toggleButton [(ngModel)]="endpointForm['hasBody']" onLabel="Has Body: Yes" offLabel="Has Body: No" onIcon="pi pi-check" offIcon="pi pi-times"></p-toggleButton>
+          <ng-container *ngIf="endpointForm['hasBody']">
+            <br><br>
+            <p-toggleButton [pTooltip]="'Defaults to endpoint type'" [(ngModel)]="endpointForm['customBody']" onLabel="Custom Body: Yes" offLabel="Custom Body: No" onIcon="pi pi-check" offIcon="pi pi-times"></p-toggleButton>&nbsp;
+            <button *ngIf="endpointForm['customBody']" [pTooltip]="'Set Custom Type'" tooltipPosition="bottom" (click)="displayBodyTypeModal = true" pButton type="button" icon="pi pi-pencil" label="" class="p-button-secondary"></button>
+          </ng-container>
+        </ng-container>
+
       </p-panel>
 
       <br>
@@ -67,4 +77,18 @@
   <app-conditional></app-conditional>
 
 </div>
+
+<p-dialog class="large" [modal]="true" header="Custom Body Type" [(visible)]="displayBodyTypeModal" *ngIf="displayBodyTypeModal">
+  <div class="p-grid">
+    <div class="p-col-8">
+      <ngx-monaco-editor style="width: 100%" [options]="data.editorOptions" [(ngModel)]="endpointForm['body']"></ngx-monaco-editor>
+    </div>
+    <div class="p-col-4">
+      <b>Example:</b>
+      <pre>{{data.example | json}}</pre>
+    </div>
+  </div>
+  <br>
+  <p-button (click)="displayBodyTypeModal = false" label="Submit" icon="pi pi-check" iconPos="left"></p-button>
+</p-dialog>
 

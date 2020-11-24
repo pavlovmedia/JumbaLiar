@@ -10,6 +10,17 @@ export class DataService {
   public token;
   private options;
 
+  public editorOptions = {theme: 'vs-dark', language: 'json'};
+  public example = {
+    person: 'string',
+    place: 'Place',
+    thing: 'number',
+    time: 'boolean[]',
+    dimension: {
+      galaxy: 'Universe[]'
+    }
+  };
+
   public userSubject: ReplaySubject<any> = new ReplaySubject<any>(1);
   public usersSubject: ReplaySubject<any> = new ReplaySubject<any>(1);
   public applicationsSubject: ReplaySubject<any> = new ReplaySubject<any>(1);

@@ -98,11 +98,11 @@
   <br><br>
   <div class="p-grid">
     <div class="p-col-8">
-      <ngx-monaco-editor style="width: 100%" [options]="editorOptions" [(ngModel)]="typeForm['definition']"></ngx-monaco-editor>
+      <ngx-monaco-editor style="width: 100%" [options]="data.editorOptions" [(ngModel)]="typeForm['definition']"></ngx-monaco-editor>
     </div>
     <div class="p-col-4">
       <b>Example:</b>
-      <pre>{{this.example | json}}</pre>
+      <pre>{{data.example | json}}</pre>
     </div>
   </div>
   <br>
@@ -118,7 +118,7 @@
 
   <span class="p-input-icon-left full-width">
     <i class="pi pi-cog"></i>
-    <p-dropdown [placeholder]="'Method'" [options]="applicationOptions" [(ngModel)]="generateForm['application']"></p-dropdown>
+    <p-dropdown appendTo="body" [placeholder]="'Method'" [options]="applicationOptions" [(ngModel)]="generateForm['application']"></p-dropdown>
   </span><br><br>
 
   <p-button (click)="generate()" label="Generate" icon="pi pi-check" iconPos="left"></p-button>

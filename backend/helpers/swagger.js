@@ -79,6 +79,36 @@ class Swagger {
                 paths['/' + endpoint.path][endpoint.method.toLowerCase()]['parameters'].push({name: i, in: 'path', required: true, type: 'string'});
               });
 
+              
+              if (endpoint.hasBody) {
+                if (!endpoint.customBody) {
+                  const typeName = types.find(i => i.id === endpoint.typeId).name;
+                  paths['/' + endpoint.path][endpoint.method.toLowerCase()]['parameters'].push({
+                    "in": "body",
+                    "name": "body",
+                    "required": true,
+                    "schema": {
+                      "$ref": "#/definitions/" + typeName
+                    }
+                  });
+                } else {
+                  const pathSplit = endpoint.path.split('/');
+                  const endpointTypeName = pathSplit[pathSplit.length -1].toPascalCase() + 'Request';
+                  if (endpoint.body !== '[{"fieldName": "string","filterType": "string","check": "string"}]') {
+                    this.initializeDefinition(endpointTypeName);
+                    this.generateDefinitions(endpointTypeName, JSON.parse(endpoint.body));
+                    paths['/' + endpoint.path][endpoint.method.toLowerCase()]['parameters'].push({
+                      "in": "body",
+                      "name": "body",
+                      "required": true,
+                      "schema": {
+                        "$ref": "#/definitions/" + endpointTypeName
+                      }
+                    });
+                  }
+                }
+              }
+
               this.setResponse(endpoint.conditionals[0].then[0].type, types, endpoint, paths);
             });
           });
@@ -218,16 +248,6 @@ class Swagger {
       case 'returnError':
         return;
       case 'pushBody':
-
-        paths['/' + endpoint.path][endpoint.method.toLowerCase()]['parameters'].push({
-          "in": "body",
-          "name": "body",
-          "required": true,
-          "schema": {
-            "$ref": "#/definitions/" + typeName
-          }
-        });
-      
         paths['/' + endpoint.path][endpoint.method.toLowerCase()]['responses']['200'] = {
           description: 'Success',
           schema: {
@@ -236,16 +256,6 @@ class Swagger {
         }
         return;
       case 'updateData':
-
-        paths['/' + endpoint.path][endpoint.method.toLowerCase()]['parameters'].push({
-          "in": "body",
-          "name": "body",
-          "required": true,
-          "schema": {
-            "$ref": "#/definitions/" + typeName
-          }
-        });
-
         paths['/' + endpoint.path][endpoint.method.toLowerCase()]['responses']['200'] = {
           description: 'Success',
           schema: {

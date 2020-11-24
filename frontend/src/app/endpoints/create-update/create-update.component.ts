@@ -12,6 +12,7 @@ import {combineLatest} from 'rxjs';
 })
 export class CreateUpdateComponent {
   public isUpdating = false;
+  public displayBodyTypeModal = false;
   public user;
   public endpointForm = {};
   public applications = [];
@@ -28,7 +29,7 @@ export class CreateUpdateComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private data: DataService,
+    public data: DataService,
     private conditionalService: ConditionalService
   ) {
     this.conditionalService.setDefaultConditionals();
@@ -57,6 +58,9 @@ export class CreateUpdateComponent {
         this.endpointForm = {
           visibility: true,
           authorization: false,
+          hasBody: false,
+          customBody: false,
+          body: '{}',
           owner: this.user.id,
           usedByIds: []
         };

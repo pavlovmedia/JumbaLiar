@@ -12,17 +12,7 @@ import {first} from 'rxjs/operators';
 export class EndpointsComponent {
   public isUpdatingTypes = false;
   public typeMap = {};
-  public editorOptions = {theme: 'vs-dark', language: 'json'};
   public applicationOptions = [];
-  public example = {
-    person: 'string', 
-    place: 'Place', 
-    thing: 'number', 
-    time: 'boolean[]',
-    dimension: {
-      galaxy: "Universe[]"
-    }
-  };
   public displayTypeModal = false;
   public typeForm = {};
   public displayGenerateModal = false;
@@ -38,7 +28,7 @@ export class EndpointsComponent {
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private data: DataService
+    public data: DataService
   ) {
     combineLatest(
       this.data.userSubject,
@@ -154,6 +144,9 @@ export class EndpointsComponent {
         path: this.camelize(this.generateForm['type'].name),
         authorization: false,
         visibility: true,
+        hasBody: false,
+        customBody: false,
+        body: '{}',
         usedByIds: [this.generateForm['application']],
         conditionals: [
           {
@@ -169,6 +162,9 @@ export class EndpointsComponent {
         path: this.camelize(this.generateForm['type'].name) + '/:id',
         authorization: false,
         visibility: true,
+        hasBody: false,
+        customBody: false,
+        body: '{}',
         usedByIds: [this.generateForm['application']],
         conditionals: [
           {
@@ -184,6 +180,9 @@ export class EndpointsComponent {
         path: this.camelize(this.generateForm['type'].name) + '/query',
         authorization: false,
         visibility: true,
+        hasBody: true,
+        customBody: true,
+        body: '[{"fieldName": "string","filterType": "string","check": "string"}]',
         usedByIds: [this.generateForm['application']],
         conditionals: [
           {
@@ -199,6 +198,9 @@ export class EndpointsComponent {
         path: this.camelize(this.generateForm['type'].name),
         authorization: false,
         visibility: true,
+        hasBody: true,
+        customBody: false,
+        body: '{}',
         usedByIds: [this.generateForm['application']],
         conditionals: [
           {
@@ -214,6 +216,9 @@ export class EndpointsComponent {
         path: this.camelize(this.generateForm['type'].name) + '/:id',
         authorization: false,
         visibility: true,
+        hasBody: true,
+        customBody: false,
+        body: '{}',
         usedByIds: [this.generateForm['application']],
         conditionals: [
           {
@@ -229,6 +234,9 @@ export class EndpointsComponent {
         path: this.camelize(this.generateForm['type'].name) + '/:id',
         authorization: false,
         visibility: true,
+        hasBody: false,
+        customBody: false,
+        body: '{}',
         usedByIds: [this.generateForm['application']],
         conditionals: [
           {

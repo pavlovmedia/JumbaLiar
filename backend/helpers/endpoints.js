@@ -1,6 +1,6 @@
 class Endpoints {
 
-  endpointPayload = ['path', 'method', 'owner', 'typeId', 'usedByIds', 'visibility', 'authorization', 'conditionals'];
+  endpointPayload = ['path', 'method', 'owner', 'typeId', 'usedByIds', 'visibility', 'authorization', 'hasBody', 'customBody', 'body', 'conditionals'];
 
   couch;
   express;
