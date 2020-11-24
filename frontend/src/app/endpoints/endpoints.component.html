@@ -114,7 +114,12 @@
 </p-dialog>
 
 <p-dialog class="large" [modal]="true" header="Generate Endpoints" [(visible)]="displayGenerateModal" *ngIf="displayGenerateModal">
-  <p>Which application is using the endpoints generated for {{generateForm['type'].name}}?</p>
+
+  <span class="p-input-icon-left services-placeholder full-width">
+    <i class="pi pi-cog"></i>
+    <span>/services/</span>
+    <input style="width: 100%" type="text" pInputText placeholder="path" [(ngModel)]="generateForm['path']" />
+  </span><br><br>
 
   <span class="p-input-icon-left full-width">
     <i class="pi pi-cog"></i>
