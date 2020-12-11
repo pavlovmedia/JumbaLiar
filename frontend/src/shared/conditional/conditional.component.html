@@ -1,0 +1,50 @@
+<ng-container *ngFor="let conditional of conditionals; let i = index">
+  <div class="p-grid" *ngIf="conditionals[i]">
+    <p-panel class="p-col-5">
+      <p-header>
+        <div class="p-pb-1">
+          IF
+        </div>
+      </p-header>
+
+      <ng-container *ngFor="let j of conditionals[i]['if']; let k = index">
+        <!--      {{j | json}}<br>-->
+        <app-chip [type]="'type'" [action]="'if'" [conditionIndex]="i" [actionIndex]="k"></app-chip>
+        <app-chip [type]="'config'" [action]="'if'" [conditionIndex]="i" [actionIndex]="k"></app-chip>
+        <app-chip [type]="'checkType'" [action]="'if'" [conditionIndex]="i" [actionIndex]="k"></app-chip>
+        <app-chip [type]="'body'" [action]="'if'" [conditionIndex]="i" [actionIndex]="k"></app-chip>
+      </ng-container>
+
+    </p-panel>
+
+    <div class="p-col-2">
+      <div class="arrow"></div>
+    </div>
+
+    <p-panel class="p-col-5">
+      <p-header>
+        <div class="p-pb-1">
+          THEN
+        </div>
+      </p-header>
+
+      <ng-container *ngFor="let j of conditionals[i]['then']; let k = index">
+<!--        {{j | json}}<br>-->
+        <!--      <app-chip></app-chip>-->
+        <app-chip [type]="'type'" [action]="'then'" [conditionIndex]="i" [actionIndex]="k"></app-chip>
+        <app-chip [type]="'config'" [action]="'then'" [conditionIndex]="i" [actionIndex]="k"></app-chip>
+        <app-chip [type]="'checkType'" [action]="'then'" [conditionIndex]="i" [actionIndex]="k"></app-chip>
+        <app-chip [type]="'body'" [action]="'then'" [conditionIndex]="i" [actionIndex]="k"></app-chip>
+      </ng-container>
+
+    </p-panel>
+  </div>
+
+  <div style="text-align: center;" *ngIf="i === conditionals.length - 1">
+    <br><p-button (click)="clickAdd()" label="" [iconPos]="'right'" icon="pi pi-plus"></p-button><br><br>
+  </div>
+
+  <div style="text-align: center;" *ngIf="i !== conditionals.length - 1">
+    <br><button (click)="clickRemove(i)" pButton class="p-button-secondary" label="" [iconPos]="'right'" icon="pi pi-times-circle"></button><br><br>
+  </div>
+</ng-container>

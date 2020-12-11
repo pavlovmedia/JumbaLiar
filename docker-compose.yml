@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  backend:
+    build: ./backend
+    restart: always
+    container_name: jumbaliar-backend
+    env_file:
+      - .env
+    volumes:
+      - ./backend/uploads:/node/uploads
+    depends_on:
+      - couchdb
+    links:
+      - "couchdb"
+    ports:
+      - 80:80
+  frontend:
+    build: ./frontend
+    restart: always
+    container_name: jumbaliar-frontend
+    env_file:
+      - .env
+    depends_on:
+      - couchdb
+    ports:
+      - 8086:80
+  couchdb:
+    image: couchdb
+    restart: always
+    container_name: couchdb
+    env_file:
+      - .env
+    ports:
+      - "5984:5984"
+    volumes:
+      - couchdb:/opt/couchdb/data
+volumes:
+  couchdb:
