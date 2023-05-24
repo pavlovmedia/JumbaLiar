@@ -13,11 +13,6 @@
 </template>
 
 <style scoped>
-.item {
-  margin-top: 2rem;
-  display: flex;
-}
-
 .details {
   flex: 1;
   margin-left: 1rem;
@@ -51,14 +46,14 @@ h3 {
     left: -26px;
     position: absolute;
     border: 1px solid var(--color-border);
-    background: var(--color-background);
+    /*background: var(--color-background);*/
     border-radius: 8px;
     width: 50px;
     height: 50px;
   }
 
   .item:before {
-    content: ' ';
+    content: " ";
     border-left: 1px solid var(--color-border);
     position: absolute;
     left: 0;
@@ -67,7 +62,7 @@ h3 {
   }
 
   .item:after {
-    content: ' ';
+    content: " ";
     border-left: 1px solid var(--color-border);
     position: absolute;
     left: 0;
