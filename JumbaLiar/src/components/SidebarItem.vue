@@ -12,21 +12,39 @@ export default {
     setActiveTab() {
       activeTab.tab = this.title;
     },
+    isActive() {
+      console.log(this.title, activeTab.tab, this.title == activeTab.tab);
+      return activeTab.tab == this.title;
+    },
+    isNotActive() {
+      console.log(this.title, activeTab.tab, this.title != activeTab.tab);
+      return activeTab.tab != this.title;
+    },
   },
 };
 </script>
 
 <template>
-  <div class="container" v-on:click="setActiveTab">
+  <div
+    :class="{ unselected: isActive, selected: isNotActive }"
+    v-on:click="setActiveTab"
+  >
     <img id="icon" :src="imagePath" />
     <p>{{ title }}</p>
   </div>
 </template>
 
 <style scoped>
-.container {
+.unselected {
   display: flex;
   height: 66px;
+  background-color: #17212f;
+}
+
+.selected {
+  display: flex;
+  height: 66px;
+  background-color: blueviolet;
 }
 
 img {

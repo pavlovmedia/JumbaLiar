@@ -4,10 +4,10 @@ import Metric from "./Metric.vue";
 
 <template>
   <div class="metricContainer">
-    <Metric title="Requests" value="value1" />
-    <Metric title="Most Service" value="value2" />
-    <Metric title="Average Response" value="value3" />
-    <Metric title="Uptime" value="value4" />
+    <Metric title="Requests" value="1,543" />
+    <Metric title="Most Service" value="/me" />
+    <Metric title="Average Response" value="10ms" />
+    <Metric title="Uptime" value="1d 10hrs" />
   </div>
 </template>
 

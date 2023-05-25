@@ -32,7 +32,6 @@ defineProps<{
 }
 
 div {
-  height: 100px;
   background-color: rgb(255, 255, 255);
   flex-grow: 1;
   border-radius: 4px;

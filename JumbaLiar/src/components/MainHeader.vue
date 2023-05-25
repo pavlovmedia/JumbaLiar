@@ -37,7 +37,7 @@ p {
   /* padding-left: 0.5rem; */
   text-align: left;
   margin: auto;
-  margin-left: 0.75rem;
+  margin-left: 15px;
   font-weight: bold;
 }
 </style>

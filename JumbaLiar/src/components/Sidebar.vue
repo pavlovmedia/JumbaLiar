@@ -3,23 +3,12 @@ import SidebarSectionHeader from "./SidebarSectionHeader.vue";
 import SidebarItem from "./SidebarItem.vue";
 </script>
 
-<script lang="ts">
-export default {
-  methods: {
-    updateb() {
-      console.log("up one");
-    },
-  },
-};
-</script>
-
-<template @udpate="updateb">
-  <div class="list" @udpate="updateb">
+<template>
+  <div class="list">
     <SidebarSectionHeader title="CONFIGURATION" />
     <SidebarItem
       title="Dashboard"
       imagePath="./src/components/icons/SingleShrimp.png"
-      @udpate="updateb"
     />
     <SidebarItem
       title="Models"
