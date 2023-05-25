@@ -5,20 +5,37 @@ import MainHeader from "./components/MainHeader.vue";
 import SidebarHeader from "./components/SidebarHeader.vue";
 </script>
 
+<script lang="ts">
+export default {
+  data() {
+    return {
+      activeTab: "Dashboard",
+    };
+  },
+
+  methods: {},
+
+  // `mounted` is a lifecycle hook which we will explain later
+  mounted() {
+    // `this` refers to the component instance.
+    console.log(this.activeTab);
+  },
+};
+</script>
+
 <template>
   <div class="parentContainer">
     <div class="header">
       <SidebarHeader />
     </div>
     <div class="sidebarContainer">
-      <Sidebar msg="You did it!" />
+      <Sidebar />
     </div>
   </div>
 
   <div class="parentContainer">
     <div class="header">
-      <MainHeader />
-      <!-- Need to pass in some var which is whatever tab is selected -->
+      <MainHeader :active="activeTab" />
     </div>
     <div class="background">
       <TheWelcome />
@@ -50,29 +67,4 @@ import SidebarHeader from "./components/SidebarHeader.vue";
   gap: 0px;
   grid-template-rows: var(--header-height) auto;
 }
-
-.template {
-  display: flex;
-  height: 100%;
-}
-/*
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    /*margin: 0 2rem 0 0;*/ /*
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-    background-color: green;
-  }
-}
-*/
 </style>

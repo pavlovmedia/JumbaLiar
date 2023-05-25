@@ -1,8 +1,14 @@
+<script setup lang="ts">
+defineProps<{
+  active: string;
+}>();
+</script>
+
 <template>
   <div class="header">
     <p>
       <slot name="title"></slot>
-      Placeholder
+      {{ active }}
     </p>
     <div class="imageContainer">
       <img class="icon" src="./icons/ProfilePicture.jpeg" />

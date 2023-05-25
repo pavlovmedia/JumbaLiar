@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import SidebarSectionHeader from "./SidebarSectionHeader.vue";
 import SidebarItem from "./SidebarItem.vue";
-defineProps<{
-  msg: string;
-}>();
 </script>
 
 <template>
