@@ -5,8 +5,19 @@ defineProps<{
 }>();
 </script>
 
+<script lang="ts">
+import { activeTab } from "@/App.vue";
+export default {
+  methods: {
+    setActiveTab() {
+      activeTab.tab = this.title;
+    },
+  },
+};
+</script>
+
 <template>
-  <div class="container">
+  <div class="container" v-on:click="setActiveTab">
     <img id="icon" :src="imagePath" />
     <p>{{ title }}</p>
   </div>

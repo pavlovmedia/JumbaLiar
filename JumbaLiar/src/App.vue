@@ -1,26 +1,15 @@
 <script setup lang="ts">
 import Sidebar from "./components/Sidebar.vue";
-import TheWelcome from "./components/TheWelcome.vue";
+import MainContent from "./components/MainContent.vue";
 import MainHeader from "./components/MainHeader.vue";
 import SidebarHeader from "./components/SidebarHeader.vue";
+import { reactive } from "vue";
 </script>
 
 <script lang="ts">
-export default {
-  data() {
-    return {
-      activeTab: "Dashboard",
-    };
-  },
-
-  methods: {},
-
-  // `mounted` is a lifecycle hook which we will explain later
-  mounted() {
-    // `this` refers to the component instance.
-    console.log(this.activeTab);
-  },
-};
+export const activeTab = reactive({
+  tab: "Dashboard",
+});
 </script>
 
 <template>
@@ -35,10 +24,10 @@ export default {
 
   <div class="parentContainer">
     <div class="header">
-      <MainHeader :active="activeTab" />
+      <MainHeader />
     </div>
     <div class="background">
-      <TheWelcome />
+      <MainContent />
     </div>
   </div>
 </template>
@@ -56,7 +45,6 @@ export default {
 .background {
   flex-grow: 1;
   background: url("./components/icons/ShrimpBackground.png");
-  filter: brightness(0.8);
   background-repeat: no-repeat;
   background-size: cover;
 }
