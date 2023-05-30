@@ -23,7 +23,6 @@ defineProps<{
 }
 
 .stat {
-  /* #000000 60%, 24pt, light */
   color: rgba(0, 0, 0, 60);
   font-weight: lighter;
   font-size: 24px;
@@ -33,6 +32,7 @@ defineProps<{
 
 div {
   background-color: rgb(255, 255, 255);
+  width: 100px;
   flex-grow: 1;
   border-radius: 4px;
 }

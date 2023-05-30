@@ -15,6 +15,7 @@ p {
   font-size: 14px;
   color: white;
   margin: auto;
+  padding-left: 15px;
   text-align: left;
 }
 </style>

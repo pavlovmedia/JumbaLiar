@@ -9,6 +9,9 @@ import { reactive } from "vue";
 <script lang="ts">
 export const activeTab = reactive({
   tab: "Dashboard",
+  setActiveTab(newTab: string) {
+    this.tab = newTab;
+  },
 });
 </script>
 
@@ -35,7 +38,7 @@ export const activeTab = reactive({
 <style scoped>
 .sidebarContainer {
   box-sizing: border-box;
-  background-color: #17212f;
+  background-color: var(--sidebar-light);
 }
 
 .header {

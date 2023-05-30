@@ -42,6 +42,11 @@
   --header-shrimp-size: 24px;
 
   --sidebar-icon-height: 28px;
+
+  --sidebar-light: #17212f;
+  --sidebar-dark: #141c28;
+  --sidebar-icon-grey: #767676;
+  --sidebar-highlight: #f37950;
 }
 
 @media (prefers-color-scheme: dark) {
