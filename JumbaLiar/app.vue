@@ -17,7 +17,7 @@ export const activeTab = reactive({
 </script>
 
 <template>
-  <div class="parentContainer">
+  <div class="columnContainer">
     <div class="header">
       <SidebarHeader />
     </div>
@@ -26,7 +26,7 @@ export const activeTab = reactive({
     </div>
   </div>
 
-  <div class="parentContainer">
+  <div class="columnContainer">
     <div class="header">
       <MainHeader />
     </div>
@@ -44,19 +44,19 @@ export const activeTab = reactive({
 }
 
 .header {
-  height: 100%;
+  /* height: 100%; */
 }
 
 .background {
-  flex-grow: 1;
-  /* background: url("./components/icons/ShrimpBackground.png"); */
+  background: url("./components/icons/ShrimpBackground.png");
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-.parentContainer {
+.columnContainer {
   display: flex;
   display: grid;
+  flex-grow: 1;
   gap: 0px;
   grid-template-rows: var(--header-height) auto;
 }
