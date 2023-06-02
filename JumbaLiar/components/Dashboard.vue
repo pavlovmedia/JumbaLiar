@@ -3,41 +3,101 @@ import Metric from "./Metric.vue";
 // import Chart from "primevue/chart";
 import Timeline from "primevue/timeline";
 import Card from "primevue/card";
+import Chart from "primevue/chart";
 
 // dummy inputs
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+
+onMounted(() => {
+  chartData.value = setChartData();
+  chartOptions.value = setChartOptions();
+});
+
+const chartData = ref();
+const chartOptions = ref();
+
+const setChartData = () => {
+  const documentStyle = getComputedStyle(document.documentElement);
+
+  return {
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    datasets: [
+      {
+        label: "First Dataset",
+        data: [65, 59, 80, 81, 56, 55, 40],
+        fill: false,
+        borderColor: documentStyle.getPropertyValue("--blue-500"),
+        tension: 0.4,
+      },
+      {
+        label: "Second Dataset",
+        data: [28, 48, 40, 19, 86, 27, 90],
+        fill: false,
+        borderColor: documentStyle.getPropertyValue("--pink-500"),
+        tension: 0.4,
+      },
+    ],
+  };
+};
+const setChartOptions = () => {
+  const documentStyle = getComputedStyle(document.documentElement);
+  const textColor = documentStyle.getPropertyValue("--text-color");
+  const textColorSecondary = documentStyle.getPropertyValue(
+    "--text-color-secondary"
+  );
+  const surfaceBorder = documentStyle.getPropertyValue("--surface-border");
+
+  return {
+    maintainAspectRatio: false,
+    aspectRatio: 0.6,
+    plugins: {
+      legend: {
+        labels: {
+          color: textColor,
+        },
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: textColorSecondary,
+        },
+        grid: {
+          color: surfaceBorder,
+        },
+      },
+      y: {
+        ticks: {
+          color: textColorSecondary,
+        },
+        grid: {
+          color: surfaceBorder,
+        },
+      },
+    },
+  };
+};
 
 const events = [
-  // "Event A",
-  // "Event B",
-  // "Event C",
-  // "Event D",
-  // "Event E",
-  // "Event F",
-  // "Event G",
-  { user: "John", action: "uploaded 5 assets", date: "May 9 2023" },
+  { event: "John uploaded 5 assets", date: "May 9 2023" },
   {
-    user: "Justin",
-    action: "updated 5 Organization endpoints",
+    event: "Justin updated 5 Organization endpoints",
     date: "May 9 2023",
   },
   {
-    user: "John",
-    action: "udpated 1 Organization endpoint",
+    event: "John udpated 1 Organization endpoint",
     date: "May 9 2023",
   },
   {
-    user: "Justin",
-    action: "created 10 Organization endpoints",
+    event: "Justin created 10 Organization endpoints",
     date: "May 9 2023",
   },
   {
-    user: "Justin",
-    action: "created an Organization model",
+    event: "Justin created an Organization model",
     date: "May 9 2023",
   },
-  { user: "John", action: "created an account", date: "May 9 2023" },
-  { user: "Justin", action: "created and account", date: "May 9 2023" },
+  { event: "John created an account", date: "May 9 2023" },
+  { event: "Justin created and account", date: "May 9 2023" },
 ];
 </script>
 
@@ -51,29 +111,30 @@ const events = [
     <Metric title="Uptime" value="1d 10hrs" />
   </div>
   <div class="visualsContainer">
-    <div class="mainCard">
-      <Card>
-        <template #title style="text-align: left">Latest Activity</template>
-        <template #content>
-          <!-- This is angry for no apparant reason-->
-          <Timeline :value="events" align="left" style="p-timeline-left">
-            <template #content="slotProps">
-              <!-- Fix the sizing issues first, then return to getting the timeline formatted correctly -->
-              <!-- <Card>
-                <template #title style="text-align: left">
-                  <b>{{ slotProps.item.date }}</b>
-                </template>
-                <template #content style="text-align: left">
-                  {{ slotProps.item.date }}
-                </template>
-              </Card> -->
+    <Card class="chartCard" style="background-color: blueviolet">
+      <Chart
+        type="line"
+        :data="chartData"
+        :options="chartOptions"
+        class="h-30rem"
+      />
+    </Card>
 
-              {{ slotProps.item.date }}
-            </template>
-          </Timeline>
-        </template>
-      </Card>
-    </div>
+    <Card class="timelineCard">
+      <template #title style="text-align: left">Latest Activity</template>
+      <template #content>
+        <!-- This is angry for no apparant reason -->
+        <Timeline :value="events" align="left" style="p-timeline-left">
+          <template #content="slotProps">
+            <div class="activityEvent">
+              {{ slotProps.item.event }}
+              <br />
+              <small>{{ slotProps.item.date }}</small>
+            </div>
+          </template>
+        </Timeline>
+      </template>
+    </Card>
   </div>
 </template>
 
@@ -91,18 +152,27 @@ const events = [
   gap: 10px;
 }
 
-.mainCard {
-  /* margin-block: var(--main-content-gap); */
-  /* height: 500px; */
-  /* padding: 2rem; */
+/* once these are done, they should be moved to main.css */
+.timelineCard {
   border-radius: 10px;
-  /* margin-bottom: 1rem; */
+  flex-direction: row;
+  flex-grow: 1;
+  max-width: 35%;
+  background: white;
+}
+.chartCard {
+  border-radius: 10px;
+  flex-direction: row;
   flex-grow: 1;
   background: white;
 }
 
-.p-card {
-  /* margin-top: 1rem; */
+:deep(.p-timeline-event-marker) {
+  border: 3px solid var(--sidebar-highlight);
+}
+
+:deep(.p-card-title) {
+  color: black;
 }
 
 :deep(.p-timeline-event-opposite) {
