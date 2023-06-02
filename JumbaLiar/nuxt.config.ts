@@ -5,11 +5,11 @@ export default defineNuxtConfig({
     build: {
         transpile: ['primevue'],
     },
-    // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: [
-      { src: '~/plugins/chart.js', mode: 'client' },
-    //   { src: '~/plugins/axios.js' }
-    ],
+    // // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
+    // plugins: [
+    //   { src: '~/plugins/chart.js', mode: 'client' },
+    // //   { src: '~/plugins/axios.js' }
+    // ],
     css: [
         '~/assets/style/main.css',
         '~/assets/style/base.css',

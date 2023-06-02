@@ -1,10 +1,4 @@
 <script setup lang="ts">
-import Metric from "./Metric.vue";
-// import Chart from "primevue/chart";
-import Timeline from "primevue/timeline";
-import Card from "primevue/card";
-import Chart from "primevue/chart";
-
 // dummy inputs
 import { ref, onMounted } from "vue";
 
@@ -49,14 +43,7 @@ const setChartOptions = () => {
 
   return {
     maintainAspectRatio: false,
-    aspectRatio: 0.6,
-    plugins: {
-      legend: {
-        labels: {
-          color: textColor,
-        },
-      },
-    },
+    responsive: true,
     scales: {
       x: {
         ticks: {
@@ -111,13 +98,16 @@ const events = [
     <Metric title="Uptime" value="1d 10hrs" />
   </div>
   <div class="visualsContainer">
-    <Card class="chartCard" style="background-color: blueviolet">
-      <Chart
-        type="line"
-        :data="chartData"
-        :options="chartOptions"
-        class="h-30rem"
-      />
+    <Card class="chartCard">
+      <template #title>Traffic</template>
+      <template #content>
+        <Chart
+          type="line"
+          :data="chartData"
+          :options="chartOptions"
+          style="min-height: 350px"
+        />
+      </template>
     </Card>
 
     <Card class="timelineCard">
@@ -159,14 +149,15 @@ const events = [
   flex-grow: 1;
   max-width: 35%;
   background: white;
+  max-height: fit-content;
 }
 .chartCard {
   border-radius: 10px;
-  flex-direction: row;
   flex-grow: 1;
+  max-width: 65%;
   background: white;
+  max-height: fit-content;
 }
-
 :deep(.p-timeline-event-marker) {
   border: 3px solid var(--sidebar-highlight);
 }
