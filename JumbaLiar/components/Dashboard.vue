@@ -144,7 +144,7 @@ const events = [
 
 /* once these are done, they should be moved to main.css */
 .timelineCard {
-  border-radius: 10px;
+  border-radius: var(--card-radius);
   flex-direction: row;
   flex-grow: 1;
   max-width: 35%;
@@ -152,7 +152,7 @@ const events = [
   max-height: fit-content;
 }
 .chartCard {
-  border-radius: 10px;
+  border-radius: var(--card-radius);
   flex-grow: 1;
   max-width: 65%;
   background: white;

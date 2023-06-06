@@ -49,6 +49,8 @@
   --sidebar-dark: #141c28;
   --sidebar-icon-grey: #767676;
   --sidebar-highlight: #f37950;
+
+  --card-radius: 10px;
 }
 
 @media (prefers-color-scheme: dark) {

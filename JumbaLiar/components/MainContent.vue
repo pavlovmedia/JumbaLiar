@@ -11,5 +11,6 @@ import Timeline from "primevue/timeline";
 </script>
 
 <template>
-  <Dashboard />
+  <!-- <Dashboard /> -->
+  <Models />
 </template>
