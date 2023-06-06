@@ -9,7 +9,8 @@ import SupportIcon from "./icons/IconSupport.vue";
 </script>
 
 <template>
-  <!-- <Dashboard /> -->
+  <!-- <Dashboard />
   <Models />
-  <Endpoints />
+  <Endpoints /> -->
+  <NewEndpoint />
 </template>

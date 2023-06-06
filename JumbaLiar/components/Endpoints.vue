@@ -88,8 +88,8 @@ const models = [
 
 <style scoped>
 .mainContainer {
-  display: grid;
   display: flex;
+  grid-template-columns: 1fr 4fr;
 }
 .tableContainer {
   border-radius: var(--card-radius);
