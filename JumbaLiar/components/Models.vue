@@ -97,7 +97,4 @@ const endpoints = [
   height: 40px;
   width: 40px;
 }
-td {
-  padding: 0.5rem;
-}
 </style>

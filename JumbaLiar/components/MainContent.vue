@@ -6,11 +6,10 @@ import EcosystemIcon from "./icons/IconEcosystem.vue";
 import CommunityIcon from "./icons/IconCommunity.vue";
 import SupportIcon from "./icons/IconSupport.vue";
 /* added stuff below here */
-import Dashboard from "./Dashboard.vue";
-import Timeline from "primevue/timeline";
 </script>
 
 <template>
   <!-- <Dashboard /> -->
   <Models />
+  <Endpoints />
 </template>
