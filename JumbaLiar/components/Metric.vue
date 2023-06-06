@@ -6,10 +6,14 @@ defineProps<{
 </script>
 
 <template>
-  <div>
+  <Card>
+    <template #title>{{ title }}</template>
+    <template #content>{{ value }}</template>
+  </Card>
+  <!-- <div>
     <p class="title">{{ title }}</p>
     <p class="stat">{{ value }}</p>
-  </div>
+  </div> -->
 </template>
 
 <style scoped>
@@ -28,6 +32,16 @@ defineProps<{
   font-size: 24px;
   padding-inline: 15px;
   margin: auto;
+}
+
+:deep(.p-card-body) {
+  padding: 0px;
+}
+:deep(.p-card-title) {
+  padding: 0px;
+}
+:deep(.p-card-content) {
+  padding: 0px;
 }
 
 div {
