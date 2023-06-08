@@ -18,20 +18,14 @@ export const activeTab = reactive({
 
 <template>
   <div class="columnContainer">
-    <div class="header">
-      <SidebarHeader />
-    </div>
+    <SidebarHeader />
     <div class="sidebarContainer">
       <Sidebar />
     </div>
   </div>
-
   <div class="columnContainer">
-    <div class="header">
-      <MainHeader />
-    </div>
+    <MainHeader />
     <div class="background">
-      <!-- <Dashboard /> -->
       <MainContent />
     </div>
   </div>
@@ -42,17 +36,29 @@ export const activeTab = reactive({
   box-sizing: border-box;
   background-color: var(--sidebar-light);
 }
-
-.header {
-  /* height: 100%; */
-}
-
 .background {
   background: url("./components/icons/ShrimpBackground.png");
   background-repeat: no-repeat;
   background-size: cover;
 }
-
+:deep(.p-card-body) {
+  padding: 0px;
+}
+:deep(.p-card-title) {
+  padding: 0px;
+  padding-top: 5px;
+  padding-inline: 15px;
+  color: black;
+}
+:deep(.p-card-content) {
+  padding: 0px;
+  padding-inline: 15px;
+  padding-bottom: 10px;
+  font-size: 20px;
+}
+:deep(.p-paginator) {
+  padding-bottom: 0;
+}
 .columnContainer {
   display: flex;
   display: grid;

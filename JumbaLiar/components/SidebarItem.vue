@@ -6,8 +6,7 @@ defineProps<{
 </script>
 
 <script lang="ts">
-import { activeTab } from "@/App.vue";
-import "primeicons/primeicons.css";
+import { activeTab } from "~/App.vue";
 export default {
   methods: {},
   data() {
@@ -51,8 +50,9 @@ export default {
   height: 66px;
   background-color: var(--sidebar-dark);
   border-inline: solid;
+  border-width: 0px;
   border-left-width: 5px;
-  border-inline-start-color: var(--sidebar-highlight);
+  border-inline-color: var(--sidebar-highlight);
   padding-left: 10px;
 }
 

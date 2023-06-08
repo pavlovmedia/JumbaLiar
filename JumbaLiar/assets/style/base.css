@@ -34,10 +34,14 @@
   --color-text: var(--vt-c-text-light-1);
 
   --section-gap: 160px;
+}
 
+/* added variables */
+:root {
   --header-height: 54px;
   --header-pfp-height: 36px;
   --header-pfp-margins: calc((var(--header-height) - var(--header-pfp-height)) / 2);
+  --header-shrimp-height: 30px;
   --header-font-size: 24px;
   --header-shrimp-size: 24px;
 
@@ -89,3 +93,5 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+

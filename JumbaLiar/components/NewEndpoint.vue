@@ -10,12 +10,12 @@ import InputText from "primevue/inputtext";
       <template #title>Configuration</template>
       <template #content>
         <div style="padding-bottom: 15px" ; flex-grow: 1;>
-          <InputText
+          <!-- <InputText
             v-model="path"
             type="text"
-            placeholder="/services/path"
+            placeholder="services"
             style="width: 100%"
-          ></InputText>
+          ></InputText> -->
         </div>
         <div>
           <InputText
@@ -38,7 +38,6 @@ import InputText from "primevue/inputtext";
             style="background-color: #f37950; border: 0px"
           ></Button>
           <!-- MOVE THIS AND THE OTHER BUTTON FORMATTING TO CSS FILE -->
-          <!-- will  -->
         </template>
       </Card>
       <Card class="container">

@@ -18,6 +18,12 @@
   height: 100%;
 }
 
+:deep(Card.p-card-title) {
+  padding: 0px;
+  padding-top: 5px;
+  padding-left: 10px;
+}
+
 a,
 .green {
   text-decoration: none;

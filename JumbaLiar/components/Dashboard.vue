@@ -139,7 +139,7 @@ const events = [
   display: flex;
   grid-template-columns: 1fr 1fr;
   padding-inline: var(--main-content-gap);
-  gap: 10px;
+  gap: var(--main-content-gap);
 }
 
 /* once these are done, they should be moved to main.css */
@@ -160,10 +160,6 @@ const events = [
 }
 :deep(.p-timeline-event-marker) {
   border: 3px solid var(--sidebar-highlight);
-}
-
-:deep(.p-card-title) {
-  color: black;
 }
 
 :deep(.p-timeline-event-opposite) {

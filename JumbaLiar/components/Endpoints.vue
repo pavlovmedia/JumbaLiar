@@ -55,7 +55,7 @@ const models = [
           <template #list="slotProps">
             <div>
               <i
-                class="pi pi-circle-fill"
+                class="pi pi-circle-fill dot"
                 :style="{ color: `${slotProps.data.color}` }"
               ></i>
               {{ slotProps.data.model }}
@@ -89,22 +89,31 @@ const models = [
 <style scoped>
 .mainContainer {
   display: flex;
-  grid-template-columns: 1fr 4fr;
+  grid-template-columns: 1fr 1fr;
 }
 .tableContainer {
   border-radius: var(--card-radius);
   background: white;
   max-height: fit-content;
   margin-top: var(--main-content-gap);
+  margin-right: var(--main-content-gap);
+  flex-grow: 1;
 }
 .listContainer {
   border-radius: var(--card-radius);
   background: white;
   max-height: fit-content;
+  max-width: 400px;
   margin: var(--main-content-gap);
+  flex-grow: 1;
 }
+.dot {
+  padding-inline: 4px;
+  padding-block: 9px;
+}
+
 .column {
-  /* this doesn't do anything (?) */
+  /* this doesn't do anything(?) */
 }
 .getMethod {
   background-color: #34a853;
