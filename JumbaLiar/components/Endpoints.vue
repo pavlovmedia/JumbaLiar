@@ -67,16 +67,31 @@ const models = [
     <Card class="tableContainer">
       <template #title>Endpoint Count: 1</template>
       <template #content>
-        <DataTable :value="endpoints" paginator :rows="6">
-          <Column field="method" header="Method" class="column">
+        <DataTable :value="endpoints" sortMode="multiple" paginator :rows="6">
+          <Column field="method" header="Method" sortable class="column">
             <template #body>
               <Badge value="GET" class="getMethod" />
             </template>
           </Column>
-          <Column field="path" header="Path" class="column"> </Column>
-          <Column field="behaviors" header="Behaviors" class="column"></Column>
-          <Column field="updatedOn" header="Updated On" class="column"></Column>
-          <Column field="updatedBy" header="Updated By" class="column"></Column>
+          <Column field="path" header="Path" sortable class="column"> </Column>
+          <Column
+            field="behaviors"
+            header="Behaviors"
+            sortable
+            class="column"
+          ></Column>
+          <Column
+            field="updatedOn"
+            header="Updated On"
+            sortable
+            class="column"
+          ></Column>
+          <Column
+            field="updatedBy"
+            header="Updated By"
+            sortable
+            class="column"
+          ></Column>
           <Column field="actions" header="Actions" class="column">
             <template #body="slotProps"> </template>
           </Column>
@@ -111,7 +126,11 @@ const models = [
   padding-inline: 4px;
   padding-block: 9px;
 }
-
+:deep(.p-card-title) {
+  border-bottom-style: solid;
+  border-bottom-width: var(--card-underline-width);
+  border-color: var(--card-underline-color);
+}
 .column {
   /* this doesn't do anything(?) */
 }

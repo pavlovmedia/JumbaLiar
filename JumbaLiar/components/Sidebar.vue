@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import SidebarSectionHeader from "./SidebarSectionHeader.vue";
-import SidebarItem from "./SidebarItem.vue";
-</script>
-
 <template>
   <div class="list">
     <SidebarSectionHeader title="CONFIGURATION" />
@@ -24,22 +19,10 @@ import SidebarItem from "./SidebarItem.vue";
   padding-block: 15px;
   gap: 15px;
 }
-
-h1 {
-  font-weight: 500;
-  font-size: 2.6rem;
-  top: -10px;
-}
-
-h3 {
-  font-size: 1.2rem;
-}
-
 .list h1,
 .list h3 {
   text-align: center;
 }
-
 @media (min-width: 1024px) {
   .list h1,
   .list h3 {

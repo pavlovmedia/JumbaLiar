@@ -14,9 +14,7 @@ import { activeTab } from "~/app.vue";
 
 <style scoped>
 .header {
-  /* display: grid; */
   display: flex;
-  /* grid-template-columns: 1fr 1fr; */
   background-color: white;
 }
 
@@ -34,7 +32,6 @@ import { activeTab } from "~/app.vue";
 p {
   font-size: var(--header-font-size);
   color: black;
-  /* padding-left: 0.5rem; */
   text-align: left;
   margin: auto;
   margin-left: 15px;

@@ -49,22 +49,22 @@ const endpoints = [
         paginator
         showGridlines
         :rows="6"
-        style="width: 100% !important"
+        sortMode="multiple"
       >
-        <Column field="name" header="Name" class="column"></Column>
-        <Column field="color" header="Color" class="column">
+        <Column field="name" header="Name" sortable />
+        <Column field="color" header="Color" sortable>
           <template #body="slotProps">
             <i
               class="pi pi-circle-fill"
               :style="{ color: `${slotProps.data.color}` }"
-            ></i>
+            />
             {{ slotProps.data.color }}
           </template>
         </Column>
-        <Column field="usages" header="Usages" class="column"></Column>
-        <Column field="updatedOn" header="Updated On" class="column"></Column>
-        <Column field="updatedBy" header="Updated By" class="column"></Column>
-        <Column field="actions" header="Actions" class="column">
+        <Column field="usages" header="Usages" sortable />
+        <Column field="updatedOn" header="Updated On" sortable />
+        <Column field="updatedBy" header="Updated By" sortable />
+        <Column field="actions" header="Actions">
           <template #body="slotProps">
             <Button icon="pi pi-pencil" aria-label="Edit" class="button edit" />
             <Button
@@ -87,10 +87,6 @@ const endpoints = [
   margin: var(--main-content-gap);
   min-width: fit-content;
 }
-.column {
-  max-width: 15%;
-  flex-grow: 1;
-}
 .button {
   border: 0px;
   margin: 5px;
@@ -102,5 +98,10 @@ const endpoints = [
 }
 .database {
   background-color: #787878;
+}
+:deep(.p-card-title) {
+  border-bottom-style: solid;
+  border-bottom-width: var(--card-underline-width);
+  border-color: var(--card-underline-color);
 }
 </style>

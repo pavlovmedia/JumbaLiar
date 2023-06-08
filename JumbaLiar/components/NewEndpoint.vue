@@ -3,6 +3,8 @@ import Card from "primevue/card";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 </script>
+<!-- I Don't think the above setup script is needed? When deleted it causes 
+  VS Code to find a few errors, but they don't affect rendering -->
 
 <template>
   <div class="horizontalColumns">
@@ -90,5 +92,10 @@ import InputText from "primevue/inputtext";
 .horizontalColumns {
   display: flex;
   grid-template-columns: 1fr 1fr;
+}
+:deep(.p-card-title) {
+  border-bottom-style: solid;
+  border-bottom-width: var(--card-underline-width);
+  border-color: var(--card-underline-color);
 }
 </style>

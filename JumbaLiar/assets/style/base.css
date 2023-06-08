@@ -55,6 +55,9 @@
   --sidebar-highlight: #f37950;
 
   --card-radius: 10px;
+  
+  --card-underline-width: 1px;
+  --card-underline-color: #cccccc;
 }
 
 @media (prefers-color-scheme: dark) {
