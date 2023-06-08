@@ -6,7 +6,7 @@ defineProps<{
 </script>
 
 <script lang="ts">
-import { activeTab } from "~/App.vue";
+import { activeTab } from "~/app.vue";
 export default {
   methods: {},
   data() {

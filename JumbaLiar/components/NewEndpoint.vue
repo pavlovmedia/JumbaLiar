@@ -9,13 +9,13 @@ import InputText from "primevue/inputtext";
     <Card class="container">
       <template #title>Configuration</template>
       <template #content>
-        <div style="padding-bottom: 15px" ; flex-grow: 1;>
-          <!-- <InputText
+        <div style="padding-bottom: 15px; flex-grow: 1">
+          <InputText
             v-model="path"
             type="text"
-            placeholder="services"
+            placeholder="/services/path"
             style="width: 100%"
-          ></InputText> -->
+          ></InputText>
         </div>
         <div>
           <InputText

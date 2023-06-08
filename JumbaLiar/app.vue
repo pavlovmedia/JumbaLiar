@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import Sidebar from "./components/Sidebar.vue";
-import MainContent from "./components/MainContent.vue";
-import MainHeader from "./components/MainHeader.vue";
-import SidebarHeader from "./components/SidebarHeader.vue";
 import { reactive } from "vue";
-import Dashboard from "./components/Dashboard.vue";
 </script>
 
 <script lang="ts">

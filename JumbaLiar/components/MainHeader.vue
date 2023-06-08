@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { activeTab } from "~/App.vue";
+import { activeTab } from "~/app.vue";
 </script>
 
 <template>
