@@ -12,10 +12,15 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: example
     ports: 
-      - 172.18.0.3:5432
+      - 3306:3306
+    volumes:
+      - jumbaliar:/var/lib/mysql
 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+      
+volumes:
+  jumbaliar:

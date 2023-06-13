@@ -9,3 +9,148 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+// Post, Profile and User all commented out to get rid of the squiggles 
+
+// model Post {
+//   id        Int      @id @default(autoincrement())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   title     String   @db.VarChar(255)
+//   content   String?
+//   published Boolean  @default(false)
+//   author    User     @relation(fields: [authorId], references: [id])
+//   authorId  Int
+// }
+
+// model Profile {
+//   id     Int     @id @default(autoincrement())
+//   bio    String?
+//   user   User    @relation(fields: [userId], references: [id])
+//   userId Int     @unique
+// }
+
+// model User {
+//   id      Int      @id @default(autoincrement())
+//   email   String   @unique
+//   name    String?
+//   posts   Post[]
+//   profile Profile?
+// }
+
+// Added models below here
+enum Method {
+  GET
+  POST
+  PUT
+  PATCH
+  OPTIONS
+  DELETE
+}
+
+enum Action {
+  RESPOND
+  INSERT_DB
+  MUTATE_DB
+}
+
+enum Source {
+  PROXY
+  MODEL_DATA
+  PAYLOAD
+  INJECT
+  STATUS_CODE
+}
+
+enum DataLookupType {
+  INDEX
+  FIELD
+}
+
+enum RequestLookupType {
+  HEADER
+  BODY
+  PATH
+  USER
+  DATE
+  STRING
+  QUERY
+  USAGE
+}
+
+model Profile {
+  username String @unique // Added tag
+  password String
+  email    String
+}
+
+model Proxy {
+  baseURL     String        @unique // Added tag
+  color       String
+  label       String
+  ProxyConfig ProxyConfig[]
+}
+
+model Audited {
+  id         String @unique // Added tag, changed from uiud
+  createdBy  String // Can't add attribute ID? Changed from Profile.id to type of Profile.id
+  udpdatedBy String // Can't add attribute ID? Changed from Profile.id to type of Profile.id
+  createdOn  Int // Changed from Number
+  updatedOn  Int // Changed from Number
+}
+
+model Model {
+  label           String            @unique // Added tag
+  type            String
+  data            String
+  ModelDataConfig ModelDataConfig[]
+}
+
+model Endpoint {
+  path     String     @unique // Added tag
+  method   Method
+  behaiors Behavior[]
+  hidden   Boolean
+  locked   Boolean
+}
+
+model Behavior {
+  trigger      Filter[]
+  action       Action
+  content      Content[]
+  selector     Filter[]
+  Endpoint     Endpoint? @relation(fields: [endpointPath], references: [path])
+  endpointPath String?
+}
+
+model Content {
+  source   Source
+  filter   Filter[]
+  config   ProxyConfig @relation(fields: [], references: []) // Not quite sure how to make this take on multiple types
+  Behavior Behavior    @relation(fields: [], references: [])
+}
+
+model Filter {
+  type     DataLookupType // Not quite sure how to make this take on multiple types
+  field    String?
+  value    String // Not quite sure how to make this take on multiple types
+  Behavior Behavior       @relation(fields: [], references: [])
+  Behavior Behavior       @relation(fields: [], references: [])
+  Content  Content        @relation(fields: [], references: [])
+}
+
+model ProxyConfig {
+  proxyID      Proxy     @relation(fields: [proxyBaseURL], references: [baseURL]) // Can't add attribute ID?
+  path         String
+  Content      Content[]
+  proxyBaseURL String
+}
+
+model ModelDataConfig {
+  modelId    Model  @relation(fields: [modelLabel], references: [label]) // Can't add attribute ID?
+  modelLabel String
+}
+
+model StatusConfig {
+  status Int // Changed from Number
+}

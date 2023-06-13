@@ -1,6 +1,7 @@
 {
   "name": "nuxt-app",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -14,6 +15,7 @@
     "prisma": "^4.15.0"
   },
   "dependencies": {
+    "@prisma/client": "^4.15.0",
     "chart.js": "^4.3.0",
     "primeicons": "^6.0.1",
     "primevue": "^3.29.2",
