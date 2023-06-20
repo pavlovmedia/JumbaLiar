@@ -38,7 +38,7 @@ datasource db {
 //   profile Profile?
 // }
 
-// Added models below here
+// Added enums and models below here
 enum Method {
   GET
   POST
@@ -78,79 +78,123 @@ enum RequestLookupType {
   USAGE
 }
 
-model Profile {
-  username String @unique // Added tag
-  password String
-  email    String
-}
+// Audited model that Model and Endpoint "extend"
+// model Audited {
+//   id         String @id @default(uuid()) 
+//   createdBy  Profile // Can't add attribute ID? Changed from Profile.id to type of Profile.id
+//   udpdatedBy Profile // Can't add attribute ID? Changed from Profile.id to type of Profile.id
+//   createdOn  DateTime @default(now()) // Changed from Number
+//   updatedOn  DateTime // Changed from Number
+// }
+
+// MASS COMMENT STARTS HERE
+
+// model Profile {
+//   username String @id // Added tag
+//   password String
+//   email    String
+// }
 
 model Proxy {
-  baseURL     String        @unique // Added tag
-  color       String
-  label       String
+  baseURL String @id // Added tag
+  color   String
+  label   String
+
+  // Added attributes
   ProxyConfig ProxyConfig[]
 }
 
-model Audited {
-  id         String @unique // Added tag, changed from uiud
-  createdBy  String // Can't add attribute ID? Changed from Profile.id to type of Profile.id
-  udpdatedBy String // Can't add attribute ID? Changed from Profile.id to type of Profile.id
-  createdOn  Int // Changed from Number
-  updatedOn  Int // Changed from Number
-}
-
 model Model {
-  label           String            @unique // Added tag
-  type            String
-  data            String
+  //   label           String // Added tag
+  //   type            String
+  //   data            String
+
+  // Audited attributes
+  id String @id @default(uuid())
+  //   createdBy       Profile // Can't add attribute ID? Changed from Profile.id to type of Profile.id
+  //   udpdatedBy      Profile // Can't add attribute ID? Changed from Profile.id to type of Profile.id
+  //   createdOn       DateTime          @default(now()) // Changed from Number
+  //   updatedOn       DateTime // Changed from Number
+
+  // Added attributes
   ModelDataConfig ModelDataConfig[]
 }
 
-model Endpoint {
-  path     String     @unique // Added tag
-  method   Method
-  behaiors Behavior[]
-  hidden   Boolean
-  locked   Boolean
-}
+// model Endpoint {
+//   path       String // Added tag
+//   method     Method
+//   behaiors   Behavior[]
+//   hidden     Boolean
+//   locked     Boolean
+
+// Audited attributes
+//   id         String     @id @default(uuid())
+//   createdBy  Profile // Can't add attribute ID? Changed from Profile.id to type of Profile.id
+//   udpdatedBy Profile // Can't add attribute ID? Changed from Profile.id to type of Profile.id
+//   createdOn  DateTime   @default(now()) // Changed from Number
+//   updatedOn  DateTime // Changed from Number
+// }
 
 model Behavior {
-  trigger      Filter[]
-  action       Action
-  content      Content[]
-  selector     Filter[]
-  Endpoint     Endpoint? @relation(fields: [endpointPath], references: [path])
-  endpointPath String?
+  // trigger  Filter[]  @relation("behaviorTrigger")
+  action  Action    @id
+  content Content[]
+  // selector Filter[] @relation("behaviorSelector")
+
+  // Added attributes
+  //   Endpoint     Endpoint? @relation(fields: [endpointPath], references: [path])
+  //   endpointPath String?
+
+  // @@unique([action]) // this is just to get it to stop whining 
 }
 
 model Content {
-  source   Source
-  filter   Filter[]
-  config   ProxyConfig @relation(fields: [], references: []) // Not quite sure how to make this take on multiple types
-  Behavior Behavior    @relation(fields: [], references: [])
+  source Source       @unique // Added tag
+  filter Filter[]
+  config ProxyConfig? @relation(fields: [proxyConfigProxyBaseURL], references: [proxyBaseURL]) //@relation(fields: [], references: []) // Not quite sure how to make this take on multiple types
+
+  //  Added attributes
+  proxyConfigProxyBaseURL String?
+  behavior                Behavior? @relation(fields: [behaviorAction], references: [action])
+  behaviorAction          Action
 }
 
 model Filter {
-  type     DataLookupType // Not quite sure how to make this take on multiple types
-  field    String?
-  value    String // Not quite sure how to make this take on multiple types
-  Behavior Behavior       @relation(fields: [], references: [])
-  Behavior Behavior       @relation(fields: [], references: [])
-  Content  Content        @relation(fields: [], references: [])
+  type  DataLookupType // Not quite sure how to make this take on multiple types
+  field String?
+  value String // Not quite sure how to make this take on multiple types
+
+  // Added attributes
+  content       Content? @relation(fields: [contentSource], references: [source])
+  contentSource Source
+
+  // these are causing problems 
+  // behavior       Behavior?      @relation(fields: [behaviorAction], references: [action])
+  // behaviorAction Action
+  // Behavior       Behavior       @relation(fields: [behaviorAction], references: [action])
+
+  //   Behavior Behavior       @relation(fields: [], references: [])
+  //   // Behavior Behavior       @relation(fields: [], references: [])
+  //   Content  Content?       @relation(fields: [contentSource], references: [source])
+  @@unique([type, value])
 }
 
 model ProxyConfig {
-  proxyID      Proxy     @relation(fields: [proxyBaseURL], references: [baseURL]) // Can't add attribute ID?
-  path         String
-  Content      Content[]
-  proxyBaseURL String
+  proxyID Proxy  @relation(fields: [proxyBaseURL], references: [baseURL]) // Can't add attribute ID?
+  path    String
+
+  // Added attributes 
+  proxyBaseURL String    @id
+  content      Content[]
 }
 
 model ModelDataConfig {
-  modelId    Model  @relation(fields: [modelLabel], references: [label]) // Can't add attribute ID?
-  modelLabel String
+  modelId Model @relation(fields: [modelLabel], references: [id]) // @id @default(uuid()) // changed from Model.id
+
+  // Added attributes
+  modelLabel String @id
 }
 
 model StatusConfig {
-  status Int // Changed from Number
+  status Int @id // Changed from Number
 }
