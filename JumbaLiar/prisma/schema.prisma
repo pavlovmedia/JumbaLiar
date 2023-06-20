@@ -136,10 +136,10 @@ model Model {
 // }
 
 model Behavior {
-  // trigger  Filter[]  @relation("behaviorTrigger")
-  action  Action    @id
-  content Content[]
-  // selector Filter[] @relation("behaviorSelector")
+  trigger  Filter[]  @relation("behaviorTrigger")
+  action   Action    @id
+  content  Content[]
+  selector Filter[]  @relation("behaviorSelector")
 
   // Added attributes
   //   Endpoint     Endpoint? @relation(fields: [endpointPath], references: [path])
@@ -165,13 +165,18 @@ model Filter {
   value String // Not quite sure how to make this take on multiple types
 
   // Added attributes
-  content       Content? @relation(fields: [contentSource], references: [source])
-  contentSource Source
+  content                Content?  @relation(fields: [contentSource], references: [source])
+  contentSource          Source
+  behaviorTrigger        Behavior? @relation("behaviorTrigger", fields: [behaviorTriggerAction], references: [action])
+  behaviorSelector       Behavior? @relation("behaviorSelector", fields: [behaviorSelectorAction], references: [action])
+  behaviorTriggerAction  Action
+  behaviorSelectorAction Action
 
   // these are causing problems 
-  // behavior       Behavior?      @relation(fields: [behaviorAction], references: [action])
-  // behaviorAction Action
-  // Behavior       Behavior       @relation(fields: [behaviorAction], references: [action])
+  // behavior         Behavior? @relation(fields: [behaviorAction], references: [action])
+  // behaviorAction   Action
+  // Behavior         Behavior? @relation(fields: [behaviorSelector], references: [action])
+  // behaviorSelector Action
 
   //   Behavior Behavior       @relation(fields: [], references: [])
   //   // Behavior Behavior       @relation(fields: [], references: [])
