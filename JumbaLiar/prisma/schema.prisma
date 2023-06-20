@@ -119,7 +119,7 @@ model Model {
   createdBy  Profile  @relation("modelCreatedBy", fields: [profileCreatedByUsername], references: [username])
   udpdatedBy Profile  @relation("modelUpdatedBy", fields: [profileUpdatedByUsername], references: [username])
   createdOn  DateTime @default(now())
-  updatedOn  DateTime
+  updatedOn  DateTime @updatedAt
 
   // Added attributes
   ModelDataConfig          ModelDataConfig[]
@@ -139,7 +139,7 @@ model Endpoint {
   createdBy  Profile  @relation("endpointCreatedBy", fields: [endpointCreatedByProfile], references: [username])
   udpdatedBy Profile  @relation("endpointUpdatedBy", fields: [endpointUpdatedByProfile], references: [username])
   createdOn  DateTime @default(now())
-  updatedOn  DateTime
+  updatedOn  DateTime @updatedAt
 
   // Added attributes
   endpointUpdatedByProfile String
