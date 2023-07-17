@@ -3,6 +3,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Card from "primevue/card";
 import Button from "primevue/button";
+import { get } from "http";
 
 const endpoints = [
   {
@@ -38,11 +39,50 @@ const endpoints = [
     actions: ["edit"],
   },
 ];
+
+// Demo function
+async function testPost() {
+  console.log(
+    await $fetch("/api/model", {
+      // TODO: Un-hardcode this
+      method: "POST",
+      body: {
+        label: "TestingLabel",
+        // type: "",
+        // data: "",
+        profile: "BobbyTables", // TODO: Un-hardcode this
+      },
+    })
+  );
+}
+
+// Demo function
+async function testGet() {
+  const headers = useRequestHeaders(["cookie"]);
+  console.log(
+    // await get("/api/model")
+    // await $fetch("/api/model", {
+    //   // TODO: Un-hardcode this
+    //   method: "GET",
+    //   headers: headers,
+    //   // body: {}, // filteres would go here
+    // })
+    await useFetch("/api/model", { headers })
+  );
+}
 </script>
 
 <template>
   <Card class="tableContainer">
-    <template #title>Model Count: 1</template>
+    <template #title>
+      Model Count: 1
+      <Button
+        @click="testGet()"
+        icon="pi pi-cog"
+        aria-label="Edit"
+        class="button edit"
+      />
+    </template>
     <template #content>
       <DataTable
         :value="endpoints"

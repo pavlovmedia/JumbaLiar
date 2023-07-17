@@ -1,7 +1,8 @@
 <script setup>
-import Card from "primevue/card";
-import Button from "primevue/button";
-import InputText from "primevue/inputtext";
+// import Card from "primevue/card";
+// import Button from "primevue/button";
+// import InputText from "primevue/inputtext";
+// import Textarea from "primevue/textarea";
 </script>
 <!-- I Don't think the above setup script is needed? When deleted it causes 
   VS Code to find a few errors, but they don't affect rendering -->
@@ -37,6 +38,8 @@ import InputText from "primevue/inputtext";
             type="button"
             label="Visibility: Visible"
             icon="pi pi-pencil"
+            @click=""
+            aasldfkja;sldkfja;lskdjf;alskdjflakdjlafkjdflaksdjflaksjdflaksjdflaksjdf
             style="background-color: #f37950; border: 0px"
           ></Button>
           <!-- MOVE THIS AND THE OTHER BUTTON FORMATTING TO CSS FILE -->
@@ -54,8 +57,16 @@ import InputText from "primevue/inputtext";
   </div>
   <Card class="container">
     <template #title>Behaviors</template>
-    <template #content
-      >The missile knows where it is at all times. It knows this because it
+    <template #content>
+      <div style="padding-bottom: 15px; flex-grow: 1">
+        <Textarea
+          v-model="path"
+          type="text"
+          placeholder="Placeholder"
+          style="width: 100%; height: 200px"
+        ></Textarea>
+      </div>
+      <!-- The missile knows where it is at all times. It knows this because it
       knows where it isn't. By subtracting where it is from where it isn't, or
       where it isn't from where it is (whichever is greater), it obtains a
       difference, or deviation. The guidance subsystem uses deviations to
@@ -76,7 +87,7 @@ import InputText from "primevue/inputtext";
       differentiating this from the algebraic sum of where it shouldn't be, and
       where it was, it is able to obtain the deviation and its variation, which
       is called error. <br /><br />
-      Not sure what is supposed to go here so this copypasta will do.
+      Not sure what is supposed to go here so this copypasta will do. -->
     </template>
   </Card>
 </template>

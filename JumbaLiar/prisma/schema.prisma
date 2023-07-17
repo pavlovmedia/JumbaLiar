@@ -1,5 +1,11 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Audited model that Model and Endpoint "extend"
+// model Audited {
+//   id         String @id @default(uuid()) 
+//   createdBy  Profile // Can't add attribute ID? Changed from Profile.id to type of Profile.id
+//   udpdatedBy Profile // Can't add attribute ID? Changed from Profile.id to type of Profile.id
+//   createdOn  DateTime @default(now()) // Changed from Number
+//   updatedOn  DateTime // Changed from Number
+// }
 
 generator client {
   provider = "prisma-client-js"
@@ -10,36 +16,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Post, Profile and User all commented out to get rid of the squiggles 
-// Should this be deleted?
-
-// model Post {
-//   id        Int      @id @default(autoincrement())
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-//   title     String   @db.VarChar(255)
-//   content   String?
-//   published Boolean  @default(false)
-//   author    User     @relation(fields: [authorId], references: [id])
-//   authorId  Int
-// }
-
-// model Profile {
-//   id     Int     @id @default(autoincrement())
-//   bio    String?
-//   user   User    @relation(fields: [userId], references: [id])
-//   userId Int     @unique
-// }
-
-// model User {
-//   id      Int      @id @default(autoincrement())
-//   email   String   @unique
-//   name    String?
-//   posts   Post[]
-//   profile Profile?
-// }
-
-// Added enums and models below here
 enum Method {
   GET
   POST
@@ -78,15 +54,6 @@ enum RequestLookupType {
   QUERY
   USAGE
 }
-
-// Audited model that Model and Endpoint "extend"
-// model Audited {
-//   id         String @id @default(uuid()) 
-//   createdBy  Profile // Can't add attribute ID? Changed from Profile.id to type of Profile.id
-//   udpdatedBy Profile // Can't add attribute ID? Changed from Profile.id to type of Profile.id
-//   createdOn  DateTime @default(now()) // Changed from Number
-//   updatedOn  DateTime // Changed from Number
-// }
 
 model Profile {
   username String @id

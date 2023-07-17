@@ -1,7 +1,7 @@
 <script setup lang="ts">
-// dummy inputs
 import { ref, onMounted } from "vue";
 
+// const otherStuff = await // const goodStuff = data
 onMounted(() => {
   chartData.value = setChartData();
   chartOptions.value = setChartOptions();
@@ -86,9 +86,30 @@ const events = [
   { event: "John created an account", date: "May 9 2023" },
   { event: "Justin created and account", date: "May 9 2023" },
 ];
-</script>
 
-<script lang="ts"></script>
+// BACKEND CALL GOES HERE
+// const data = await $fetch("/api/model", {
+//   method: "post",
+//   body: { rq: "wheeeeeeeeeeeee" },
+//   // can add body field here as well
+// });
+</script>
+<script lang="ts">
+async function post(content?: Object) {
+  if (content == null) {
+    return -1;
+  } else {
+    //
+    // THIS WAS COMMENTED OUT TO RESOLVE A WARNING (and I don't want to spend time figuring out what's wrong)
+    //
+    // return $fetch("/api/model", {
+    //   method: "POST",
+    //   body: { rq: "pain" },
+    // });
+  }
+}
+const stuff = post({ body: "a" });
+</script>
 
 <template>
   <div class="metricContainer">
@@ -99,7 +120,8 @@ const events = [
   </div>
   <div class="visualsContainer">
     <Card class="chartCard">
-      <template #title>Traffic</template>
+      <template #title>{{ stuff }}</template>
+      <!-- <template #title>traffic</template> -->
       <template #content>
         <Chart
           type="line"
@@ -113,7 +135,6 @@ const events = [
     <Card class="timelineCard">
       <template #title style="text-align: left">Latest Activity</template>
       <template #content>
-        <!-- This is angry for no apparant reason -->
         <Timeline :value="events" align="left" style="p-timeline-left">
           <template #content="slotProps">
             <div class="activityEvent">
