@@ -23,17 +23,9 @@ prisma.$on("error", (e) => {
 });
 
 export default defineEventHandler(async (event) => {
-  const data = await readBody(event);
-  // Doesn't check if request is valid, will maybe throw error or more likely return nothing
   try {
-    await prisma.model.findMany({ where: data });
-    return 0;
+    return await prisma.model.findMany();
   } catch (error) {
-    // Errors are now caught here, nothing descriptive is done though
-    return -2;
+    return -1;
   }
-  // } else {
-  //   // TODO: add more descriptive behavior
-  //   return -1;
-  // }
 });

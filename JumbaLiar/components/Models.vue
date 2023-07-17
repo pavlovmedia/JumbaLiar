@@ -3,42 +3,8 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Card from "primevue/card";
 import Button from "primevue/button";
-import { get } from "http";
 
-const endpoints = [
-  {
-    name: "Organization",
-    color: "#298BB5",
-    usages: 1,
-    updatedOn: "5/10/2023",
-    updatedBy: "Justin White",
-    actions: ["edit"],
-  },
-  {
-    name: "MyAccountUser",
-    color: "#298BB5",
-    usages: 0,
-    updatedOn: "5/10/2023",
-    updatedBy: "Justin White",
-    actions: ["edit"],
-  },
-  {
-    name: "Location",
-    color: "#298BB5",
-    usages: 5,
-    updatedOn: "5/10/2023",
-    updatedBy: "Justin White",
-    actions: ["edit"],
-  },
-  {
-    name: "PostalAddress",
-    color: "#298BB5",
-    usages: 10,
-    updatedOn: "5/10/2023",
-    updatedBy: "Justin White",
-    actions: ["edit"],
-  },
-];
+const models = await $fetch("/api/model");
 
 // Demo function
 async function testPost() {
@@ -56,19 +22,11 @@ async function testPost() {
   );
 }
 
-// Demo function
-async function testGet() {
-  const headers = useRequestHeaders(["cookie"]);
-  console.log(
-    // await get("/api/model")
-    // await $fetch("/api/model", {
-    //   // TODO: Un-hardcode this
-    //   method: "GET",
-    //   headers: headers,
-    //   // body: {}, // filteres would go here
-    // })
-    await useFetch("/api/model", { headers })
-  );
+function formatDate(date: string) {
+  var day = date.substring(8, 10);
+  var month = date.charAt(5) == "0" ? date.charAt(6) : date.substring(5, 7);
+  var year = date.substring(0, 4);
+  return month + "/" + day + "/" + year;
 }
 </script>
 
@@ -85,26 +43,30 @@ async function testGet() {
     </template>
     <template #content>
       <DataTable
-        :value="endpoints"
+        :value="models"
         paginator
         showGridlines
         :rows="6"
         sortMode="multiple"
       >
-        <Column field="name" header="Name" sortable />
-        <Column field="color" header="Color" sortable>
+        <Column field="label" header="Name" sortable />
+        <Column field="type" header="Color" sortable>
           <template #body="slotProps">
             <i
               class="pi pi-circle-fill"
-              :style="{ color: `${slotProps.data.color}` }"
+              :style="{ color: `${slotProps.data.type}` }"
             />
-            {{ slotProps.data.color }}
+            {{ slotProps.data.type }}
           </template>
         </Column>
         <Column field="usages" header="Usages" sortable />
-        <Column field="updatedOn" header="Updated On" sortable />
-        <Column field="updatedBy" header="Updated By" sortable />
-        <Column field="actions" header="Actions">
+        <Column field="updatedOn" header="Updated On" sortable>
+          <template #body="slotProps">
+            {{ formatDate(slotProps.data.updatedOn) }}
+          </template>
+        </Column>
+        <Column field="profileUpdatedByUsername" header="Updated By" sortable />
+        <Column field="data" header="Actions">
           <template #body="slotProps">
             <Button icon="pi pi-pencil" aria-label="Edit" class="button edit" />
             <Button

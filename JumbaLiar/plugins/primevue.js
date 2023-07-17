@@ -6,6 +6,7 @@ import Card from "primevue/card";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import Textarea from "primevue/textarea";
+import ConfirmDialog from "primevue/confirmdialog";
 
 export default defineNuxtPlugin(nuxtApp => {
   nuxtApp.vueApp.use(PrimeVue);
@@ -15,4 +16,5 @@ export default defineNuxtPlugin(nuxtApp => {
   nuxtApp.vueApp.component('InputText', InputText);
   nuxtApp.vueApp.component('Button', Button);
   nuxtApp.vueApp.component('Textarea', Textarea);
+  nuxtApp.vueApp.component('ConfirmDialog', ConfirmDialog);
 })
