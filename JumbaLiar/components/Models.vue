@@ -4,6 +4,21 @@ import Column from "primevue/column";
 import Card from "primevue/card";
 import Button from "primevue/button";
 
+/////////////////////////// ADDED STUFF
+
+// If possible find something else, this really likes to break
+// this breaks stuff for now, error: No PrimeVue Dialog provided
+// import { useDialog } from "primevue/usedialog";
+// const ModelEditor = defineAsyncComponent(
+//   () => import("./components/EditModel.vue")
+// );
+// const dialog = useDialog();
+
+const edit = ref(false);
+const data = ref();
+
+/////////////////////////// END ADDED STUFF
+
 const models = await $fetch("/api/model");
 
 // Demo function
@@ -23,25 +38,36 @@ async function testPost() {
 }
 
 function formatDate(date: string) {
-  var day = date.substring(8, 10);
+  var day = date.charAt(8) == "0" ? date.charAt(9) : date.substring(8, 10);
   var month = date.charAt(5) == "0" ? date.charAt(6) : date.substring(5, 7);
   var year = date.substring(0, 4);
   return month + "/" + day + "/" + year;
 }
+
+// const edit = (model: Object) => {
+//   const dialogRef = dialog.open(ModelEditor, {
+//     props: {
+//       contentProps: {
+//         name: model.label,
+//         color: model.type,
+//         data: model.data,
+//       },
+//     },
+//   });
+// };
 </script>
 
 <template>
   <Card class="tableContainer">
     <template #title>
       Model Count: 1
-      <Button
-        @click="testGet()"
-        icon="pi pi-cog"
-        aria-label="Edit"
-        class="button edit"
-      />
+      <!-- TEST BUTTON -->
+      <Button icon="pi pi-cog" aria-label="Edit" class="button edit" />
     </template>
     <template #content>
+      <Dialog>
+        <Card name="" color="" data="" />
+      </Dialog>
       <DataTable
         :value="models"
         paginator
@@ -68,7 +94,15 @@ function formatDate(date: string) {
         <Column field="profileUpdatedByUsername" header="Updated By" sortable />
         <Column field="data" header="Actions">
           <template #body="slotProps">
-            <Button icon="pi pi-pencil" aria-label="Edit" class="button edit" />
+            <!-- ADDED STUFF -->
+            <DynamicDialog />
+            <!-- END ADDED STUFF -->
+            <Button
+              icon="pi pi-pencil"
+              aria-label="Edit"
+              class="button edit"
+              @click="edit"
+            />
             <Button
               icon="pi pi-database"
               aria-label="Edit"

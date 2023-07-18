@@ -86,15 +86,9 @@ const events = [
   { event: "John created an account", date: "May 9 2023" },
   { event: "Justin created and account", date: "May 9 2023" },
 ];
-
-// BACKEND CALL GOES HERE
-// const data = await $fetch("/api/model", {
-//   method: "post",
-//   body: { rq: "wheeeeeeeeeeeee" },
-//   // can add body field here as well
-// });
 </script>
 <script lang="ts">
+// Out of date?
 async function post(content?: Object) {
   if (content == null) {
     return -1;
@@ -112,6 +106,9 @@ const stuff = post({ body: "a" });
 </script>
 
 <template>
+  <!-- <div class="visualsContainer">
+    <EditModel />
+  </div> -->
   <div class="metricContainer">
     <Metric title="Requests" value="1,543" />
     <Metric title="Most Service" value="/me" />

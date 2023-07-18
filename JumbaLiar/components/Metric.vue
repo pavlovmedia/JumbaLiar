@@ -17,6 +17,6 @@ div {
   background-color: rgb(255, 255, 255);
   width: 100px;
   flex-grow: 1;
-  border-radius: 10px;
+  border-radius: var(--card-radius);
 }
 </style>
