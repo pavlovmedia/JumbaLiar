@@ -3,6 +3,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Card from "primevue/card";
 import Button from "primevue/button";
+import { Model } from "@prisma/client";
 
 /////////////////////////// ADDED STUFF
 
@@ -15,7 +16,21 @@ import Button from "primevue/button";
 // const dialog = useDialog();
 
 const edit = ref(false);
-const data = ref();
+const label = ref("");
+const type = ref("");
+const data = ref("");
+
+function startEdit(model: Model) {
+  console.log("click");
+  if (edit.value == true) {
+    return;
+  } else {
+    label.value = model.label;
+    type.value = model.type;
+    data.value = model.data;
+    edit.value = true;
+  }
+}
 
 /////////////////////////// END ADDED STUFF
 
@@ -65,8 +80,18 @@ function formatDate(date: string) {
       <Button icon="pi pi-cog" aria-label="Edit" class="button edit" />
     </template>
     <template #content>
-      <Dialog>
-        <Card name="" color="" data="" />
+      <Dialog
+        v-model:visible="edit"
+        modal
+        :show-header="false"
+        content-style="padding: 0;"
+        style="{border-radius: `${var(--card-radius)}}"
+      >
+        <EditModel
+          :name="label.valueOf()"
+          :color="type.valueOf()"
+          :data="data.valueOf()"
+        />
       </Dialog>
       <DataTable
         :value="models"
@@ -74,6 +99,8 @@ function formatDate(date: string) {
         showGridlines
         :rows="6"
         sortMode="multiple"
+        removableSort
+        data-key="id"
       >
         <Column field="label" header="Name" sortable />
         <Column field="type" header="Color" sortable>
@@ -94,14 +121,11 @@ function formatDate(date: string) {
         <Column field="profileUpdatedByUsername" header="Updated By" sortable />
         <Column field="data" header="Actions">
           <template #body="slotProps">
-            <!-- ADDED STUFF -->
-            <DynamicDialog />
-            <!-- END ADDED STUFF -->
             <Button
               icon="pi pi-pencil"
               aria-label="Edit"
               class="button edit"
-              @click="edit"
+              @click="startEdit(slotProps.data)"
             />
             <Button
               icon="pi pi-database"

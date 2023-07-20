@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const props = defineProps<{
+  // model: object;
   name: string;
   color: string;
   data: string;
@@ -15,7 +16,7 @@ const color = ref(props.color);
 const data = ref(props.data);
 </script>
 
-<!-- Padding/align stuff should be fixed later -->
+<!-- TODO: Padding/align stuff should be fixed later -->
 
 <template>
   <Card style="flex-grow: 1; max-width: 700px">

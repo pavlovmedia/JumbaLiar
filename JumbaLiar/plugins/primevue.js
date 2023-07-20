@@ -8,6 +8,7 @@ import Button from "primevue/button";
 import Textarea from "primevue/textarea";
 import DynamicDialog from "primevue/dynamicdialog";
 import DialogService from 'primevue/dialogservice';
+import Dialog from "primevue/dialog";
 
 export default defineNuxtPlugin(nuxtApp => {
   nuxtApp.vueApp.use(PrimeVue);
@@ -19,4 +20,5 @@ export default defineNuxtPlugin(nuxtApp => {
   nuxtApp.vueApp.component('Button', Button);
   nuxtApp.vueApp.component('Textarea', Textarea);
   nuxtApp.vueApp.component('DynamicDialog', DynamicDialog);
+  nuxtApp.vueApp.component('Dialog', Dialog);
 })

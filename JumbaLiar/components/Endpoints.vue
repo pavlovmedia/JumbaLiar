@@ -67,7 +67,13 @@ const models = [
     <Card class="tableContainer">
       <template #title>Endpoint Count: 1</template>
       <template #content>
-        <DataTable :value="endpoints" sortMode="multiple" paginator :rows="6">
+        <DataTable
+          :value="endpoints"
+          sortMode="multiple"
+          removableSort
+          paginator
+          :rows="6"
+        >
           <Column field="method" header="Method" sortable class="column">
             <template #body>
               <Badge value="GET" class="getMethod" />

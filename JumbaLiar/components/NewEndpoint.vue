@@ -7,6 +7,8 @@
 <!-- I Don't think the above setup script is needed? When deleted it causes 
   VS Code to find a few errors, but they don't affect rendering -->
 
+<!-- TODO: This file doesn't render, somethign something cannot read properties of null (reading 'nextSibling') -->
+
 <template>
   <div class="horizontalColumns">
     <Card class="container">
@@ -39,7 +41,6 @@
             label="Visibility: Visible"
             icon="pi pi-pencil"
             @click=""
-            aasldfkja;sldkfja;lskdjf;alskdjflakdjlafkjdflaksdjflaksjdflaksjdflaksjdf
             style="background-color: #f37950; border: 0px"
           ></Button>
           <!-- MOVE THIS AND THE OTHER BUTTON FORMATTING TO CSS FILE -->
