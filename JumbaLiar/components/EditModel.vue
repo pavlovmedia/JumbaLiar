@@ -77,8 +77,16 @@ const data = ref(props.data);
           class="orange button"
           label="Update"
           icon="pi pi-check"
+          @click="
+            $emit('save', name.valueOf(), color.valueOf(), data.valueOf())
+          "
         ></Button>
-        <Button class="grey button" label="Cancel" icon="pi pi-times"></Button>
+        <Button
+          class="grey button"
+          label="Cancel"
+          icon="pi pi-times"
+          @click="$emit('quit')"
+        ></Button>
       </div>
     </template>
   </Card>

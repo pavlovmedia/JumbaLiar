@@ -32,6 +32,9 @@ function startEdit(model: Model) {
   }
 }
 
+function save(name: string, color: string, data: string) {}
+function quit() {}
+
 /////////////////////////// END ADDED STUFF
 
 const models = await $fetch("/api/model");
@@ -79,7 +82,11 @@ function formatDate(date: string) {
       <!-- TEST BUTTON -->
       <Button icon="pi pi-cog" aria-label="Edit" class="button edit" />
     </template>
-    <template #content>
+    <template
+      #content
+      @save="(name, color, data) => save(name, color, data)"
+      @quit="() => quit()"
+    >
       <Dialog
         v-model:visible="edit"
         modal
@@ -100,7 +107,6 @@ function formatDate(date: string) {
         :rows="6"
         sortMode="multiple"
         removableSort
-        data-key="id"
       >
         <Column field="label" header="Name" sortable />
         <Column field="type" header="Color" sortable>
