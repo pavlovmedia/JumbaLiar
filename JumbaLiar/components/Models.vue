@@ -4,6 +4,7 @@ import Column from "primevue/column";
 import Card from "primevue/card";
 import Button from "primevue/button";
 import { Model } from "@prisma/client";
+import { NewEndpoint } from ".nuxt/components";
 
 /////////////////////////// ADDED STUFF
 
@@ -19,6 +20,7 @@ const edit = ref(false);
 const label = ref("");
 const type = ref("");
 const data = ref("");
+const id = ref("");
 
 function startEdit(model: Model) {
   console.log("click");
@@ -28,12 +30,29 @@ function startEdit(model: Model) {
     label.value = model.label;
     type.value = model.type;
     data.value = model.data;
+    id.value = model.id;
     edit.value = true;
   }
 }
 
-function save(name: string, color: string, data: string) {}
-function quit() {}
+async function save(newLabel: string, newType: string, newData: string) {
+  console.log("saving!", newLabel, newType, newData);
+  if (
+    !(newLabel == label.value && newType == type.value && newData == data.value)
+  ) {
+    console.log("changes!");
+    //   await $fetch("/api/model", {
+    //     method: "PATCH",
+    //     body: {}, // TODO: this needs to be updated
+    //   });
+  }
+  edit.value = false;
+  // TODO: compare changes and patch models, probably just see if anything changed and push everything?
+}
+function quit() {
+  console.log("quitting!");
+  edit.value = false;
+}
 
 /////////////////////////// END ADDED STUFF
 
@@ -82,11 +101,7 @@ function formatDate(date: string) {
       <!-- TEST BUTTON -->
       <Button icon="pi pi-cog" aria-label="Edit" class="button edit" />
     </template>
-    <template
-      #content
-      @save="(name, color, data) => save(name, color, data)"
-      @quit="() => quit()"
-    >
+    <template #content>
       <Dialog
         v-model:visible="edit"
         modal
@@ -98,6 +113,8 @@ function formatDate(date: string) {
           :name="label.valueOf()"
           :color="type.valueOf()"
           :data="data.valueOf()"
+          @save="save"
+          @quit="quit"
         />
       </Dialog>
       <DataTable

@@ -5,15 +5,24 @@ const props = defineProps<{
   color: string;
   data: string;
 }>();
-
-import Card from "primevue/card";
-import Button from "primevue/button";
-import InputText from "primevue/inputtext";
-import Textarea from "primevue/textarea";
-
 const name = ref(props.name);
 const color = ref(props.color);
 const data = ref(props.data);
+</script>
+
+<script lang="ts">
+export default {
+  methods: {
+    save(name: string, color: string, data: string) {
+      console.log("edit save");
+      this.$emit("save", name, color, data);
+    },
+    quit() {
+      console.log("edit quit");
+      this.$emit("quit");
+    },
+  },
+};
 </script>
 
 <!-- TODO: Padding/align stuff should be fixed later -->
@@ -77,15 +86,13 @@ const data = ref(props.data);
           class="orange button"
           label="Update"
           icon="pi pi-check"
-          @click="
-            $emit('save', name.valueOf(), color.valueOf(), data.valueOf())
-          "
+          @click="save(name.valueOf(), color.valueOf(), data.valueOf())"
         ></Button>
         <Button
           class="grey button"
           label="Cancel"
           icon="pi pi-times"
-          @click="$emit('quit')"
+          @click="quit"
         ></Button>
       </div>
     </template>
