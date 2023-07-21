@@ -41,10 +41,17 @@ async function save(newLabel: string, newType: string, newData: string) {
     !(newLabel == label.value && newType == type.value && newData == data.value)
   ) {
     console.log("changes!");
-    //   await $fetch("/api/model", {
-    //     method: "PATCH",
-    //     body: {}, // TODO: this needs to be updated
-    //   });
+    console.log(
+      await $fetch("/api/model", {
+        method: "PATCH",
+        body: {
+          id: id.value,
+          label: newLabel,
+          type: newType,
+          data: newData,
+        },
+      })
+    );
   }
   edit.value = false;
   // TODO: compare changes and patch models, probably just see if anything changed and push everything?
