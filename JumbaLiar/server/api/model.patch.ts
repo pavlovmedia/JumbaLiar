@@ -8,7 +8,7 @@ const prisma = new PrismaClient({
   ],
 });
 
-// debugging
+// debugging, should be commented out at some point wherever it occurs
 prisma.$on("warn", (e) => {
   console.log(e);
 });
@@ -27,17 +27,6 @@ export default defineEventHandler(async (event) => {
   if (data != null) {
     if ("id" in data && "label" in data && "type" in data && "data" in data) {
       try {
-        // var uniq: Prisma.ProfileWhereUniqueInput = { username: data.profile };
-        // var user: Prisma.ProfileCreateNestedOneWithoutModelCreatedByProfileInput =
-        //   { connect: uniq };
-        // var rq: Prisma.ModelCreateInput;
-        // rq = {
-        //   label: data.label,
-        //   type: data.type == undefined ? "#298BB5" : data.type,
-        //   data: data.data == undefined ? "default" : data.data,
-        //   createdBy: user,
-        //   udpdatedBy: user,
-        // };
         await prisma.model.update({
           where: { id: data.id },
           data: {
@@ -48,8 +37,7 @@ export default defineEventHandler(async (event) => {
         });
         return 0;
       } catch (error) {
-        // Errors are now caught here, nothing descriptive is done though
-        return -2;
+        return -1;
       }
     } else {
       return -1;

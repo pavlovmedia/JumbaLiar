@@ -4,17 +4,6 @@ import Column from "primevue/column";
 import Card from "primevue/card";
 import Button from "primevue/button";
 import { Model } from "@prisma/client";
-import { NewEndpoint } from ".nuxt/components";
-
-/////////////////////////// ADDED STUFF
-
-// If possible find something else, this really likes to break
-// this breaks stuff for now, error: No PrimeVue Dialog provided
-// import { useDialog } from "primevue/usedialog";
-// const ModelEditor = defineAsyncComponent(
-//   () => import("./components/EditModel.vue")
-// );
-// const dialog = useDialog();
 
 const edit = ref(false);
 const label = ref("");
@@ -41,27 +30,23 @@ async function save(newLabel: string, newType: string, newData: string) {
     !(newLabel == label.value && newType == type.value && newData == data.value)
   ) {
     console.log("changes!");
-    console.log(
-      await $fetch("/api/model", {
-        method: "PATCH",
-        body: {
-          id: id.value,
-          label: newLabel,
-          type: newType,
-          data: newData,
-        },
-      })
-    );
+    await $fetch("/api/model", {
+      method: "PATCH",
+      body: {
+        id: id.value,
+        label: newLabel,
+        type: newType,
+        data: newData,
+      },
+    });
   }
   edit.value = false;
-  // TODO: compare changes and patch models, probably just see if anything changed and push everything?
 }
+
 function quit() {
   console.log("quitting!");
   edit.value = false;
 }
-
-/////////////////////////// END ADDED STUFF
 
 const models = await $fetch("/api/model");
 
@@ -87,18 +72,6 @@ function formatDate(date: string) {
   var year = date.substring(0, 4);
   return month + "/" + day + "/" + year;
 }
-
-// const edit = (model: Object) => {
-//   const dialogRef = dialog.open(ModelEditor, {
-//     props: {
-//       contentProps: {
-//         name: model.label,
-//         color: model.type,
-//         data: model.data,
-//       },
-//     },
-//   });
-// };
 </script>
 
 <template>
