@@ -1,10 +1,4 @@
 <script setup lang="ts">
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-import Card from "primevue/card";
-import Badge from "primevue/badge";
-import DataView from "primevue/dataview";
-
 const endpoints = [
   {
     method: "get",

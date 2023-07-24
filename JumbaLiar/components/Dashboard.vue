@@ -87,23 +87,6 @@ const events = [
   { event: "Justin created and account", date: "May 9 2023" },
 ];
 </script>
-<script lang="ts">
-// Out of date?
-async function post(content?: Object) {
-  if (content == null) {
-    return -1;
-  } else {
-    //
-    // THIS WAS COMMENTED OUT TO RESOLVE A WARNING (and I don't want to spend time figuring out what's wrong)
-    //
-    // return $fetch("/api/model", {
-    //   method: "POST",
-    //   body: { rq: "pain" },
-    // });
-  }
-}
-const stuff = post({ body: "a" });
-</script>
 
 <template>
   <!-- <div class="visualsContainer">
@@ -116,19 +99,19 @@ const stuff = post({ body: "a" });
     <Metric title="Uptime" value="1d 10hrs" />
   </div>
   <div class="visualsContainer">
-    <Card class="chartCard">
-      <template #title>{{ stuff }}</template>
-      <!-- <template #title>traffic</template> -->
-      <template #content>
-        <Chart
-          type="line"
-          :data="chartData"
-          :options="chartOptions"
-          style="min-height: 350px"
-        />
-      </template>
-    </Card>
-
+    <div class="chartContainer">
+      <Card class="chartCard">
+        <template #title>Traffic</template>
+        <template #content>
+          <Chart
+            type="line"
+            :data="chartData"
+            :options="chartOptions"
+            style="min-height: 350px"
+          />
+        </template>
+      </Card>
+    </div>
     <Card class="timelineCard">
       <template #title style="text-align: left">Latest Activity</template>
       <template #content>
@@ -159,7 +142,10 @@ const stuff = post({ body: "a" });
   padding-inline: var(--main-content-gap);
   gap: var(--main-content-gap);
 }
-
+.chartContainer {
+  flex-grow: 1;
+  max-width: 65%;
+}
 /* once these are done, they should be moved to main.css */
 .timelineCard {
   border-radius: var(--card-radius);
@@ -167,14 +153,15 @@ const stuff = post({ body: "a" });
   flex-grow: 1;
   max-width: 35%;
   background: white;
-  max-height: fit-content;
+  /* max-height: fit-content; */
 }
 .chartCard {
   border-radius: var(--card-radius);
+  flex-direction: row;
   flex-grow: 1;
-  max-width: 65%;
   background: white;
-  max-height: fit-content;
+  margin: 0px;
+  /* max-height: fit-content; */
 }
 :deep(.p-timeline-event-marker) {
   border: 3px solid var(--sidebar-highlight);
@@ -182,5 +169,9 @@ const stuff = post({ body: "a" });
 
 :deep(.p-timeline-event-opposite) {
   display: none;
+}
+
+.a {
+  background-color: var(--sidebar-highlight);
 }
 </style>

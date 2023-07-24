@@ -5,11 +5,22 @@ import Card from "primevue/card";
 import Button from "primevue/button";
 import { Model } from "@prisma/client";
 
+const models = await $fetch("/api/model");
+
 const edit = ref(false);
+const create = ref(false);
+const dataView = ref(false);
 const label = ref("");
 const type = ref("");
 const data = ref("");
 const id = ref("");
+
+function formatDate(date: string) {
+  var day = date.charAt(8) == "0" ? date.charAt(9) : date.substring(8, 10);
+  var month = date.charAt(5) == "0" ? date.charAt(6) : date.substring(5, 7);
+  var year = date.substring(0, 4);
+  return month + "/" + day + "/" + year;
+}
 
 function startEdit(model: Model) {
   console.log("click");
@@ -24,12 +35,51 @@ function startEdit(model: Model) {
   }
 }
 
-async function save(newLabel: string, newType: string, newData: string) {
-  console.log("saving!", newLabel, newType, newData);
-  if (
+function startCreate() {
+  console.log("click");
+  if (create.value == true) {
+    return;
+  } else {
+    label.value = "";
+    type.value = "";
+    data.value = "";
+    id.value = "";
+    create.value = true;
+  }
+}
+
+function viewData(model: Model) {
+  console.log("Data click");
+  if (dataView.value == true) {
+    return;
+  } else {
+    label.value = model.label;
+    type.value = model.type;
+    data.value = model.data == "" ? "Model has no data!" : model.data;
+    id.value = model.id;
+    dataView.value = true;
+  }
+}
+
+async function save(
+  created: boolean,
+  newLabel: string,
+  newType: string,
+  newData: string
+) {
+  if (created) {
+    await $fetch("/api/model", {
+      method: "POST",
+      body: {
+        label: newLabel,
+        type: newType,
+        data: newData,
+        profile: "BobbyTables", // TODO: Un-hardcode this
+      },
+    });
+  } else if (
     !(newLabel == label.value && newType == type.value && newData == data.value)
   ) {
-    console.log("changes!");
     await $fetch("/api/model", {
       method: "PATCH",
       body: {
@@ -41,45 +91,46 @@ async function save(newLabel: string, newType: string, newData: string) {
     });
   }
   edit.value = false;
+  create.value = false;
 }
 
 function quit() {
-  console.log("quitting!");
   edit.value = false;
+  create.value = false;
 }
-
-const models = await $fetch("/api/model");
 
 // Demo function
-async function testPost() {
-  console.log(
-    await $fetch("/api/model", {
-      // TODO: Un-hardcode this
-      method: "POST",
-      body: {
-        label: "TestingLabel",
-        // type: "",
-        // data: "",
-        profile: "BobbyTables", // TODO: Un-hardcode this
-      },
-    })
-  );
-}
-
-function formatDate(date: string) {
-  var day = date.charAt(8) == "0" ? date.charAt(9) : date.substring(8, 10);
-  var month = date.charAt(5) == "0" ? date.charAt(6) : date.substring(5, 7);
-  var year = date.substring(0, 4);
-  return month + "/" + day + "/" + year;
-}
+// async function testPost() {
+//   console.log(
+//     await $fetch("/api/model", {
+//       // TODO: Un-hardcode this
+//       method: "POST",
+//       body: {
+//         label: "TestingLabel",
+//         // type: "",
+//         // data: "",
+//         profile: "BobbyTables", // TODO: Un-hardcode this
+//       },
+//     })
+//   );
+// }
 </script>
 
 <template>
   <Card class="tableContainer">
     <template #title>
-      Model Count: 1
-      <!-- TEST BUTTON -->
-      <Button icon="pi pi-cog" aria-label="Edit" class="button edit" />
+      <div class="tableHeader">
+        <p class="titleText">Model Count: {{ models.length }}</p>
+        <div>
+          <!--class="buttonContainer"-->
+          <Button
+            icon="pi pi-plus"
+            aria-label="Edit"
+            class="button edit"
+            @click="startCreate"
+          />
+        </div>
+      </div>
     </template>
     <template #content>
       <Dialog
@@ -87,15 +138,41 @@ function formatDate(date: string) {
         modal
         :show-header="false"
         content-style="padding: 0;"
-        style="{border-radius: `${var(--card-radius)}}"
       >
+        <!-- style="{border-radius: `${var(--card-radius)}}" -->
         <EditModel
+          :create="false"
           :name="label.valueOf()"
           :color="type.valueOf()"
           :data="data.valueOf()"
           @save="save"
           @quit="quit"
         />
+      </Dialog>
+      <Dialog
+        v-model:visible="create"
+        modal
+        :show-header="false"
+        content-style="padding: 0;"
+      >
+        <!-- style="{border-radius: `${var(--card-radius)}}" -->
+        <EditModel
+          :create="true"
+          name=""
+          color=""
+          data=""
+          @save="save"
+          @quit="quit"
+        />
+      </Dialog>
+      <Dialog v-model:visible="dataView" modal content-style="padding: 0;">
+        <!-- :show-header="false"
+          style="{border-radius: `${var(--card-radius)}}" -->
+        <template #header>
+          {{ "Not implemented yet :)  " }}
+          <!-- <p class="titleText">Data for {{ label }}</p> -->
+        </template>
+        <!-- <DataView :name="label.valueOf()" :data="data.valueOf()"> </DataView> -->
       </Dialog>
       <DataTable
         :value="models"
@@ -134,6 +211,7 @@ function formatDate(date: string) {
               icon="pi pi-database"
               aria-label="Edit"
               class="button database"
+              @click="viewData(slotProps.data)"
             />
           </template>
         </Column>
@@ -143,6 +221,13 @@ function formatDate(date: string) {
 </template>
 
 <style scoped>
+.dataCard {
+  padding-inline: var(--main-content-gap);
+  gap: var(--main-content-gap);
+  width: 100%;
+  background: white;
+  max-height: fit-content;
+}
 .tableContainer {
   border-radius: var(--card-radius);
   background: white;
@@ -150,6 +235,11 @@ function formatDate(date: string) {
   margin: var(--main-content-gap);
   min-width: fit-content;
 }
+.tableHeader {
+  display: flex;
+  grid-template-rows: 1fr 1fr;
+}
+
 .button {
   border: 0px;
   margin: 5px;
@@ -161,6 +251,16 @@ function formatDate(date: string) {
 }
 .database {
   background-color: #787878;
+}
+.titleText {
+  font-size: var(--header-font-size);
+  color: black;
+  text-align: left;
+  margin: auto;
+  /* display: table-cell;
+  vertical-align: middle; */
+  font-weight: bold;
+  flex-grow: 1;
 }
 :deep(.p-card-title) {
   border-bottom-style: solid;

@@ -1,10 +1,12 @@
 <script setup lang="ts">
 const props = defineProps<{
-  // model: object;
+  create: boolean;
   name: string;
   color: string;
   data: string;
 }>();
+
+const title = ref(props.create ? "Create Model" : "Update Model");
 const name = ref(props.name);
 const color = ref(props.color);
 const data = ref(props.data);
@@ -14,11 +16,9 @@ const data = ref(props.data);
 export default {
   methods: {
     save(name: string, color: string, data: string) {
-      console.log("edit save");
-      this.$emit("save", name, color, data);
+      this.$emit("save", this.create, name, color, data);
     },
     quit() {
-      console.log("edit quit");
       this.$emit("quit");
     },
   },
@@ -29,7 +29,7 @@ export default {
 
 <template>
   <Card style="flex-grow: 1; max-width: 700px">
-    <template #title> Update Model </template>
+    <template #title> {{ title }} </template>
     <template #content>
       <div class="inputContainer">
         <InputText
@@ -38,7 +38,7 @@ export default {
           placeholder="Model Name"
         ></InputText>
       </div>
-      <div class="inputContainerA">
+      <div class="inputContainer">
         <InputText class="grow" v-model="color" placeholder="Color"></InputText>
       </div>
       <div class="buttonContainer">
@@ -72,8 +72,7 @@ export default {
       </div>
       <div class="textBoxContainer">
         <Textarea
-          autoResize
-          rows="5"
+          rows="16"
           cols="30"
           v-model="data"
           placeholder="Data"
@@ -113,11 +112,9 @@ export default {
   padding-inline: 0px;
   padding-bottom: var(--main-content-gap);
 }
-.inputContainerA {
-  display: flex;
-  grid-template-rows: 1fr 1fr;
-  padding-inline: 0px;
-  padding-bottom: var(--main-content-gap);
+.inputText {
+  flex-grow: 1;
+  max-height: 750px;
 }
 .buttonContainer {
   display: flex;

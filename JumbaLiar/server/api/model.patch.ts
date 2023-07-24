@@ -8,7 +8,7 @@ const prisma = new PrismaClient({
   ],
 });
 
-// debugging, should be commented out at some point wherever it occurs
+// debugging
 prisma.$on("warn", (e) => {
   console.log(e);
 });
@@ -18,6 +18,7 @@ prisma.$on("info", (e) => {
 });
 
 prisma.$on("error", (e) => {
+  // TODO: Modify this to raise some sort of error so it can be relayed back to the frontend
   console.log(e);
 });
 
