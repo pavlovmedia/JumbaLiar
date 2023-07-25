@@ -95,11 +95,11 @@ model Model {
 }
 
 model Endpoint {
-  path     String
-  method   Method
-  behaiors Behavior[]
-  hidden   Boolean
-  locked   Boolean
+  path      String
+  method    Method
+  behaviors Behavior[]
+  hidden    Boolean
+  locked    Boolean
 
   // Audited attributes
   id         String   @id @default(uuid())
@@ -129,7 +129,7 @@ model Content {
   filter Filter[]
   config ProxyConfig? @relation(fields: [proxyConfigProxyBaseURL], references: [proxyBaseURL]) //@relation(fields: [], references: []) // Not quite sure how to make this take on multiple types
 
-  //  Added attributes
+  // Added attributes
   proxyConfigProxyBaseURL String?
   behavior                Behavior? @relation(fields: [behaviorAction], references: [action])
   behaviorAction          Action
