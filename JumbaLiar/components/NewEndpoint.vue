@@ -1,13 +1,7 @@
-<script setup>
-// import Card from "primevue/card";
-// import Button from "primevue/button";
-// import InputText from "primevue/inputtext";
-// import Textarea from "primevue/textarea";
+<script setup lang="ts">
+const path = ref();
+const method = ref();
 </script>
-<!-- I Don't think the above setup script is needed? When deleted it causes 
-  VS Code to find a few errors, but they don't affect rendering -->
-
-<!-- TODO: This file doesn't render, somethign something cannot read properties of null (reading 'nextSibling') -->
 
 <template>
   <div class="horizontalColumns">
@@ -16,7 +10,7 @@
       <template #content>
         <div style="padding-bottom: 15px; flex-grow: 1">
           <InputText
-            v-model="path"
+            :v-model="path"
             type="text"
             placeholder="/services/path"
             style="width: 100%"
@@ -24,7 +18,7 @@
         </div>
         <div>
           <InputText
-            v-model="method"
+            :v-model="method"
             type="text"
             placeholder="Method"
             style="width: 100%"

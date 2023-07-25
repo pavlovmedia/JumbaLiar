@@ -9,6 +9,10 @@ import Textarea from "primevue/textarea";
 import DynamicDialog from "primevue/dynamicdialog";
 import DialogService from 'primevue/dialogservice';
 import Dialog from "primevue/dialog";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import Badge from "primevue/badge";
+import DataView from "primevue/dataview";
 
 export default defineNuxtPlugin(nuxtApp => {
   nuxtApp.vueApp.use(PrimeVue);
@@ -21,4 +25,8 @@ export default defineNuxtPlugin(nuxtApp => {
   nuxtApp.vueApp.component('Textarea', Textarea);
   nuxtApp.vueApp.component('DynamicDialog', DynamicDialog);
   nuxtApp.vueApp.component('Dialog', Dialog);
+  nuxtApp.vueApp.component('DataTable', DataTable);
+  nuxtApp.vueApp.component('Column', Column);
+  nuxtApp.vueApp.component('Badge', Badge);
+  nuxtApp.vueApp.component('DataView', DataView);
 })

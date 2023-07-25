@@ -33,11 +33,7 @@ const endpoints = [
     actions: [],
   },
 ];
-const models = [
-  { color: "#298BB5", model: "MyAccountUser" },
-  { color: "#298BB5", model: "Location" },
-  { color: "#298BB5", model: "Organization" },
-];
+const models = await $fetch("/api/model");
 </script>
 
 <template>
@@ -45,17 +41,20 @@ const models = [
     <Card class="listContainer">
       <template #title>Models</template>
       <template #content>
-        <DataView :value="models" data-key="models" paginator :rows="5">
-          <template #list="slotProps">
-            <div>
-              <i
-                class="pi pi-circle-fill dot"
-                :style="{ color: `${slotProps.data.color}` }"
-              ></i>
-              {{ slotProps.data.model }}
-            </div>
-          </template>
-        </DataView>
+        <div class="dataViewContainer">
+          <DataView :value="models" data-key="models" paginator :rows="5">
+            <!-- TODO: CHANGE PAGINATOR ROWS BACK TO 10 OR SOMETHING LARGER THAN 5 -->
+            <template #list="slotProps">
+              <div>
+                <i
+                  class="pi pi-circle-fill dot"
+                  :style="{ color: `${slotProps.data.type}` }"
+                ></i>
+                {{ slotProps.data.label }}
+              </div>
+            </template>
+          </DataView>
+        </div>
       </template>
     </Card>
     <Card class="tableContainer">
@@ -118,9 +117,11 @@ const models = [
   border-radius: var(--card-radius);
   background: white;
   max-height: fit-content;
-  max-width: 400px;
   margin: var(--main-content-gap);
   flex-grow: 1;
+}
+.dataViewContainer {
+  max-width: 400px;
 }
 .dot {
   padding-inline: 4px;
@@ -133,6 +134,7 @@ const models = [
 }
 .column {
   /* this doesn't do anything(?) */
+  /* TODO: Figure out what was supposed to happen here, or just delete this */
 }
 .getMethod {
   background-color: #34a853;
