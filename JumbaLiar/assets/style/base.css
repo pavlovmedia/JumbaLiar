@@ -58,6 +58,13 @@
   
   --card-underline-width: 1px;
   --card-underline-color: #cccccc;
+
+  --get-highlight: #6394f8;
+  --post-highlight: #5dd189;
+  --put-highlight: #ee992e;
+  --patch-highlight: #03c0c1;
+  --options-highlight: #285097;
+  --delete-highlight: #e42d28;
 }
 
 @media (prefers-color-scheme: dark) {

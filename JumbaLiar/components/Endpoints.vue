@@ -188,33 +188,30 @@ function getMethodColor(method: string) {
   width: 40px;
 }
 .edit {
-  background-color: #f37950;
+  background-color: var(--sidebar-highlight);
 }
 .column {
   /* this doesn't do anything(?) */
   /* TODO: Figure out what was supposed to happen here, or just delete this */
   /* Maybe vertical lines between columns? */
 }
-.getMethod {
-  background-color: #34a853;
-}
 .GET {
-  background-color: #6394f8;
+  background-color: var(--get-highlight);
 }
 .POST {
-  background-color: #5dd189;
+  background-color: var(--post-highlight);
 }
 .PUT {
-  background-color: #ee992e;
+  background-color: var(--put-highlight);
 }
 .PATCH {
-  background-color: #03c0c1;
+  background-color: var(--patch-highlight);
 }
 .OPTIONS {
-  background-color: #285097;
+  background-color: var(--options-highlight);
 }
 .DELETE {
-  background-color: #e42d28;
+  background-color: var(--delete-highlight);
 }
 
 :deep(.p-card-title) {

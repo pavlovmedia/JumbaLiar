@@ -1,33 +1,50 @@
 <script setup lang="ts">
-const path = ref();
-const method = ref();
+const path = ref("");
+const method = ref(null);
+const methodOptions = ref(["GET", "POST", "PUT", "PATCH", "OPTIONS", "DELETE"]);
 </script>
 
+<!-- TODO: Clean up styling, it's everywhere right now -->
+
 <template>
-  <div class="horizontalColumns">
-    <Card class="container">
-      <template #title>Configuration</template>
-      <template #content>
-        <div style="padding-bottom: 15px; flex-grow: 1">
-          <InputText
-            :v-model="path"
-            type="text"
-            placeholder="/services/path"
-            style="width: 100%"
-          ></InputText>
-        </div>
-        <div>
-          <InputText
-            :v-model="method"
-            type="text"
-            placeholder="Method"
-            style="width: 100%"
-          ></InputText>
-        </div>
-      </template>
-    </Card>
-    <div style="flex-grow: 1; max-width: 35%">
-      <Card class="container">
+  <div class="upperContainer">
+    <div class="configContainer">
+      <Card class="config card">
+        <template #title>Configuration</template>
+        <template #content>
+          <div style="padding-bottom: 15px; flex-grow: 1">
+            <InputText
+              :v-model="path"
+              type="text"
+              placeholder="/services/path"
+              style="width: 100%"
+            ></InputText>
+          </div>
+          <div style="padding-bottom: 5px">
+            <!-- TODO: See above todo -->
+            <Dropdown
+              v-model="method"
+              :options="methodOptions"
+              placeholder="Select a method"
+              style="width: 100%"
+            />
+            <!-- <SelectButton
+              v-model="method"
+              :options="methodOptions"
+              aria-labelledby="basic"
+            /> -->
+            <!-- <InputText
+              :v-model="method"
+              type="text"
+              placeholder="Method"
+              style="width: 100%"
+            ></InputText> -->
+          </div>
+        </template>
+      </Card>
+    </div>
+    <div class="settingsHelpContainer">
+      <Card class="settings card">
         <template #title>Settings</template>
         <template #content>
           <Button
@@ -37,10 +54,10 @@ const method = ref();
             @click=""
             style="background-color: #f37950; border: 0px"
           ></Button>
-          <!-- MOVE THIS AND THE OTHER BUTTON FORMATTING TO CSS FILE -->
+          <!-- TODO: MOVE THIS AND THE OTHER BUTTON FORMATTING TO CSS FILE -->
         </template>
       </Card>
-      <Card class="container">
+      <Card class="help card">
         <template #title>Help</template>
         <template #content>
           <ul>
@@ -50,14 +67,15 @@ const method = ref();
       </Card>
     </div>
   </div>
-  <Card class="container">
+  <Card class="behaviors card">
     <template #title>Behaviors</template>
     <template #content>
-      <div style="padding-bottom: 15px; flex-grow: 1">
+      <div>
         <Textarea
           v-model="path"
           type="text"
           placeholder="Placeholder"
+          class="behaviorsTextarea"
           style="width: 100%; height: 200px"
         ></Textarea>
       </div>
@@ -88,16 +106,39 @@ const method = ref();
 </template>
 
 <style scoped>
-.container {
+.card {
   border-radius: var(--card-radius);
   background: white;
   max-height: fit-content;
-  margin: var(--main-content-gap);
-  flex-grow: 1;
 }
-.horizontalColumns {
+.upperContainer {
   display: flex;
   grid-template-columns: 1fr 1fr;
+}
+.configContainer {
+  flex-grow: 1;
+  max-width: 60%;
+}
+.settingsHelpContainer {
+  flex-grow: 1;
+  max-width: 40%;
+}
+.config {
+  margin: var(--main-content-gap);
+}
+.settings {
+  margin-block: var(--main-content-gap);
+  margin-right: var(--main-content-gap);
+}
+.help {
+  margin-right: var(--main-content-gap);
+}
+.behaviors {
+  margin: var(--main-content-gap);
+}
+.behaviorsTextarea {
+  width: 100%;
+  height: 200px;
 }
 :deep(.p-card-title) {
   border-bottom-style: solid;
