@@ -1,39 +1,68 @@
 <script setup lang="ts">
-const endpoints = [
-  {
-    method: "get",
-    path: "#298BB5",
-    behaviors: 1,
-    updatedOn: "5/10/2023",
-    updatedBy: "Justin White",
-    actions: [],
-  },
-  {
-    method: "get",
-    path: "#298BB5",
-    behaviors: 1,
-    updatedOn: "5/10/2023",
-    updatedBy: "Justin White",
-    actions: [],
-  },
-  {
-    method: "get",
-    path: "#298BB5",
-    behaviors: 1,
-    updatedOn: "5/10/2023",
-    updatedBy: "Justin White",
-    actions: [],
-  },
-  {
-    method: "get",
-    path: "#298BB5",
-    behaviors: 10,
-    updatedOn: "5/10/2023",
-    updatedBy: "Justin White",
-    actions: [],
-  },
-];
+// const endpoints = [
+//   {
+//     method: "get",
+//     path: "#298BB5",
+//     behaviors: 1,
+//     updatedOn: "5/10/2023",
+//     updatedBy: "Justin White",
+//     actions: [],
+//   },
+//   {
+//     method: "get",
+//     path: "#298BB5",
+//     behaviors: 1,
+//     updatedOn: "5/10/2023",
+//     updatedBy: "Justin White",
+//     actions: [],
+//   },
+//   {
+//     method: "get",
+//     path: "#298BB5",
+//     behaviors: 1,
+//     updatedOn: "5/10/2023",
+//     updatedBy: "Justin White",
+//     actions: [],
+//   },
+//   {
+//     method: "get",
+//     path: "#298BB5",
+//     behaviors: 10,
+//     updatedOn: "5/10/2023",
+//     updatedBy: "Justin White",
+//     actions: [],
+//   },
+// ];
 const models = await $fetch("/api/model");
+const endpoints = await $fetch("/api/endpoint");
+
+function formatDate(date: string) {
+  var day = date.charAt(8) == "0" ? date.charAt(9) : date.substring(8, 10);
+  var month = date.charAt(5) == "0" ? date.charAt(6) : date.substring(5, 7);
+  var year = date.substring(0, 4);
+  return month + "/" + day + "/" + year;
+}
+
+function startCreate() {}
+
+function getMethodColor(method: string) {
+  switch (method) {
+    case "GET": //blue
+      return;
+    case "POST": //green
+      return;
+    case "PUT": //yellow
+      return;
+    case "PATCH": //teal
+      return;
+    case "OPTIONS": //dark blue
+      return;
+    case "DELETE": //red
+      return;
+    default:
+      return "";
+  }
+}
 </script>
 
 <template>
@@ -42,14 +71,13 @@ const models = await $fetch("/api/model");
       <template #title>Models</template>
       <template #content>
         <div class="dataViewContainer">
-          <DataView :value="models" data-key="models" paginator :rows="5">
-            <!-- TODO: CHANGE PAGINATOR ROWS BACK TO 10 OR SOMETHING LARGER THAN 5 -->
+          <DataView :value="models" data-key="models" paginator :rows="8">
             <template #list="slotProps">
               <div>
                 <i
                   class="pi pi-circle-fill dot"
                   :style="{ color: `${slotProps.data.type}` }"
-                ></i>
+                />
                 {{ slotProps.data.label }}
               </div>
             </template>
@@ -58,7 +86,19 @@ const models = await $fetch("/api/model");
       </template>
     </Card>
     <Card class="tableContainer">
-      <template #title>Endpoint Count: 1</template>
+      <template #title>
+        <div class="tableHeader">
+          <p class="titleText">Endpoint Count: {{ endpoints.length }}</p>
+          <div>
+            <Button
+              icon="pi pi-plus"
+              aria-label="Edit"
+              class="button edit"
+              @click="startCreate"
+            />
+          </div>
+        </div>
+      </template>
       <template #content>
         <DataTable
           :value="endpoints"
@@ -68,8 +108,11 @@ const models = await $fetch("/api/model");
           :rows="6"
         >
           <Column field="method" header="Method" sortable class="column">
-            <template #body>
-              <Badge value="GET" class="getMethod" />
+            <template #body="slotProps">
+              <Badge
+                :value="slotProps.data.method"
+                :class="slotProps.data.method"
+              />
             </template>
           </Column>
           <Column field="path" header="Path" sortable class="column"> </Column>
@@ -79,14 +122,13 @@ const models = await $fetch("/api/model");
             sortable
             class="column"
           ></Column>
+          <Column field="updatedOn" header="Updated On" sortable class="column">
+            <template #body="slotProps">
+              {{ formatDate(slotProps.data.updatedOn) }}
+            </template>
+          </Column>
           <Column
-            field="updatedOn"
-            header="Updated On"
-            sortable
-            class="column"
-          ></Column>
-          <Column
-            field="updatedBy"
+            field="endpointUpdatedByProfile"
             header="Updated By"
             sortable
             class="column"
@@ -113,6 +155,10 @@ const models = await $fetch("/api/model");
   margin-right: var(--main-content-gap);
   flex-grow: 1;
 }
+.tableHeader {
+  display: flex;
+  grid-template-rows: 1fr 1fr;
+}
 .listContainer {
   border-radius: var(--card-radius);
   background: white;
@@ -127,16 +173,53 @@ const models = await $fetch("/api/model");
   padding-inline: 4px;
   padding-block: 9px;
 }
-:deep(.p-card-title) {
-  border-bottom-style: solid;
-  border-bottom-width: var(--card-underline-width);
-  border-color: var(--card-underline-color);
+.titleText {
+  font-size: var(--header-font-size);
+  color: black;
+  text-align: left;
+  margin: auto;
+  font-weight: bold;
+  flex-grow: 1;
+}
+.button {
+  border: 0px;
+  margin: 5px;
+  height: 40px;
+  width: 40px;
+}
+.edit {
+  background-color: #f37950;
 }
 .column {
   /* this doesn't do anything(?) */
   /* TODO: Figure out what was supposed to happen here, or just delete this */
+  /* Maybe vertical lines between columns? */
 }
 .getMethod {
   background-color: #34a853;
+}
+.GET {
+  background-color: #6394f8;
+}
+.POST {
+  background-color: #5dd189;
+}
+.PUT {
+  background-color: #ee992e;
+}
+.PATCH {
+  background-color: #03c0c1;
+}
+.OPTIONS {
+  background-color: #285097;
+}
+.DELETE {
+  background-color: #e42d28;
+}
+
+:deep(.p-card-title) {
+  border-bottom-style: solid;
+  border-bottom-width: var(--card-underline-width);
+  border-color: var(--card-underline-color);
 }
 </style>

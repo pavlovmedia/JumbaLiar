@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-import Card from "primevue/card";
-import Button from "primevue/button";
 import { Model } from "@prisma/client";
 
 const models = await $fetch("/api/model");
@@ -122,7 +118,6 @@ function quit() {
       <div class="tableHeader">
         <p class="titleText">Model Count: {{ models.length }}</p>
         <div>
-          <!--class="buttonContainer"-->
           <Button
             icon="pi pi-plus"
             aria-label="Edit"
@@ -257,8 +252,6 @@ function quit() {
   color: black;
   text-align: left;
   margin: auto;
-  /* display: table-cell;
-  vertical-align: middle; */
   font-weight: bold;
   flex-grow: 1;
 }
