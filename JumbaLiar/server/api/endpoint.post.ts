@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
         return 0;
       } catch (error) {
         // Errors are now caught here, nothing descriptive is done though
-        return -2;
+        return -1;
       }
     } else {
       // TODO: add more descriptive behavior?

@@ -24,7 +24,7 @@ prisma.$on("error", (e) => {
 
 export default defineEventHandler(async (event) => {
   try {
-    return await prisma.model.findMany();
+    return await prisma.endpoint.findMany();
   } catch (error) {
     return -1;
   }
