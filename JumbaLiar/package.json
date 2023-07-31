@@ -16,7 +16,7 @@
     "prisma": "^4.16.0"
   },
   "dependencies": {
-    "@prisma/client": "^4.16.1",
+    "@prisma/client": "^5.0.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "chart.js": "^4.3.0",

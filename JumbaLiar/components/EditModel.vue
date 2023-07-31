@@ -133,7 +133,7 @@ export default {
   background-color: var(--sidebar-highlight);
 }
 .grey {
-  background-color: #787878;
+  background-color: var(--sidebar-icon-grey);
 }
 .button {
   border: 0px;

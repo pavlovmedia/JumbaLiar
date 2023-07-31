@@ -1,12 +1,3 @@
-// Audited model that Model and Endpoint "extend"
-// model Audited {
-//   id         String @id @default(uuid()) 
-//   createdBy  Profile // Can't add attribute ID? Changed from Profile.id to type of Profile.id
-//   udpdatedBy Profile // Can't add attribute ID? Changed from Profile.id to type of Profile.id
-//   createdOn  DateTime @default(now()) // Changed from Number
-//   updatedOn  DateTime // Changed from Number
-// }
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,6 +5,114 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Profile {
+  email                    String
+  password                 String
+  username                 String     @id
+  endpointCreatedByProfile Endpoint[] @relation("endpointCreatedBy")
+  endpointUpdatedByProfile Endpoint[] @relation("endpointUpdatedBy")
+  ModelCreatedByProfile    Model[]    @relation("modelCreatedBy")
+  ModelUpdatedByProfile    Model[]    @relation("modelUpdatedBy")
+}
+
+model Proxy {
+  baseURL     String       @id
+  color       String
+  label       String
+  ProxyConfig ProxyConfig?
+}
+
+model Model {
+  label                    String
+  type                     String
+  data                     String
+  id                       String           @id @default(uuid())
+  createdOn                DateTime         @default(now())
+  updatedOn                DateTime         @updatedAt
+  profileCreatedByUsername String
+  profileUpdatedByUsername String
+  createdBy                Profile          @relation("modelCreatedBy", fields: [profileCreatedByUsername], references: [username])
+  udpdatedBy               Profile          @relation("modelUpdatedBy", fields: [profileUpdatedByUsername], references: [username])
+  ModelDataConfig          ModelDataConfig?
+
+  @@index([profileCreatedByUsername], map: "Model_profileCreatedByUsername_fkey")
+  @@index([profileUpdatedByUsername], map: "Model_profileUpdatedByUsername_fkey")
+}
+
+model Endpoint {
+  path                     String
+  method                   Method
+  hidden                   Boolean
+  locked                   Boolean
+  id                       String     @id @default(uuid())
+  createdOn                DateTime   @default(now())
+  updatedOn                DateTime   @updatedAt
+  endpointUpdatedByProfile String
+  endpointCreatedByProfile String
+  behaviors                Behavior[]
+  createdBy                Profile    @relation("endpointCreatedBy", fields: [endpointCreatedByProfile], references: [username])
+  udpdatedBy               Profile    @relation("endpointUpdatedBy", fields: [endpointUpdatedByProfile], references: [username])
+
+  @@index([endpointCreatedByProfile], map: "Endpoint_endpointCreatedByProfile_fkey")
+  @@index([endpointUpdatedByProfile], map: "Endpoint_endpointUpdatedByProfile_fkey")
+}
+
+model Behavior {
+  action     Action    @id
+  endpointId String?
+  endpoint   Endpoint? @relation(fields: [endpointId], references: [id])
+  content    Content[]
+  selector   Filter[]  @relation("behaviorSelector")
+  trigger    Filter[]  @relation("behaviorTrigger")
+
+  @@index([endpointId], map: "Behavior_endpointId_fkey")
+}
+
+model Content {
+  source                  Source       @unique
+  proxyConfigProxyBaseURL String?
+  behaviorAction          Action
+  behavior                Behavior     @relation(fields: [behaviorAction], references: [action])
+  config                  ProxyConfig? @relation(fields: [proxyConfigProxyBaseURL], references: [proxyBaseURL])
+  filter                  Filter[]
+
+  @@index([behaviorAction], map: "Content_behaviorAction_fkey")
+  @@index([proxyConfigProxyBaseURL], map: "Content_proxyConfigProxyBaseURL_fkey")
+}
+
+model Filter {
+  type                   DataLookupType
+  field                  String?
+  value                  String
+  contentSource          Source
+  behaviorTriggerAction  Action
+  behaviorSelectorAction Action
+  behaviorSelector       Behavior       @relation("behaviorSelector", fields: [behaviorSelectorAction], references: [action])
+  behaviorTrigger        Behavior       @relation("behaviorTrigger", fields: [behaviorTriggerAction], references: [action])
+  content                Content        @relation(fields: [contentSource], references: [source])
+
+  @@unique([type, value])
+  @@index([behaviorSelectorAction], map: "Filter_behaviorSelectorAction_fkey")
+  @@index([behaviorTriggerAction], map: "Filter_behaviorTriggerAction_fkey")
+  @@index([contentSource], map: "Filter_contentSource_fkey")
+}
+
+model ProxyConfig {
+  path         String
+  proxyBaseURL String    @id
+  content      Content[]
+  proxyID      Proxy     @relation(fields: [proxyBaseURL], references: [baseURL])
+}
+
+model ModelDataConfig {
+  modelLabel String @id
+  modelId    Model  @relation(fields: [modelLabel], references: [id])
+}
+
+model StatusConfig {
+  status Int @id
 }
 
 enum Method {
@@ -42,131 +141,4 @@ enum Source {
 enum DataLookupType {
   INDEX
   FIELD
-}
-
-enum RequestLookupType {
-  HEADER
-  BODY
-  PATH
-  USER
-  DATE
-  STRING
-  QUERY
-  USAGE
-}
-
-model Profile {
-  username String @id
-  password String
-  email    String
-
-  // Added attributes
-  endpointCreatedByProfile Endpoint[] @relation("endpointCreatedBy")
-  endpointUpdatedByProfile Endpoint[] @relation("endpointUpdatedBy")
-  ModelCreatedByProfile    Model[]    @relation("modelCreatedBy")
-  ModelUpdatedByProfile    Model[]    @relation("modelUpdatedBy")
-}
-
-model Proxy {
-  baseURL String @id
-  color   String
-  label   String
-
-  // Added attributes
-  ProxyConfig ProxyConfig[]
-}
-
-model Model {
-  label String
-  type  String
-  data  String
-
-  // Audited attributes
-  id         String   @id @default(uuid())
-  createdBy  Profile  @relation("modelCreatedBy", fields: [profileCreatedByUsername], references: [username])
-  udpdatedBy Profile  @relation("modelUpdatedBy", fields: [profileUpdatedByUsername], references: [username])
-  createdOn  DateTime @default(now())
-  updatedOn  DateTime @updatedAt
-
-  // Added attributes
-  ModelDataConfig          ModelDataConfig[]
-  profileCreatedByUsername String
-  profileUpdatedByUsername String
-}
-
-model Endpoint {
-  path      String
-  method    Method
-  behaviors Behavior[]
-  hidden    Boolean
-  locked    Boolean
-
-  // Audited attributes
-  id         String   @id @default(uuid())
-  createdBy  Profile  @relation("endpointCreatedBy", fields: [endpointCreatedByProfile], references: [username])
-  udpdatedBy Profile  @relation("endpointUpdatedBy", fields: [endpointUpdatedByProfile], references: [username])
-  createdOn  DateTime @default(now())
-  updatedOn  DateTime @updatedAt
-
-  // Added attributes
-  endpointUpdatedByProfile String
-  endpointCreatedByProfile String
-}
-
-model Behavior {
-  trigger  Filter[]  @relation("behaviorTrigger")
-  action   Action    @id
-  content  Content[]
-  selector Filter[]  @relation("behaviorSelector")
-
-  // Added attributes
-  endpoint   Endpoint? @relation(fields: [endpointId], references: [id])
-  endpointId String?
-}
-
-model Content {
-  source Source       @unique // Added tag
-  filter Filter[]
-  config ProxyConfig? @relation(fields: [proxyConfigProxyBaseURL], references: [proxyBaseURL]) //@relation(fields: [], references: []) // Not quite sure how to make this take on multiple types
-
-  // Added attributes
-  proxyConfigProxyBaseURL String?
-  behavior                Behavior? @relation(fields: [behaviorAction], references: [action])
-  behaviorAction          Action
-}
-
-model Filter {
-  type  DataLookupType // TODO: Not sure how to make this take on multiple types
-  field String?
-  value String // TODO: Not sure how to make this take on multiple types
-
-  // Added attributes
-  content                Content?  @relation(fields: [contentSource], references: [source])
-  contentSource          Source
-  behaviorTrigger        Behavior? @relation("behaviorTrigger", fields: [behaviorTriggerAction], references: [action])
-  behaviorTriggerAction  Action
-  behaviorSelector       Behavior? @relation("behaviorSelector", fields: [behaviorSelectorAction], references: [action])
-  behaviorSelectorAction Action
-
-  @@unique([type, value])
-}
-
-model ProxyConfig {
-  proxyID Proxy  @relation(fields: [proxyBaseURL], references: [baseURL])
-  path    String
-
-  // Added attributes 
-  proxyBaseURL String    @id
-  content      Content[]
-}
-
-model ModelDataConfig {
-  modelId Model @relation(fields: [modelLabel], references: [id])
-
-  // Added attributes
-  modelLabel String @id
-}
-
-model StatusConfig {
-  status Int @id
 }

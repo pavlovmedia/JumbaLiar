@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
         rq = {
           path: data.path,
           method: data.method == undefined ? "GET" : data.method,
-          behaviors: data.behaviors == undefined ? null : data.behaviors, // TODO: figure out what needs to happen here because I don't know
+          // behaviors: data.behaviors == undefined ? null : data.behaviors, // TODO: figure out what needs to happen here because I don't know
           hidden: data.hidden == undefined ? false : true,
           locked: data.locked == undefined ? false : true,
           createdBy: user,
@@ -49,9 +49,9 @@ export default defineEventHandler(async (event) => {
       }
     } else {
       // TODO: add more descriptive behavior?
-      return -1;
+      return -2;
     }
   }
   // TODO: add more descriptive behavior?
-  return -1;
+  return -3;
 });

@@ -1,12 +1,33 @@
 <script setup lang="ts">
+import { activeTab } from "~/app.vue";
 const path = ref("");
 const method = ref(null);
 const visibility = ref(true);
-const methodOptions = ref(["GET", "POST", "PUT", "PATCH", "OPTIONS", "DELETE"]);
+const behaviors = ref("");
+const methodOptions = ref(["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]);
+
+async function create() {
+  console.log(
+    await $fetch("/api/endpoint", {
+      method: "POST",
+      body: {
+        path: path.value,
+        method: method.value,
+        visibility: visibility.value,
+        // behaviors: behaviors.value,
+        profile: "BobbyTables", // TODO: Un-hardcode this
+      },
+    })
+  );
+  quit();
+}
+
+function quit() {
+  activeTab.setActiveTab("Endpoints");
+}
 </script>
 
 <!-- TODO: Clean up styling, it's everywhere right now -->
-
 <template>
   <div class="upperContainer">
     <div class="configContainer">
@@ -48,16 +69,19 @@ const methodOptions = ref(["GET", "POST", "PUT", "PATCH", "OPTIONS", "DELETE"]);
       <Card class="settings card">
         <template #title>Settings</template>
         <template #content>
-          <ToggleButton
-            class="toggleButton"
-            type="button"
-            v-model="visibility"
-            on-label="Visibility: Visible"
-            off-label="Visibility: Invisible"
-            on-icon="pi pi-pencil"
-            off-icon="pi pi-eye-slash"
-            style="background-color: var(--sidebar-highlight); border: 0px"
-          />
+          <div style="padding-bottom: 5px">
+            <!-- TODO: See above todo -->
+            <ToggleButton
+              class="toggleButton"
+              type="button"
+              v-model="visibility"
+              on-label="Visibility: Visible"
+              off-label="Visibility: Invisible"
+              on-icon="pi pi-pencil"
+              off-icon="pi pi-eye-slash"
+              style="background-color: var(--sidebar-highlight); border: 0px"
+            />
+          </div>
           <!-- TODO: MOVE THIS AND THE OTHER BUTTON FORMATTING TO CSS FILE -->
         </template>
       </Card>
@@ -74,39 +98,36 @@ const methodOptions = ref(["GET", "POST", "PUT", "PATCH", "OPTIONS", "DELETE"]);
   <Card class="behaviors card">
     <template #title>Behaviors</template>
     <template #content>
-      <div>
+      <div style="max-width: ">
         <Textarea
-          v-model="path"
+          v-model="behaviors"
           type="text"
           placeholder="Placeholder"
           class="behaviorsTextarea"
           style="width: 100%; height: 200px"
-        ></Textarea>
+        />
       </div>
-      <!-- The missile knows where it is at all times. It knows this because it
-      knows where it isn't. By subtracting where it is from where it isn't, or
-      where it isn't from where it is (whichever is greater), it obtains a
-      difference, or deviation. The guidance subsystem uses deviations to
-      generate corrective commands to drive the missile from a position where it
-      is to a position where it isn't, and arriving at a position where it
-      wasn't, it now is. Consequently, the position where it is, is now the
-      position that it wasn't, and it follows that the position that it was, is
-      now the position that it isn't. In the event that the position that it is
-      in is not the position that it wasn't, the system has acquired a
-      variation, the variation being the difference between where the missile
-      is, and where it wasn't. If variation is considered to be a significant
-      factor, it too may be corrected by the GEA. However, the missile must also
-      know where it was. The missile guidance computer scenario works as
-      follows. Because a variation has modified some of the information the
-      missile has obtained, it is not sure just where it is. However, it is sure
-      where it isn't, within reason, and it knows where it was. It now subtracts
-      where it should be from where it wasn't, or vice-versa, and by
-      differentiating this from the algebraic sum of where it shouldn't be, and
-      where it was, it is able to obtain the deviation and its variation, which
-      is called error. <br /><br />
-      Not sure what is supposed to go here so this copypasta will do. -->
     </template>
   </Card>
+  <div class="buttonContainer">
+    <Card class="buttons card">
+      <template #content>
+        <Button
+          class="grey button"
+          label="Cancel"
+          icon="pi pi-times"
+          @click="quit"
+        />
+        <Button
+          class="orange button"
+          label="Create"
+          icon="pi pi-check"
+          style="margin-left: var(--main-content-gap)"
+          @click="create()"
+        />
+      </template>
+    </Card>
+  </div>
 </template>
 
 <style scoped>
@@ -147,6 +168,25 @@ const methodOptions = ref(["GET", "POST", "PUT", "PATCH", "OPTIONS", "DELETE"]);
 .behaviorsTextarea {
   width: 100%;
   height: 200px;
+}
+.buttonContainer {
+  display: flex;
+  flex-direction: row-reverse;
+  /* background-color: red; */
+}
+.buttons {
+  margin-inline: var(--main-content-gap);
+  padding-top: var(--main-content-gap);
+  padding-bottom: 5px;
+}
+.button {
+  border: 0px;
+}
+.orange {
+  background-color: var(--sidebar-highlight);
+}
+.grey {
+  background-color: var(--sidebar-icon-grey);
 }
 :deep(.p-card-title) {
   border-bottom-style: solid;

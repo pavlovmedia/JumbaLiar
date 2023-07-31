@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { Model } from "@prisma/client";
 
-const models = await $fetch("/api/model");
-
+const models = ref([]);
 const edit = ref(false);
 const create = ref(false);
 const dataView = ref(false);
@@ -12,13 +11,17 @@ const label = ref("");
 const type = ref("");
 const data = ref("");
 const id = ref("");
-const deleteDisable = ref(!(deleteText == label));
+update();
 
 function formatDate(date: string) {
   var day = date.charAt(8) == "0" ? date.charAt(9) : date.substring(8, 10);
   var month = date.charAt(5) == "0" ? date.charAt(6) : date.substring(5, 7);
   var year = date.substring(0, 4);
   return month + "/" + day + "/" + year;
+}
+
+async function update() {
+  models.value = await $fetch("/api/model");
 }
 
 function startEdit(model: Model) {
@@ -89,6 +92,7 @@ async function save(
   }
   edit.value = false;
   create.value = false;
+  update();
 }
 
 function quit() {
@@ -118,6 +122,7 @@ async function deleteModel() {
       },
     })
   );
+  update();
   quit();
 }
 
@@ -329,7 +334,7 @@ function deleteString() {
   background-color: #f37950;
 }
 .grey {
-  background-color: #787878;
+  background-color: var(--sidebar-icon-grey);
 }
 .titleText {
   font-size: var(--header-font-size);
