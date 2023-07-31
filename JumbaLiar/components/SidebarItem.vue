@@ -17,12 +17,18 @@ export default {
   computed: {
     divClass() {
       return {
-        unselected: activeTab.tab != this.title,
-        selected: activeTab.tab == this.title,
+        unselected: !activeTab.tab.includes(
+          this.title.substring(0, this.title.length - 1)
+        ),
+        selected: activeTab.tab.includes(
+          this.title.substring(0, this.title.length - 1)
+        ),
       };
     },
     iconHighlighted() {
-      return activeTab.tab == this.title
+      return activeTab.tab.includes(
+        this.title.substring(0, this.title.length - 1)
+      )
         ? "--sidebar-highlight"
         : "--sidebar-icon-grey";
     },
