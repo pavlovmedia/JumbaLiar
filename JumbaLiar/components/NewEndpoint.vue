@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const path = ref("");
 const method = ref(null);
+const visibility = ref(true);
 const methodOptions = ref(["GET", "POST", "PUT", "PATCH", "OPTIONS", "DELETE"]);
 </script>
 
@@ -47,13 +48,16 @@ const methodOptions = ref(["GET", "POST", "PUT", "PATCH", "OPTIONS", "DELETE"]);
       <Card class="settings card">
         <template #title>Settings</template>
         <template #content>
-          <Button
+          <ToggleButton
+            class="toggleButton"
             type="button"
-            label="Visibility: Visible"
-            icon="pi pi-pencil"
-            @click=""
-            style="background-color: #f37950; border: 0px"
-          ></Button>
+            v-model="visibility"
+            on-label="Visibility: Visible"
+            off-label="Visibility: Invisible"
+            on-icon="pi pi-pencil"
+            off-icon="pi pi-eye-slash"
+            style="background-color: var(--sidebar-highlight); border: 0px"
+          />
           <!-- TODO: MOVE THIS AND THE OTHER BUTTON FORMATTING TO CSS FILE -->
         </template>
       </Card>
@@ -123,8 +127,11 @@ const methodOptions = ref(["GET", "POST", "PUT", "PATCH", "OPTIONS", "DELETE"]);
   flex-grow: 1;
   max-width: 40%;
 }
+/* .config should become `margin: var(...` instead of margin-right/bottom when not in dialog */
 .config {
   margin: var(--main-content-gap);
+  /* margin-right: var(--main-content-gap);
+  margin-bottom: var(--main-content-gap); */
 }
 .settings {
   margin-block: var(--main-content-gap);
@@ -133,6 +140,7 @@ const methodOptions = ref(["GET", "POST", "PUT", "PATCH", "OPTIONS", "DELETE"]);
 .help {
   margin-right: var(--main-content-gap);
 }
+/* .behaviors should become `margin: var(...` instead of margin-top when not in dialog */
 .behaviors {
   margin: var(--main-content-gap);
 }

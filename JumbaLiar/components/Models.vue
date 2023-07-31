@@ -6,10 +6,13 @@ const models = await $fetch("/api/model");
 const edit = ref(false);
 const create = ref(false);
 const dataView = ref(false);
+const deleteWarn = ref(false);
+const deleteText = ref("");
 const label = ref("");
 const type = ref("");
 const data = ref("");
 const id = ref("");
+const deleteDisable = ref(!(deleteText == label));
 
 function formatDate(date: string) {
   var day = date.charAt(8) == "0" ? date.charAt(9) : date.substring(8, 10);
@@ -19,7 +22,6 @@ function formatDate(date: string) {
 }
 
 function startEdit(model: Model) {
-  console.log("click");
   if (edit.value == true) {
     return;
   } else {
@@ -32,7 +34,6 @@ function startEdit(model: Model) {
 }
 
 function startCreate() {
-  console.log("click");
   if (create.value == true) {
     return;
   } else {
@@ -45,7 +46,6 @@ function startCreate() {
 }
 
 function viewData(model: Model) {
-  console.log("Data click");
   if (dataView.value == true) {
     return;
   } else {
@@ -83,6 +83,7 @@ async function save(
         label: newLabel,
         type: newType,
         data: newData,
+        profile: "BobbyTables", // TODO: Un-hardcode this
       },
     });
   }
@@ -93,6 +94,35 @@ async function save(
 function quit() {
   edit.value = false;
   create.value = false;
+  deleteWarn.value = false;
+}
+
+function viewDelete(model: Model) {
+  if (deleteWarn.value == true) {
+    return;
+  } else {
+    label.value = model.label;
+    type.value = model.type;
+    data.value = model.data;
+    id.value = model.id;
+    deleteWarn.value = true;
+  }
+}
+
+async function deleteModel() {
+  console.log(
+    await $fetch("/api/model", {
+      method: "DELETE",
+      body: {
+        id: id.value,
+      },
+    })
+  );
+  quit();
+}
+
+function deleteString() {
+  return "Yes, delete the model " + label.value;
 }
 
 // Demo function
@@ -120,8 +150,8 @@ function quit() {
         <div>
           <Button
             icon="pi pi-plus"
-            aria-label="Edit"
-            class="button edit"
+            aria-label="newModel"
+            class="button orange"
             @click="startCreate"
           />
         </div>
@@ -169,6 +199,43 @@ function quit() {
         </template>
         <!-- <DataView :name="label.valueOf()" :data="data.valueOf()"> </DataView> -->
       </Dialog>
+      <Dialog
+        v-model:visible="deleteWarn"
+        modal
+        :show-header="false"
+        content-style="padding: 0"
+      >
+        <Card class="deleteContainer">
+          <template #header>
+            <div class="tableHeader">
+              <p class="titleText">Delete {{ label.valueOf() }}</p>
+              <div>
+                <Button
+                  icon="pi pi-times"
+                  aria-label="Quit"
+                  class="button grey"
+                  @click="quit()"
+                />
+              </div>
+            </div>
+          </template>
+          <template #content>
+            <p>
+              Are you sure you want to delete the Model {{ label.valueOf() }}?
+            </p>
+            <b> This action can not be undone<br /> </b>
+            <div>
+              <Button
+                icon="pi pi-trash"
+                :label="deleteString()"
+                class="deleteButton orange"
+                @click="deleteModel()"
+              />
+              <!-- aria-label="delete" -->
+            </div>
+          </template>
+        </Card>
+      </Dialog>
       <DataTable
         :value="models"
         paginator
@@ -199,14 +266,20 @@ function quit() {
             <Button
               icon="pi pi-pencil"
               aria-label="Edit"
-              class="button edit"
+              class="button orange"
               @click="startEdit(slotProps.data)"
             />
             <Button
               icon="pi pi-database"
-              aria-label="Edit"
-              class="button database"
+              aria-label="ViewDB"
+              class="button grey"
               @click="viewData(slotProps.data)"
+            />
+            <Button
+              icon="pi pi-trash"
+              aria-label="Delete"
+              class="button grey"
+              @click="viewDelete(slotProps.data)"
             />
           </template>
         </Column>
@@ -223,6 +296,14 @@ function quit() {
   background: white;
   max-height: fit-content;
 }
+.deleteContainer {
+  border-radius: var(--card-radius);
+  background: white;
+  max-height: fit-content;
+  padding-inline: var(--main-content-gap);
+  padding-top: var(--main-content-gap);
+  flex-grow: 1;
+}
 .tableContainer {
   border-radius: var(--card-radius);
   background: white;
@@ -234,17 +315,20 @@ function quit() {
   display: flex;
   grid-template-rows: 1fr 1fr;
 }
-
 .button {
   border: 0px;
   margin: 5px;
   height: 40px;
   width: 40px;
 }
-.edit {
+.deleteButton {
+  margin-top: 10px;
+  border: 0px;
+}
+.orange {
   background-color: #f37950;
 }
-.database {
+.grey {
   background-color: #787878;
 }
 .titleText {

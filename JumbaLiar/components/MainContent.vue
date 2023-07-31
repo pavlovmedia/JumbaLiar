@@ -6,5 +6,5 @@ import { activeTab } from "~/app.vue";
   <Dashboard v-if="activeTab.tab === 'Dashboard'" />
   <Models v-if="activeTab.tab === 'Models'" />
   <Endpoints v-if="activeTab.tab === 'Endpoints'" />
-  <NewEndpoint v-if="activeTab.tab === 'Settings'" />
+  <NewEndpoint v-if="activeTab.tab === 'New Endpoint'" />
 </template>

@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient({
   log: [
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
   if (data != null) {
     if ("id" in data) {
       try {
-        prisma.model.delete({
+        await prisma.model.delete({
           where: {
             id: data.id,
           },

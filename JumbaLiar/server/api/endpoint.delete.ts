@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
   if (data != null) {
     if ("id" in data) {
       try {
-        prisma.endpoint.delete({
+        await prisma.endpoint.delete({
           where: {
             id: data.id,
           },

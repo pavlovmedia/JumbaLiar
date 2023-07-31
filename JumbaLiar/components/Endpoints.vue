@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { activeTab } from "~/app.vue";
 // const endpoints = [
 //   {
 //     method: "get",
@@ -42,27 +43,6 @@ function formatDate(date: string) {
   var year = date.substring(0, 4);
   return month + "/" + day + "/" + year;
 }
-
-function startCreate() {}
-
-function getMethodColor(method: string) {
-  switch (method) {
-    case "GET": //blue
-      return;
-    case "POST": //green
-      return;
-    case "PUT": //yellow
-      return;
-    case "PATCH": //teal
-      return;
-    case "OPTIONS": //dark blue
-      return;
-    case "DELETE": //red
-      return;
-    default:
-      return "";
-  }
-}
 </script>
 
 <template>
@@ -94,7 +74,7 @@ function getMethodColor(method: string) {
               icon="pi pi-plus"
               aria-label="Edit"
               class="button edit"
-              @click="startCreate"
+              @click="activeTab.setActiveTab('New Endpoint')"
             />
           </div>
         </div>
