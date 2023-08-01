@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
       "id" in data &&
       "method" in data &&
       "path" in data &&
-      "behaviors" in data &&
+      // "behaviors" in data &&
       "hidden" in data &&
       "locked" in data
     ) {
@@ -40,7 +40,7 @@ export default defineEventHandler(async (event) => {
           data: {
             method: data.method,
             path: data.path,
-            behaviors: data.behaviors,
+            // behaviors: data.behaviors,
             hidden: data.hidden,
             locked: data.locked,
           },

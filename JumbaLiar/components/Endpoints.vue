@@ -4,7 +4,6 @@ import { activeTab, editEndpoint } from "~/app.vue";
 const models = await $fetch("/api/model");
 const endpoints = ref([]);
 const activeEndpoint = ref("");
-const activeEndpointID = ref("");
 update();
 
 const deleteWarn = ref(false);
@@ -22,23 +21,24 @@ async function update() {
 
 function startEdit(endpoint: Endpoint) {
   editEndpoint.setData(
+    endpoint.id,
     endpoint.path,
     endpoint.method,
     undefined,
     !endpoint.hidden
   );
-  activeTab.setActiveTab("New Endpoint");
+  activeTab.setActiveTab("Edit Endpoint");
 }
 
 async function viewDelete(endpoint: Endpoint) {
   await editEndpoint.setData(
+    endpoint.id,
     endpoint.path,
     endpoint.method,
     undefined,
     !endpoint.hidden
   );
   activeEndpoint.value = endpoint.path;
-  activeEndpointID.value = endpoint.id;
   deleteWarn.value = true;
 }
 
@@ -46,7 +46,7 @@ async function deleteEndpoint() {
   await $fetch("/api/endpoint", {
     method: "DELETE",
     body: {
-      id: activeEndpointID.value,
+      id: editEndpoint.id,
     },
   });
   update();
@@ -102,91 +102,106 @@ function quit() {
         </template>
       </Card>
     </Dialog>
-    <Card class="listContainer">
-      <template #title>Models</template>
-      <template #content>
-        <div class="dataViewContainer">
-          <DataView :value="models" data-key="models" paginator :rows="8">
-            <template #list="slotProps">
-              <div>
-                <i
-                  class="pi pi-circle-fill dot"
-                  :style="{ color: `${slotProps.data.type}` }"
-                />
-                {{ slotProps.data.label }}
-              </div>
-            </template>
-          </DataView>
-        </div>
-      </template>
-    </Card>
-    <Card class="tableContainer">
-      <template #title>
-        <div class="tableHeader">
-          <p class="titleText">Endpoint Count: {{ endpoints.length }}</p>
-          <div>
-            <Button
-              icon="pi pi-plus"
-              aria-label="Edit"
-              class="button edit"
-              @click="editEndpoint.startCreate()"
-            />
+    <div class="listDiv">
+      <Card class="listContainer">
+        <template #title>Models</template>
+        <template #content>
+          <div class="dataViewContainer">
+            <DataView :value="models" data-key="models" paginator :rows="8">
+              <template #list="slotProps">
+                <div>
+                  <i
+                    class="pi pi-circle-fill dot"
+                    :style="{ color: `${slotProps.data.type}` }"
+                  />
+                  {{ slotProps.data.label }}
+                </div>
+              </template>
+            </DataView>
           </div>
-        </div>
-      </template>
-      <template #content>
-        <DataTable
-          :value="endpoints"
-          sortMode="multiple"
-          removableSort
-          paginator
-          :rows="6"
-        >
-          <Column field="method" header="Method" sortable class="column">
-            <template #body="slotProps">
-              <Badge
-                :value="slotProps.data.method"
-                :class="slotProps.data.method"
-              />
-            </template>
-          </Column>
-          <Column field="path" header="Path" sortable class="column"> </Column>
-          <Column
-            field="behaviors"
-            header="Behaviors"
-            sortable
-            class="column"
-          ></Column>
-          <Column field="updatedOn" header="Updated On" sortable class="column">
-            <template #body="slotProps">
-              {{ formatDate(slotProps.data.updatedOn) }}
-            </template>
-          </Column>
-          <Column
-            field="endpointUpdatedByProfile"
-            header="Updated By"
-            sortable
-            class="column"
-          ></Column>
-          <Column field="actions" header="Actions" class="column">
-            <template #body="slotProps">
+        </template>
+      </Card>
+    </div>
+    <div class="tableDiv">
+      <Card class="tableContainer">
+        <template #title>
+          <div class="tableHeader">
+            <p class="titleText">Endpoint Count: {{ endpoints.length }}</p>
+            <div>
               <Button
-                icon="pi pi-pencil"
+                icon="pi pi-plus"
                 aria-label="Edit"
                 class="button orange"
-                @click="startEdit(slotProps.data)"
+                @click="editEndpoint.startCreate()"
               />
-              <Button
-                icon="pi pi-trash"
-                aria-label="Delete"
-                class="button grey"
-                @click="viewDelete(slotProps.data)"
-              />
-            </template>
-          </Column>
-        </DataTable>
-      </template>
-    </Card>
+            </div>
+          </div>
+        </template>
+        <template #content>
+          <DataTable
+            :value="endpoints"
+            sortMode="multiple"
+            removableSort
+            paginator
+            :rows="6"
+          >
+            <Column field="method" header="Method" sortable class="column">
+              <template #body="slotProps">
+                <Badge
+                  :value="slotProps.data.method"
+                  :class="slotProps.data.method"
+                />
+              </template>
+            </Column>
+            <Column field="path" header="Path" sortable class="column">
+            </Column>
+            <Column
+              field="behaviors"
+              header="Behaviors"
+              sortable
+              class="column"
+            ></Column>
+            <Column
+              field="updatedOn"
+              header="Updated On"
+              sortable
+              class="column"
+            >
+              <template #body="slotProps">
+                {{ formatDate(slotProps.data.updatedOn) }}
+              </template>
+            </Column>
+            <Column
+              field="endpointUpdatedByProfile"
+              header="Updated By"
+              sortable
+              class="column"
+            ></Column>
+            <Column
+              field="actions"
+              header="Actions"
+              class="column"
+              style="min-width: 135px"
+            >
+              <template #body="slotProps">
+                <Button
+                  icon="pi pi-pencil"
+                  aria-label="Edit"
+                  class="button orange"
+                  @click="startEdit(slotProps.data)"
+                />
+                <Button
+                  icon="pi pi-trash"
+                  aria-label="Delete"
+                  class="button grey"
+                  @click="viewDelete(slotProps.data)"
+                />
+              </template>
+            </Column>
+          </DataTable>
+        </template>
+      </Card>
+    </div>
   </div>
 </template>
 
@@ -195,24 +210,37 @@ function quit() {
   display: flex;
   grid-template-columns: 1fr 1fr;
 }
+.tableDiv {
+  flex-grow: 1;
+}
 .tableContainer {
   border-radius: var(--card-radius);
   background: white;
   max-height: fit-content;
   margin-top: var(--main-content-gap);
   margin-right: var(--main-content-gap);
-  flex-grow: 1;
 }
-.tableHeader {
-  display: flex;
-  grid-template-rows: 1fr 1fr;
+.listDiv {
+  flex-grow: 1;
+  max-width: fit-content;
 }
 .listContainer {
   border-radius: var(--card-radius);
   background: white;
   max-height: fit-content;
   margin: var(--main-content-gap);
+}
+.deleteContainer {
+  border-radius: var(--card-radius);
+  background: white;
+  max-height: fit-content;
+  padding-inline: var(--main-content-gap);
+  padding-top: var(--main-content-gap);
   flex-grow: 1;
+}
+.tableHeader {
+  display: flex;
+  grid-template-rows: 1fr 1fr;
 }
 .dataViewContainer {
   max-width: 400px;
@@ -235,13 +263,14 @@ function quit() {
   height: 40px;
   width: 40px;
 }
-.orange {
-  background-color: #f37950;
+.deleteButton {
+  margin-top: 10px;
+  border: 0px;
 }
 .grey {
   background-color: var(--sidebar-icon-grey);
 }
-.edit {
+.orange {
   background-color: var(--sidebar-highlight);
 }
 .column {
