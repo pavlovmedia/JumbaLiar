@@ -1,41 +1,13 @@
 <script setup lang="ts">
-import { activeTab } from "~/app.vue";
-// const endpoints = [
-//   {
-//     method: "get",
-//     path: "#298BB5",
-//     behaviors: 1,
-//     updatedOn: "5/10/2023",
-//     updatedBy: "Justin White",
-//     actions: [],
-//   },
-//   {
-//     method: "get",
-//     path: "#298BB5",
-//     behaviors: 1,
-//     updatedOn: "5/10/2023",
-//     updatedBy: "Justin White",
-//     actions: [],
-//   },
-//   {
-//     method: "get",
-//     path: "#298BB5",
-//     behaviors: 1,
-//     updatedOn: "5/10/2023",
-//     updatedBy: "Justin White",
-//     actions: [],
-//   },
-//   {
-//     method: "get",
-//     path: "#298BB5",
-//     behaviors: 10,
-//     updatedOn: "5/10/2023",
-//     updatedBy: "Justin White",
-//     actions: [],
-//   },
-// ];
+import { Endpoint } from "@prisma/client";
+import { activeTab, editEndpoint } from "~/app.vue";
 const models = await $fetch("/api/model");
-const endpoints = await $fetch("/api/endpoint");
+const endpoints = ref([]);
+const activeEndpoint = ref("");
+const activeEndpointID = ref("");
+update();
+
+const deleteWarn = ref(false);
 
 function formatDate(date: string) {
   var day = date.charAt(8) == "0" ? date.charAt(9) : date.substring(8, 10);
@@ -43,10 +15,93 @@ function formatDate(date: string) {
   var year = date.substring(0, 4);
   return month + "/" + day + "/" + year;
 }
+
+async function update() {
+  endpoints.value = await $fetch("/api/endpoint");
+}
+
+function startEdit(endpoint: Endpoint) {
+  editEndpoint.setData(
+    endpoint.path,
+    endpoint.method,
+    undefined,
+    !endpoint.hidden
+  );
+  activeTab.setActiveTab("New Endpoint");
+}
+
+async function viewDelete(endpoint: Endpoint) {
+  await editEndpoint.setData(
+    endpoint.path,
+    endpoint.method,
+    undefined,
+    !endpoint.hidden
+  );
+  activeEndpoint.value = endpoint.path;
+  activeEndpointID.value = endpoint.id;
+  deleteWarn.value = true;
+}
+
+async function deleteEndpoint() {
+  await $fetch("/api/endpoint", {
+    method: "DELETE",
+    body: {
+      id: activeEndpointID.value,
+    },
+  });
+  update();
+  quit();
+}
+
+function deleteString() {
+  return "Yes, delete the endpoint " + activeEndpoint.value;
+}
+
+function quit() {
+  deleteWarn.value = false;
+}
 </script>
 
 <template>
   <div class="mainContainer">
+    <Dialog
+      v-model:visible="deleteWarn"
+      modal
+      :show-header="false"
+      content-style="padding: 0"
+    >
+      <Card class="deleteContainer">
+        <template #header>
+          <div class="tableHeader">
+            <p class="titleText">Delete {{ activeEndpoint }}</p>
+            <div>
+              <Button
+                icon="pi pi-times"
+                aria-label="Quit"
+                class="button grey"
+                @click="quit()"
+              />
+            </div>
+          </div>
+        </template>
+        <template #content>
+          <p>
+            Are you sure you want to delete the endpoint
+            {{ editEndpoint.path }}?
+          </p>
+          <b> This action can not be undone<br /> </b>
+          <div>
+            <Button
+              icon="pi pi-trash"
+              :label="deleteString()"
+              class="deleteButton orange"
+              @click="deleteEndpoint()"
+            />
+            <!-- aria-label="delete" -->
+          </div>
+        </template>
+      </Card>
+    </Dialog>
     <Card class="listContainer">
       <template #title>Models</template>
       <template #content>
@@ -74,7 +129,7 @@ function formatDate(date: string) {
               icon="pi pi-plus"
               aria-label="Edit"
               class="button edit"
-              @click="activeTab.setActiveTab('New Endpoint')"
+              @click="editEndpoint.startCreate()"
             />
           </div>
         </div>
@@ -114,7 +169,20 @@ function formatDate(date: string) {
             class="column"
           ></Column>
           <Column field="actions" header="Actions" class="column">
-            <template #body="slotProps"> </template>
+            <template #body="slotProps">
+              <Button
+                icon="pi pi-pencil"
+                aria-label="Edit"
+                class="button orange"
+                @click="startEdit(slotProps.data)"
+              />
+              <Button
+                icon="pi pi-trash"
+                aria-label="Delete"
+                class="button grey"
+                @click="viewDelete(slotProps.data)"
+              />
+            </template>
           </Column>
         </DataTable>
       </template>
@@ -166,6 +234,12 @@ function formatDate(date: string) {
   margin: 5px;
   height: 40px;
   width: 40px;
+}
+.orange {
+  background-color: #f37950;
+}
+.grey {
+  background-color: var(--sidebar-icon-grey);
 }
 .edit {
   background-color: var(--sidebar-highlight);

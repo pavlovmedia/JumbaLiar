@@ -9,6 +9,31 @@ export const activeTab = reactive({
     this.tab = newTab;
   },
 });
+
+export const editEndpoint = reactive({
+  path: "",
+  method: "",
+  behaviors: "",
+  visible: false,
+  setData(
+    newPath?: string,
+    newMethod?: string,
+    newBehaviors?: string,
+    newVisible?: boolean
+  ) {
+    if (newPath != undefined) this.path = newPath;
+    if (newMethod != undefined) this.method = newMethod;
+    if (newBehaviors != undefined) this.behaviors = newBehaviors;
+    if (newVisible != undefined) this.visible = newVisible;
+  },
+  startCreate() {
+    this.path = "";
+    this.method = "";
+    this.behaviors = "";
+    this.visible = false;
+    activeTab.setActiveTab("New Endpoint");
+  },
+});
 </script>
 
 <template>

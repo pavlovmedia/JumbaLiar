@@ -6,7 +6,6 @@ const edit = ref(false);
 const create = ref(false);
 const dataView = ref(false);
 const deleteWarn = ref(false);
-const deleteText = ref("");
 const label = ref("");
 const type = ref("");
 const data = ref("");

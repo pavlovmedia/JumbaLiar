@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { activeTab } from "~/app.vue";
-const path = ref("");
-const method = ref(null);
-const visibility = ref(true);
+import { activeTab, editEndpoint } from "~/app.vue";
+const path = ref(editEndpoint.path);
+const method = ref(editEndpoint.method);
+const visibility = ref(!editEndpoint.visible);
 const behaviors = ref("");
 const methodOptions = ref(["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]);
 
@@ -36,11 +36,11 @@ function quit() {
         <template #content>
           <div style="padding-bottom: 15px; flex-grow: 1">
             <InputText
-              :v-model="path"
+              v-model="path"
               type="text"
               placeholder="/services/path"
               style="width: 100%"
-            ></InputText>
+            />
           </div>
           <div style="padding-bottom: 5px">
             <!-- TODO: See above todo -->
@@ -50,17 +50,6 @@ function quit() {
               placeholder="Select a method"
               style="width: 100%"
             />
-            <!-- <SelectButton
-              v-model="method"
-              :options="methodOptions"
-              aria-labelledby="basic"
-            /> -->
-            <!-- <InputText
-              :v-model="method"
-              type="text"
-              placeholder="Method"
-              style="width: 100%"
-            ></InputText> -->
           </div>
         </template>
       </Card>

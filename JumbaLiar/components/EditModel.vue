@@ -6,10 +6,11 @@ const props = defineProps<{
   data: string;
 }>();
 
-const title = ref(props.create ? "Create Model" : "Update Model");
 const name = ref(props.name);
 const color = ref(props.color);
 const data = ref(props.data);
+const title = props.create ? "Create Model" : "Update Model";
+const saveButton = props.create ? "Create" : "Update";
 </script>
 
 <script lang="ts">
@@ -83,7 +84,7 @@ export default {
       <div class="buttonContainer alignLeft">
         <Button
           class="orange button"
-          label="Update"
+          :label="saveButton"
           icon="pi pi-check"
           @click="save(name.valueOf(), color.valueOf(), data.valueOf())"
         ></Button>
