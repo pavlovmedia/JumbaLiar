@@ -1,0 +1,48 @@
+<div class="login p-grid">
+  <div class="p-col p-p-0">
+    <div class="inner p-d-flex p-ai-center p-jc-center">
+      <div>
+        <img id="logo" src="/assets/logo.png" alt="JumbaLiar logo">
+        <h1>Welcome</h1>
+        <p>Sign in to start using JumbaLiar</p>
+        <p>If you do not currently have an account, you can register <span class="link" (click)="display = true">here</span>.</p>
+      </div>
+    </div>
+  </div>
+  <div class="p-col p-p-0">
+    <div class="inner p-d-flex p-ai-center p-jc-center">
+      <div style="position: relative;">
+        <h2>Login</h2>
+        <span class="p-input-icon-left">
+          <i class="pi pi-user"></i>
+          <input size="40" type="text" pInputText placeholder="Email" [(ngModel)]="signinForm['email']" />
+        </span><br><br>
+        <span class="p-input-icon-left">
+          <i class="pi pi-lock"></i>
+          <input size="40" type="password" pInputText placeholder="Password" [(ngModel)]="signinForm['password']" />
+        </span><br><br>
+        <p-button [disabled]="submitting" (onClick)="submit()" label="Submit" icon="pi pi-check" iconPos="left"></p-button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-dialog [modal]="true" header="Register" [(visible)]="display">
+  <span class="p-input-icon-left">
+    <i class="pi pi-user"></i>
+    <input size="50" type="text" pInputText placeholder="First Name" [(ngModel)]="registerForm['firstName']" />
+  </span><br><br>
+  <span class="p-input-icon-left">
+    <i class="pi pi-user"></i>
+    <input size="50" type="text" pInputText placeholder="Last Name" [(ngModel)]="registerForm['lastName']" />
+  </span><br><br>
+  <span class="p-input-icon-left">
+    <i class="pi pi-envelope"></i>
+    <input size="50" type="email" pInputText placeholder="Email Address" [(ngModel)]="registerForm['email']" />
+  </span><br><br>
+  <span class="p-input-icon-left">
+    <i class="pi pi-lock"></i>
+    <input size="50" type="password" pInputText placeholder="Password" [(ngModel)]="registerForm['password']" />
+  </span><br><br>
+  <p-button [disabled]="submitting" (onClick)="register()" label="Register" icon="pi pi-check" iconPos="left"></p-button>
+</p-dialog>
