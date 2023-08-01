@@ -107,7 +107,7 @@ function quit() {
         <template #title>Models</template>
         <template #content>
           <div class="dataViewContainer">
-            <DataView :value="models" data-key="models" paginator :rows="8">
+            <DataView :value="models" data-key="models" paginator :rows="12">
               <template #list="slotProps">
                 <div>
                   <i
