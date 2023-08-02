@@ -6,6 +6,7 @@ const edit = ref(false);
 const create = ref(false);
 const dataView = ref(false);
 const deleteWarn = ref(false);
+const deleteText = ref("");
 const label = ref("");
 const type = ref("");
 const data = ref("");
@@ -97,6 +98,7 @@ async function save(
 function quit() {
   edit.value = false;
   create.value = false;
+  dataView.value = false;
   deleteWarn.value = false;
 }
 
@@ -194,17 +196,8 @@ function deleteString() {
           @quit="quit"
         />
       </Dialog>
-      <Dialog v-model:visible="dataView" modal content-style="padding: 0;">
-        <!-- :show-header="false"
-          style="{border-radius: `${var(--card-radius)}}" -->
-        <template #header>
-          {{ "Not implemented yet :)  " }}
-          <!-- <p class="titleText">Data for {{ label }}</p> -->
-        </template>
-        <!-- <DataView :name="label.valueOf()" :data="data.valueOf()"> </DataView> -->
-      </Dialog>
       <Dialog
-        v-model:visible="deleteWarn"
+        v-model:visible="dataView"
         modal
         :show-header="false"
         content-style="padding: 0"
@@ -212,7 +205,7 @@ function deleteString() {
         <Card class="deleteContainer">
           <template #header>
             <div class="tableHeader">
-              <p class="titleText">Delete {{ label.valueOf() }}</p>
+              <p class="titleText">Data for {{ label.valueOf() }}</p>
               <div>
                 <Button
                   icon="pi pi-times"
@@ -224,11 +217,53 @@ function deleteString() {
             </div>
           </template>
           <template #content>
-            <p>
-              Are you sure you want to delete the Model {{ label.valueOf() }}?
+            <Textarea
+              v-model="data"
+              rows="30"
+              cols="100"
+              disabled
+              style="color: black"
+            />
+          </template>
+        </Card>
+      </Dialog>
+      <Dialog
+        v-model:visible="deleteWarn"
+        modal
+        :show-header="false"
+        content-style="padding: 0"
+      >
+        <Card class="deleteContainer">
+          <template #header>
+            <div class="tableHeader">
+              <p class="titleText" style="margin-left: 10px">
+                Delete {{ label.valueOf() }}
+              </p>
+              <div>
+                <Button
+                  icon="pi pi-times"
+                  aria-label="Quit"
+                  class="button grey"
+                  @click="quit()"
+                />
+              </div>
+            </div>
+          </template>
+          <template #content>
+            <p style="text-align: center">
+              Are you sure you want to delete the model
+              {{ label.valueOf() }}?<br /><b
+                style="font-weight: 800; text-decoration: underline"
+                >This action can not be undone</b
+              >
             </p>
-            <b> This action can not be undone<br /> </b>
-            <div>
+            <div
+              style="
+                align-items: center;
+                justify-content: center;
+                display: flex;
+              "
+            >
               <Button
                 icon="pi pi-trash"
                 :label="deleteString()"

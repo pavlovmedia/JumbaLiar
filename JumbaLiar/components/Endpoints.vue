@@ -85,12 +85,14 @@ function quit() {
           </div>
         </template>
         <template #content>
-          <p>
-            Are you sure you want to delete the endpoint
-            {{ editEndpoint.path }}?
-          </p>
-          <b> This action can not be undone<br /> </b>
-          <div>
+          <div
+            style="align-items: center; justify-content: center; display: flex"
+          >
+            <p>
+              Are you sure you want to delete the endpoint
+              {{ editEndpoint.path }}?
+            </p>
+            <b> This action can not be undone<br /> </b>
             <Button
               icon="pi pi-trash"
               :label="deleteString()"
@@ -228,6 +230,7 @@ function quit() {
   border-radius: var(--card-radius);
   background: white;
   max-height: fit-content;
+  min-width: 275px;
   margin: var(--main-content-gap);
 }
 .deleteContainer {
