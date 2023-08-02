@@ -85,14 +85,16 @@ function quit() {
           </div>
         </template>
         <template #content>
+          <p style="text-align: center">
+            Are you sure you want to delete the endpoint
+            {{ editEndpoint.path }}?<br />
+          </p>
+          <p style="text-align: center; font-weight: 800">
+            This action can not be undone<br />
+          </p>
           <div
             style="align-items: center; justify-content: center; display: flex"
           >
-            <p>
-              Are you sure you want to delete the endpoint
-              {{ editEndpoint.path }}?
-            </p>
-            <b> This action can not be undone<br /> </b>
             <Button
               icon="pi pi-trash"
               :label="deleteString()"
