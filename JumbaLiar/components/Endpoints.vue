@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { Endpoint } from "@prisma/client";
 import { activeTab, editEndpoint } from "~/app.vue";
-const models = await $fetch("/api/model");
+import { backend } from "../backend/backend";
+
+const BE = new backend();
+const models = await BE.model.getAll();
 const endpoints = ref([]);
 const activeEndpoint = ref("");
-update();
-
 const deleteWarn = ref(false);
+
+update();
 
 function formatDate(date: string) {
   var day = date.charAt(8) == "0" ? date.charAt(9) : date.substring(8, 10);
@@ -16,7 +19,7 @@ function formatDate(date: string) {
 }
 
 async function update() {
-  endpoints.value = await $fetch("/api/endpoint");
+  endpoints.value = await BE.endpoint.getAll(); // This error is okay
 }
 
 function startEdit(endpoint: Endpoint) {
@@ -43,12 +46,7 @@ async function viewDelete(endpoint: Endpoint) {
 }
 
 async function deleteEndpoint() {
-  await $fetch("/api/endpoint", {
-    method: "DELETE",
-    body: {
-      id: editEndpoint.id,
-    },
-  });
+  await BE.endpoint.delete(editEndpoint.id);
   update();
   quit();
 }

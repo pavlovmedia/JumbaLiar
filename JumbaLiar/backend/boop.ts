@@ -1,4 +1,4 @@
-class bloop {
+export class boop {
   path: string;
 
   constructor(suffix: string) {

@@ -1,5 +1,11 @@
+import { modelsBackend } from "./modelsBackend";
+import { endpointsBackend } from "./endpointsBackend";
+
 export class backend {
-  model: bloop = new bloop("model");
-  endpoint: bloop = new bloop("endpoint");
-  constructor() {}
+  model: modelsBackend;
+  endpoint: endpointsBackend;
+  constructor() {
+    this.model = new modelsBackend();
+    this.endpoint = new endpointsBackend();
+  }
 }

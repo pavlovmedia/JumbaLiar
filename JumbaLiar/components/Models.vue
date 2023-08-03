@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Model } from "@prisma/client";
+import { backend } from "../backend/backend";
 
+const BE = new backend();
 const models = ref([]);
 const edit = ref(false);
 const create = ref(false);
@@ -21,7 +23,7 @@ function formatDate(date: string) {
 }
 
 async function update() {
-  models.value = await $fetch("/api/model");
+  models.value = await BE.model.getAll(); // This error is okay
 }
 
 function startEdit(model: Model) {
@@ -67,26 +69,24 @@ async function save(
   newData: string
 ) {
   if (created) {
-    await $fetch("/api/model", {
-      method: "POST",
-      body: {
+    await BE.model.post({
+      profileUsername: "BobbyTables", // TODO: Un-hardcode this
+      data: {
         label: newLabel,
         type: newType,
         data: newData,
-        profile: "BobbyTables", // TODO: Un-hardcode this
       },
     });
   } else if (
     !(newLabel == label.value && newType == type.value && newData == data.value)
   ) {
-    await $fetch("/api/model", {
-      method: "PATCH",
-      body: {
-        id: id.value,
+    await BE.model.patch({
+      id: id.value,
+      profileUsername: "BobbyTables", // TODO: Un-hardcode this
+      data: {
         label: newLabel,
         type: newType,
         data: newData,
-        profile: "BobbyTables", // TODO: Un-hardcode this
       },
     });
   }
@@ -115,14 +115,7 @@ function viewDelete(model: Model) {
 }
 
 async function deleteModel() {
-  console.log(
-    await $fetch("/api/model", {
-      method: "DELETE",
-      body: {
-        id: id.value,
-      },
-    })
-  );
+  await BE.model.delete(id.value);
   update();
   quit();
 }
@@ -130,22 +123,6 @@ async function deleteModel() {
 function deleteString() {
   return "Yes, delete the model " + label.value;
 }
-
-// Demo function
-// async function testPost() {
-//   console.log(
-//     await $fetch("/api/model", {
-//       // TODO: Un-hardcode this
-//       method: "POST",
-//       body: {
-//         label: "TestingLabel",
-//         // type: "",
-//         // data: "",
-//         profile: "BobbyTables", // TODO: Un-hardcode this
-//       },
-//     })
-//   );
-// }
 </script>
 
 <template>
