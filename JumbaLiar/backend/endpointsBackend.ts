@@ -24,7 +24,10 @@ export class endpointsBackend {
   async post(data: endpointCreate) {
     return await $fetch(this.path, {
       method: "POST",
-      body: data,
+      body: {
+        profileUsername: data.profileUsername,
+        body: data.data,
+      },
     });
   }
 

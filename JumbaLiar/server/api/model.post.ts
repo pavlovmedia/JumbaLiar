@@ -26,16 +26,18 @@ export default defineEventHandler(async (event) => {
   const data = await readBody(event);
   // TODO: Currently doesn't return anything for a bad request
   if (data != null) {
-    if ("label" in data && "profile" in data) {
+    if ("profileUsername" in data && "body" in data) {
       try {
-        var uniq: Prisma.ProfileWhereUniqueInput = { username: data.profile };
+        var uniq: Prisma.ProfileWhereUniqueInput = {
+          username: data.profileUsername,
+        };
         var user: Prisma.ProfileCreateNestedOneWithoutModelCreatedByProfileInput =
           { connect: uniq };
         var rq: Prisma.ModelCreateInput;
         rq = {
-          label: data.label,
-          type: data.type == undefined ? "#298BB5" : data.type,
-          data: data.data == undefined ? "default" : data.data,
+          label: data.body.label,
+          type: data.body.type == undefined ? "#298BB5" : data.body.type,
+          data: data.body.data == undefined ? "default" : data.body.data,
           createdBy: user,
           udpdatedBy: user,
         };

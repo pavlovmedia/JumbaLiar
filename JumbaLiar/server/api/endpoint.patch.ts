@@ -26,23 +26,16 @@ export default defineEventHandler(async (event) => {
   const data = await readBody(event);
   // TODO: Currently doesn't return anything for a bad request
   if (data != null) {
-    if (
-      "id" in data &&
-      "method" in data &&
-      "path" in data &&
-      // "behaviors" in data &&
-      "hidden" in data &&
-      "locked" in data
-    ) {
+    if ("id" in data && "profileUsername" in data && "data" in data) {
       try {
         await prisma.endpoint.update({
           where: { id: data.id },
           data: {
-            method: data.method,
-            path: data.path,
+            method: data.data.method,
+            path: data.data.path,
             // behaviors: data.behaviors,
-            hidden: data.hidden,
-            locked: data.locked,
+            hidden: data.data.hidden,
+            locked: data.data.locked,
           },
         });
         return 0;

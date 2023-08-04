@@ -80,15 +80,17 @@ async function save(
   } else if (
     !(newLabel == label.value && newType == type.value && newData == data.value)
   ) {
-    await BE.model.patch({
-      id: id.value,
-      profileUsername: "BobbyTables", // TODO: Un-hardcode this
-      data: {
-        label: newLabel,
-        type: newType,
-        data: newData,
-      },
-    });
+    console.log(
+      await BE.model.patch({
+        id: id.value,
+        profileUsername: "BobbyTables", // TODO: Un-hardcode this
+        data: {
+          label: newLabel,
+          type: newType,
+          data: newData,
+        },
+      })
+    );
   }
   edit.value = false;
   create.value = false;

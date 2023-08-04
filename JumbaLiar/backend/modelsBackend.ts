@@ -24,7 +24,10 @@ export class modelsBackend {
   async post(data: modelCreate) {
     return await $fetch(this.path, {
       method: "POST",
-      body: data,
+      body: {
+        profileUsername: data.profileUsername,
+        body: data.data,
+      },
     });
   }
 

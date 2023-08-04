@@ -30,7 +30,7 @@ export interface modelCreate {
 
 export interface endpointFilters {
   path?: string;
-  method?: Method;
+  method?: string;
   hidden?: boolean;
   locked?: boolean;
   endpointCreatedByProfile?: string;
@@ -42,7 +42,7 @@ export interface endpointPatch {
   profileUsername: string;
   data: {
     path?: string;
-    method?: Method;
+    method?: string;
     hidden?: boolean;
     locked?: boolean;
   };
@@ -52,7 +52,7 @@ export interface endpointCreate {
   profileUsername: string;
   data: {
     path: string;
-    method: Method;
+    method: string;
     hidden: boolean;
     locked: boolean;
   };

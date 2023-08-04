@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { activeTab, editEndpoint } from "~/app.vue";
+import { backend } from "../backend/backend";
+
+const BE = new backend();
 const path = ref(editEndpoint.path);
 const method = ref(editEndpoint.method);
 const visibility = ref(!editEndpoint.visible);
@@ -7,18 +10,15 @@ const behaviors = ref("");
 const methodOptions = ref(["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]);
 
 async function create() {
-  console.log(
-    await $fetch("/api/endpoint", {
-      method: "POST",
-      body: {
-        path: path.value,
-        method: method.value,
-        visibility: visibility.value,
-        // behaviors: behaviors.value,
-        profile: "BobbyTables", // TODO: Un-hardcode this
-      },
-    })
-  );
+  await BE.endpoint.post({
+    profileUsername: "BobbyTables", // TODO: Un-hardcode this
+    data: {
+      path: path.value,
+      method: method.value,
+      hidden: visibility.value,
+      locked: false, // TODO: Un-hardcode this
+    },
+  });
   quit();
 }
 

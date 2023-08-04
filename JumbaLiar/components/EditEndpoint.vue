@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { activeTab, editEndpoint } from "~/app.vue";
+import { backend } from "../backend/backend";
+
+const BE = new backend();
 const path = ref(editEndpoint.path);
 const method = ref(editEndpoint.method);
 const visibility = ref(!editEndpoint.visible);
@@ -8,14 +11,13 @@ const methodOptions = ref(["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]);
 
 async function update() {
   console.log(
-    await $fetch("/api/endpoint", {
-      method: "PATCH",
-      body: {
-        id: editEndpoint.id,
+    await BE.endpoint.patch({
+      id: editEndpoint.id,
+      profileUsername: "BobbyTables", // TODO: Un-hardcode this
+      data: {
         path: path.value,
         method: method.value,
         hidden: visibility.value,
-        // behaviors: behaviors.value,
         locked: false, // TODO: Un-hardcode this
       },
     })

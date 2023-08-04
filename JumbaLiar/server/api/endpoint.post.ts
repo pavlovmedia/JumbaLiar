@@ -26,18 +26,19 @@ export default defineEventHandler(async (event) => {
   const data = await readBody(event);
   // TODO: Currently doesn't return anything for a bad request
   if (data != null) {
-    if ("path" in data && "profile" in data) {
+    if ("body" in data && "profileUsername" in data) {
       try {
-        var uniq: Prisma.ProfileWhereUniqueInput = { username: data.profile };
+        var uniq: Prisma.ProfileWhereUniqueInput = {
+          username: data.profileUsername,
+        };
         var user: Prisma.ProfileCreateNestedOneWithoutEndpointCreatedByProfileInput =
           { connect: uniq };
         var rq: Prisma.EndpointCreateInput;
         rq = {
-          path: data.path,
-          method: data.method == undefined ? "GET" : data.method,
-          // behaviors: data.behaviors == undefined ? null : data.behaviors, // TODO: figure out what needs to happen here because I don't know
-          hidden: data.hidden == undefined ? false : true,
-          locked: data.locked == undefined ? false : true,
+          path: data.body.path,
+          method: data.body.method == undefined ? "GET" : data.body.method,
+          hidden: data.body.hidden == undefined ? false : true,
+          locked: data.body.locked == undefined ? false : true,
           createdBy: user,
           udpdatedBy: user,
         };
@@ -49,7 +50,7 @@ export default defineEventHandler(async (event) => {
       }
     } else {
       // TODO: add more descriptive behavior?
-      return -2;
+      return -58;
     }
   }
   // TODO: add more descriptive behavior?
