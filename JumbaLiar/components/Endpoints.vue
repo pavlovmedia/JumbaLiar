@@ -87,7 +87,13 @@ function quit() {
             Are you sure you want to delete the endpoint
             {{ editEndpoint.path }}?<br />
           </p>
-          <p style="text-align: center; font-weight: 800">
+          <p
+            style="
+              text-align: center;
+              font-weight: 800;
+              text-decoration: underline;
+            "
+          >
             This action can not be undone<br />
           </p>
           <div

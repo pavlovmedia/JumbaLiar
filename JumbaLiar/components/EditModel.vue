@@ -17,7 +17,7 @@ const saveButton = props.create ? "Create" : "Update";
 export default {
   methods: {
     save(name: string, color: string, data: string) {
-      this.$emit("save", this.create, name, color, data);
+      this.$emit("save", this.create, name, color.toUpperCase(), data);
     },
     quit() {
       this.$emit("quit");
@@ -25,8 +25,6 @@ export default {
   },
 };
 </script>
-
-<!-- TODO: Padding/align stuff should be fixed later -->
 
 <template>
   <Card style="flex-grow: 1; max-width: 700px">
@@ -40,7 +38,12 @@ export default {
         ></InputText>
       </div>
       <div class="inputContainer">
-        <InputText class="grow" v-model="color" placeholder="Color"></InputText>
+        <InputMask
+          class="grow"
+          v-model="color"
+          mask="#******"
+          placeholder="Color"
+        />
       </div>
       <div class="buttonContainer">
         <Button class="grey button buttonWidth grow center">

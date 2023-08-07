@@ -15,7 +15,7 @@ async function create() {
     data: {
       path: path.value,
       method: method.value,
-      hidden: visibility.value,
+      hidden: !visibility.value,
       locked: false, // TODO: Un-hardcode this
     },
   });
@@ -71,7 +71,6 @@ function quit() {
               style="background-color: var(--sidebar-highlight); border: 0px"
             />
           </div>
-          <!-- TODO: MOVE THIS AND THE OTHER BUTTON FORMATTING TO CSS FILE -->
         </template>
       </Card>
       <Card class="help card">
@@ -87,7 +86,7 @@ function quit() {
   <Card class="behaviors card">
     <template #title>Behaviors</template>
     <template #content>
-      <div style="max-width: ">
+      <div>
         <Textarea
           v-model="behaviors"
           type="text"

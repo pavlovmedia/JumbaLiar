@@ -9,6 +9,7 @@ import DataTable from 'primevue/datatable';
 import DataView from 'primevue/dataview';
 import Dialog from 'primevue/dialog';
 import Dropdown from 'primevue/dropdown';
+import InputMask from 'primevue/inputmask';
 import InputText from 'primevue/inputtext';
 import SelectButton from 'primevue/selectbutton';
 import Textarea from 'primevue/textarea';
@@ -26,6 +27,7 @@ export default defineNuxtPlugin(nuxtApp => {
   nuxtApp.vueApp.component('DataView', DataView);
   nuxtApp.vueApp.component('Dialog', Dialog);
   nuxtApp.vueApp.component('Dropdown', Dropdown);
+  nuxtApp.vueApp.component('InputMask', InputMask);
   nuxtApp.vueApp.component('InputText', InputText);
   nuxtApp.vueApp.component('SelectButton', SelectButton);
   nuxtApp.vueApp.component('Textarea', Textarea);
