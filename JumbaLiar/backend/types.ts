@@ -1,5 +1,3 @@
-import { Method } from "@prisma/client";
-
 export interface modelFilters {
   id?: string;
   label?: string;

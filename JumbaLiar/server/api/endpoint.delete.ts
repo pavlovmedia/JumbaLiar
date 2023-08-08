@@ -24,7 +24,6 @@ prisma.$on("error", (e) => {
 export default defineEventHandler(async (event) => {
   const data = await readBody(event);
   // TODO: Currently doesn't return anything for a bad request
-  // TODO: Is the first if statement unnecessary?
   if (data != null) {
     if ("id" in data) {
       try {

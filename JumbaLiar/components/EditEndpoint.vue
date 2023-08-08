@@ -10,18 +10,16 @@ const behaviors = ref("");
 const methodOptions = ref(["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]);
 
 async function update() {
-  console.log(
-    await BE.endpoint.patch({
-      id: editEndpoint.id,
-      profileUsername: "BobbyTables", // TODO: Un-hardcode this
-      data: {
-        path: path.value,
-        method: method.value,
-        hidden: visibility.value,
-        locked: false, // TODO: Un-hardcode this
-      },
-    })
-  );
+  await BE.endpoint.patch({
+    id: editEndpoint.id,
+    profileUsername: "BobbyTables", // TODO: Un-hardcode this
+    data: {
+      path: path.value,
+      method: method.value,
+      hidden: visibility.value,
+      locked: false, // TODO: Un-hardcode this
+    },
+  });
   quit();
 }
 

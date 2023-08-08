@@ -134,12 +134,15 @@ function quit() {
       <Card class="tableContainer">
         <template #title>
           <div class="tableHeader">
-            <p class="titleText">Endpoint Count: {{ endpoints.length }}</p>
+            <p class="titleText" style="margin-top: 0px">
+              Endpoint Count: {{ endpoints.length }}
+            </p>
             <div>
               <Button
                 icon="pi pi-plus"
                 aria-label="Edit"
                 class="button orange"
+                style="margin-top: 0px; margin-right: 0px"
                 @click="editEndpoint.startCreate()"
               />
             </div>
@@ -149,11 +152,18 @@ function quit() {
           <DataTable
             :value="endpoints"
             sortMode="multiple"
+            showGridlines
             removableSort
             paginator
-            :rows="6"
+            :rows="8"
           >
-            <Column field="method" header="Method" sortable class="column">
+            <Column
+              field="method"
+              header="Method"
+              sortable
+              class="column"
+              style="padding: 12px"
+            >
               <template #body="slotProps">
                 <Badge
                   :value="slotProps.data.method"
@@ -161,19 +171,27 @@ function quit() {
                 />
               </template>
             </Column>
-            <Column field="path" header="Path" sortable class="column">
+            <Column
+              field="path"
+              header="Path"
+              sortable
+              class="column"
+              style="padding: 12px"
+            >
             </Column>
             <Column
               field="behaviors"
               header="Behaviors"
               sortable
               class="column"
+              style="padding: 12px"
             ></Column>
             <Column
               field="updatedOn"
               header="Updated On"
               sortable
               class="column"
+              style="padding: 12px"
             >
               <template #body="slotProps">
                 {{ formatDate(slotProps.data.updatedOn) }}
@@ -184,12 +202,13 @@ function quit() {
               header="Updated By"
               sortable
               class="column"
+              style="padding: 12px"
             ></Column>
             <Column
               field="actions"
               header="Actions"
               class="column"
-              style="min-width: 135px"
+              style="min-width: 116px; padding: 7px"
             >
               <template #body="slotProps">
                 <Button
@@ -282,11 +301,9 @@ function quit() {
 .orange {
   background-color: var(--sidebar-highlight);
 }
-.column {
-  /* this doesn't do anything(?) */
-  /* TODO: Figure out what was supposed to happen here, or just delete this */
-  /* Maybe vertical lines between columns? */
-}
+/* DO NOT DELETE
+ * The below styles are for the method badges 
+ */
 .GET {
   background-color: var(--get-highlight);
 }

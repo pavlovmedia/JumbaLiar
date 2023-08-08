@@ -80,17 +80,15 @@ async function save(
   } else if (
     !(newLabel == label.value && newType == type.value && newData == data.value)
   ) {
-    console.log(
-      await BE.model.patch({
-        id: id.value,
-        profileUsername: "BobbyTables", // TODO: Un-hardcode this
-        data: {
-          label: newLabel,
-          type: newType,
-          data: newData,
-        },
-      })
-    );
+    await BE.model.patch({
+      id: id.value,
+      profileUsername: "BobbyTables", // TODO: Un-hardcode this
+      data: {
+        label: newLabel,
+        type: newType,
+        data: newData,
+      },
+    });
   }
   edit.value = false;
   create.value = false;
@@ -131,12 +129,15 @@ function deleteString() {
   <Card class="tableContainer">
     <template #title>
       <div class="tableHeader">
-        <p class="titleText">Model Count: {{ models.length }}</p>
+        <p class="titleText" style="margin-top: 0px">
+          Model Count: {{ models.length }}
+        </p>
         <div>
           <Button
             icon="pi pi-plus"
             aria-label="newModel"
             class="button orange"
+            style="margin-top: 0px; margin-right: 0px"
             @click="startCreate"
           />
         </div>
@@ -149,7 +150,6 @@ function deleteString() {
         :show-header="false"
         content-style="padding: 0;"
       >
-        <!-- style="{border-radius: `${var(--card-radius)}}" -->
         <EditModel
           :create="false"
           :name="label.valueOf()"
@@ -258,12 +258,12 @@ function deleteString() {
         :value="models"
         paginator
         showGridlines
-        :rows="6"
+        :rows="8"
         sortMode="multiple"
         removableSort
       >
-        <Column field="label" header="Name" sortable />
-        <Column field="type" header="Color" sortable>
+        <Column field="label" header="Name" sortable style="padding: 12px" />
+        <Column field="type" header="Color" sortable style="padding: 12px">
           <template #body="slotProps">
             <i
               class="pi pi-circle-fill"
@@ -272,14 +272,28 @@ function deleteString() {
             {{ slotProps.data.type }}
           </template>
         </Column>
-        <Column field="usages" header="Usages" sortable />
-        <Column field="updatedOn" header="Updated On" sortable>
+        <Column field="usages" header="Usages" sortable style="padding: 12px" />
+        <Column
+          field="updatedOn"
+          header="Updated On"
+          sortable
+          style="padding: 12px"
+        >
           <template #body="slotProps">
             {{ formatDate(slotProps.data.updatedOn) }}
           </template>
         </Column>
-        <Column field="profileUpdatedByUsername" header="Updated By" sortable />
-        <Column field="data" header="Actions">
+        <Column
+          field="profileUpdatedByUsername"
+          header="Updated By"
+          sortable
+          style="padding: 12px"
+        />
+        <Column
+          field="data"
+          header="Actions"
+          style="min-width: 166px; padding: 7px"
+        >
           <template #body="slotProps">
             <Button
               icon="pi pi-pencil"
@@ -307,13 +321,6 @@ function deleteString() {
 </template>
 
 <style scoped>
-.dataCard {
-  padding-inline: var(--main-content-gap);
-  gap: var(--main-content-gap);
-  width: 100%;
-  background: white;
-  max-height: fit-content;
-}
 .deleteContainer {
   border-radius: var(--card-radius);
   background: white;
@@ -344,7 +351,7 @@ function deleteString() {
   border: 0px;
 }
 .orange {
-  background-color: #f37950;
+  background-color: var(--sidebar-highlight);
 }
 .grey {
   background-color: var(--sidebar-icon-grey);
@@ -361,5 +368,9 @@ function deleteString() {
   border-bottom-style: solid;
   border-bottom-width: var(--card-underline-width);
   border-color: var(--card-underline-color);
+  padding-top: 0px;
+}
+:deep(.p-card-content) {
+  padding: 0px;
 }
 </style>
