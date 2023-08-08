@@ -181,9 +181,9 @@ function deleteString() {
         :show-header="false"
         content-style="padding: 0"
       >
-        <Card class="deleteContainer">
+        <Card class="dataContainer">
           <template #header>
-            <div class="tableHeader">
+            <div class="dataTableHeader">
               <p class="titleText">Data for {{ label.valueOf() }}</p>
               <div>
                 <Button
@@ -329,6 +329,12 @@ function deleteString() {
   padding-top: var(--main-content-gap);
   flex-grow: 1;
 }
+.dataContainer {
+  border-radius: var(--card-radius);
+  background: white;
+  max-height: fit-content;
+  flex-grow: 1;
+}
 .tableContainer {
   border-radius: var(--card-radius);
   background: white;
@@ -339,6 +345,12 @@ function deleteString() {
 .tableHeader {
   display: flex;
   grid-template-rows: 1fr 1fr;
+}
+.dataTableHeader {
+  display: flex;
+  grid-template-rows: 1fr 1fr;
+  padding-left: 16px;
+  padding-right: 11px;
 }
 .button {
   border: 0px;
@@ -369,6 +381,12 @@ function deleteString() {
   border-bottom-width: var(--card-underline-width);
   border-color: var(--card-underline-color);
   padding-top: 0px;
+}
+:deep(.p-card-header) {
+  border-bottom-style: solid;
+  border-bottom-width: var(--card-underline-width);
+  border-color: var(--card-underline-color);
+  /* padding-top: 0px; */
 }
 :deep(.p-card-content) {
   padding: 0px;
