@@ -4,7 +4,7 @@ import { reactive } from "vue";
 
 <script lang="ts">
 export const activeTab = reactive({
-  tab: "Dashboard",
+  tab: "Login",
   setActiveTab(newTab: string) {
     this.tab = newTab;
   },
@@ -41,13 +41,16 @@ export const editEndpoint = reactive({
 </script>
 
 <template>
-  <div class="columnContainer">
+  <div v-if="activeTab.tab === 'Login'" class="loginContainer">
+    <Login style="flex-grow: 1" />
+  </div>
+  <div v-if="activeTab.tab !== 'Login'" class="columnContainer">
     <SidebarHeader />
     <div class="sidebarContainer">
       <Sidebar />
     </div>
   </div>
-  <div class="columnContainer">
+  <div v-if="activeTab.tab !== 'Login'" class="columnContainer">
     <MainHeader />
     <div class="background">
       <MainContent />
@@ -59,6 +62,9 @@ export const editEndpoint = reactive({
 .sidebarContainer {
   box-sizing: border-box;
   background-color: var(--sidebar-light);
+}
+.loginContainer {
+  width: 100vw;
 }
 .background {
   background: url("./components/icons/ShrimpBackground.png");
