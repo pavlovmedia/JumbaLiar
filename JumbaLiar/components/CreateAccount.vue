@@ -64,21 +64,49 @@ function cancel() {
               placeholder="Email"
               :class="getEmailStatus()"
             />
+            <small
+              v-if="getEmailStatus() == 'p-invalid'"
+              class="warning"
+              id="email-help"
+            >
+              Invalid email address!
+            </small>
             <InputText
+              class="spacer"
               v-model="username"
               placeholder="Username"
               :class="getUsernameStatus()"
             />
+            <small
+              v-if="getUsernameStatus() == 'p-invalid'"
+              class="warning"
+              id="email-help"
+            >
+              Username is taken!
+            </small>
             <!-- :feedback="false" -->
-            <Password v-model="password" placeholder="Password" toggleMask />
             <Password
+              class="spacer"
+              v-model="password"
+              placeholder="Password"
+              toggleMask
+            />
+            <Password
+              class="spacer"
               :feedback="false"
               v-model="confirmPassword"
               placeholder="Confirm Password"
               toggleMask
               :class="getPasswordStatus()"
             />
-            <div class="controlContainer">
+            <small
+              v-if="getPasswordStatus() == 'p-invalid'"
+              class="warning"
+              id="email-help"
+            >
+              Password must match!
+            </small>
+            <div class="controlContainer spacer">
               <Button
                 class="grey button"
                 label="Cancel"
@@ -100,10 +128,6 @@ function cancel() {
 </template>
 
 <style scoped>
-.background {
-  background-repeat: no-repeat;
-  background-size: auto;
-}
 .mainContainer {
   display: flex;
   width: 100%;
@@ -125,10 +149,13 @@ function cancel() {
   font-weight: 700;
   color: black;
 }
+.spacer {
+  margin-top: 20px;
+}
 .contentContainer {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  /* gap: 20px; */
 }
 .controlContainer {
   gap: 15px;
@@ -138,6 +165,9 @@ function cancel() {
   height: 45px;
   border: 0px;
   flex-grow: 1;
+}
+.warning {
+  padding-left: 8px;
 }
 .grey {
   background-color: var(--sidebar-icon-grey);
