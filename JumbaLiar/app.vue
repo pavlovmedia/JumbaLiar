@@ -44,13 +44,22 @@ export const editEndpoint = reactive({
   <div v-if="activeTab.tab === 'Login'" class="loginContainer">
     <Login style="flex-grow: 1" class="login background" />
   </div>
-  <div v-if="activeTab.tab !== 'Login'" class="columnContainer">
+  <div v-if="activeTab.tab === 'Create Account'" class="loginContainer">
+    <CreateAccount style="flex-grow: 1" class="login background" />
+  </div>
+  <div
+    v-if="activeTab.tab !== 'Login' && activeTab.tab !== 'Create Account'"
+    class="columnContainer"
+  >
     <SidebarHeader />
     <div class="sidebarContainer">
       <Sidebar />
     </div>
   </div>
-  <div v-if="activeTab.tab !== 'Login'" class="columnContainer">
+  <div
+    v-if="activeTab.tab !== 'Login' && activeTab.tab !== 'Create Account'"
+    class="columnContainer"
+  >
     <MainHeader />
     <div class="main background">
       <MainContent />
@@ -64,14 +73,21 @@ export const editEndpoint = reactive({
   background-color: var(--sidebar-light);
 }
 .loginContainer {
+  border-style: solid;
+  border-width: 0px;
+  border-top-width: 8px;
+  border-color: var(--sidebar-highlight);
   width: 100vw;
 }
 .background {
-  background-repeat: no-repeat;
   background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 .login {
   background-image: url("./components/icons/LoginBackground.jpeg");
+  outline-width: 10px;
+  outline-color: var(--sidebar-highlight);
 }
 .main {
   background-image: url("./components/icons/ShrimpBackground.png");

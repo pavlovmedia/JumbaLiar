@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { create } from "domain";
 import { activeTab } from "~/app.vue";
 const username = ref("");
 const password = ref("");
@@ -6,10 +7,14 @@ const password = ref("");
 function login() {
   activeTab.setActiveTab("Dashboard");
 }
+
+function createAccount() {
+  activeTab.setActiveTab("Create Account");
+}
 </script>
 
 <template>
-  <div class="background mainContainer">
+  <div class="mainContainer">
     <div class="loginContainer">
       <Card unstyled class="card">
         <template #header>
@@ -26,7 +31,6 @@ function login() {
               placeholder="Password"
               toggleMask
             />
-            <!-- placeholder="Password" -->
             <Button class="button login" label="Log In" @click="login" />
             <Divider align="center" type="solid">
               <b>or</b>
@@ -45,18 +49,18 @@ function login() {
         </template>
       </Card>
       <div class="createContainer">
-        <Button class="createButton" text label="Create an account" />
+        <Button
+          class="createButton"
+          text
+          label="Create an account"
+          @click="createAccount"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.background {
-  /* background: url("./icons/LoginBackground.jpeg"); */
-  background-repeat: no-repeat;
-  background-size: auto;
-}
 .mainContainer {
   display: flex;
   width: 100%;
