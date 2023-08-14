@@ -18,16 +18,15 @@ function login() {
         <template #content>
           <div class="contentContainer">
             <img />
-            <InputText
-              class="input"
-              v-model="username"
-              placeholder="Username"
-            />
-            <InputText
-              class="input"
+            <InputText v-model="username" placeholder="Username" />
+
+            <Password
+              :feedback="false"
               v-model="password"
               placeholder="Password"
+              toggleMask
             />
+            <!-- placeholder="Password" -->
             <Button class="button login" label="Log In" @click="login" />
             <Divider align="center" type="solid">
               <b>or</b>
@@ -54,7 +53,7 @@ function login() {
 
 <style scoped>
 .background {
-  background: url("./icons/LoginBackground.jpeg");
+  /* background: url("./icons/LoginBackground.jpeg"); */
   background-repeat: no-repeat;
   background-size: auto;
 }
@@ -85,19 +84,11 @@ function login() {
   gap: 20px;
 }
 .createContainer {
-}
-.input {
-  width: 315px;
-  border-inline-width: 0px;
-  border-top-width: 0px;
-  border-bottom-width: 1px;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  border-color: #5b5b5b;
+  display: flex;
 }
 .createButton {
   color: white;
-  justify-self: center;
+  margin: auto;
 }
 .button {
   width: 315px;
@@ -116,5 +107,14 @@ function login() {
 }
 :deep(.p-divider) {
   margin: 0px;
+}
+:deep(.p-inputtext) {
+  width: 315px;
+  border-inline-width: 0px;
+  border-top-width: 0px;
+  border-bottom-width: 1px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-color: #5b5b5b;
 }
 </style>

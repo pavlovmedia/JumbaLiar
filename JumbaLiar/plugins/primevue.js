@@ -12,6 +12,7 @@ import Divider from 'primevue/divider';
 import Dropdown from 'primevue/dropdown';
 import InputMask from 'primevue/inputmask';
 import InputText from 'primevue/inputtext';
+import Password from 'primevue/password';
 import SelectButton from 'primevue/selectbutton';
 import Textarea from 'primevue/textarea';
 import Timeline from 'primevue/timeline';
@@ -31,6 +32,7 @@ export default defineNuxtPlugin(nuxtApp => {
   nuxtApp.vueApp.component('Dropdown', Dropdown);
   nuxtApp.vueApp.component('InputMask', InputMask);
   nuxtApp.vueApp.component('InputText', InputText);
+  nuxtApp.vueApp.component('Password', Password);
   nuxtApp.vueApp.component('SelectButton', SelectButton);
   nuxtApp.vueApp.component('Textarea', Textarea);
   nuxtApp.vueApp.component('Timeline', Timeline);

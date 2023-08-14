@@ -42,7 +42,7 @@ export const editEndpoint = reactive({
 
 <template>
   <div v-if="activeTab.tab === 'Login'" class="loginContainer">
-    <Login style="flex-grow: 1" />
+    <Login style="flex-grow: 1" class="login background" />
   </div>
   <div v-if="activeTab.tab !== 'Login'" class="columnContainer">
     <SidebarHeader />
@@ -52,7 +52,7 @@ export const editEndpoint = reactive({
   </div>
   <div v-if="activeTab.tab !== 'Login'" class="columnContainer">
     <MainHeader />
-    <div class="background">
+    <div class="main background">
       <MainContent />
     </div>
   </div>
@@ -67,9 +67,14 @@ export const editEndpoint = reactive({
   width: 100vw;
 }
 .background {
-  background: url("./components/icons/ShrimpBackground.png");
   background-repeat: no-repeat;
   background-size: cover;
+}
+.login {
+  background-image: url("./components/icons/LoginBackground.jpeg");
+}
+.main {
+  background-image: url("./components/icons/ShrimpBackground.png");
 }
 :deep(.p-card-body) {
   padding: 0px;
