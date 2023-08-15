@@ -11,12 +11,18 @@ const color = ref(props.color);
 const data = ref(props.data);
 const title = props.create ? "Create Model" : "Update Model";
 const saveButton = props.create ? "Create" : "Update";
+const modelWarn = ref(false);
+const colorWarn = ref("");
 </script>
 
 <script lang="ts">
 export default {
   methods: {
     save(name: string, color: string, data: string) {
+      if (name.valueOf() == "") {
+        modelWarn.value = true;
+        return;
+      }
       this.$emit("save", this.create, name, color.toUpperCase(), data);
     },
     quit() {
@@ -27,7 +33,7 @@ export default {
 </script>
 
 <template>
-  <Card style="flex-grow: 1; max-width: 700px">
+  <Card class="card">
     <template #title> {{ title }} </template>
     <template #content>
       <div class="inputContainer">
@@ -36,6 +42,9 @@ export default {
           v-model="name"
           placeholder="Model Name"
         ></InputText>
+        <small v-if="modelWarn == true" class="warning" id="model-warn">
+          Model name can't be blank!
+        </small>
       </div>
       <div class="inputContainer">
         <InputMask
@@ -104,9 +113,9 @@ export default {
 
 <style scoped>
 .card {
+  flex-grow: 1;
+  max-width: 700px;
   border-radius: var(--card-radius);
-  width: 100%;
-  padding: var(--main-content-gap);
   gap: var(--main-content-gap);
   border-radius: var(--card-radius);
 }
@@ -115,10 +124,6 @@ export default {
   grid-template-rows: 1fr 1fr;
   padding-inline: 0px;
   padding-bottom: var(--main-content-gap);
-}
-.inputText {
-  flex-grow: 1;
-  max-height: 750px;
 }
 .buttonContainer {
   display: flex;
@@ -145,17 +150,14 @@ export default {
 .grow {
   flex-grow: 1;
 }
-.noVPadding {
-  padding-block: 0px;
-}
-.noHPadding {
-  padding-inline: 0px;
-}
 .alignLeft {
   flex-direction: row-reverse;
 }
 .center {
   justify-content: center;
+}
+.warning {
+  padding-left: 8px;
 }
 :deep(.p-card-title) {
   border-bottom-style: solid;

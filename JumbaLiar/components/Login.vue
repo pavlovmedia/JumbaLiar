@@ -154,6 +154,9 @@ function createAccount() {
   border-color: black;
   border-radius: 4px;
 }
+.warning {
+  padding-left: 8px;
+}
 :deep(.p-divider) {
   margin: 0px;
 }
