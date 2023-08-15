@@ -1,11 +1,35 @@
 <script setup lang="ts">
-import { create } from "domain";
 import { activeTab } from "~/app.vue";
 const username = ref("");
 const password = ref("");
+const warn = ref(false);
+const lastUsername = ref("");
+const lastPassword = ref("");
 
-function login() {
+async function login() {
+  // TODO: check that username and password exist and match in DB
+  // For now this is hardcoded so the username is BobbyTables and the password is asdfasdf1234
+  if (username.value != "BobbyTables") {
+    warn.value = true;
+    lastUsername.value = username.value;
+    lastPassword.value = password.value;
+    return;
+  }
+  if (password.value != "asdfasdf1234") {
+    warn.value = true;
+    lastUsername.value = username.value;
+    lastPassword.value = password.value;
+    return;
+  }
   activeTab.setActiveTab("Dashboard");
+}
+
+function getWarn() {
+  if (
+    lastUsername.value == username.value &&
+    lastPassword.value == password.value
+  )
+    return warn.value ? "p-invalid" : "";
 }
 
 function createAccount() {
@@ -23,25 +47,41 @@ function createAccount() {
         <template #content>
           <div class="contentContainer">
             <img />
-            <InputText v-model="username" placeholder="Username" />
-
+            <InputText
+              :class="getWarn()"
+              v-model="username"
+              placeholder="Username"
+            />
             <Password
+              class="spacer"
+              :class="getWarn()"
               :feedback="false"
               v-model="password"
               placeholder="Password"
               toggleMask
             />
-            <Button class="button login" label="Log In" @click="login" />
+            <small
+              v-if="getWarn() == 'p-invalid'"
+              class="warning"
+              id="email-help"
+            >
+              Invalid username or password!
+            </small>
+            <Button
+              class="button login doubleSpacer"
+              label="Log In"
+              @click="login"
+            />
             <Divider align="center" type="solid">
               <b>or</b>
             </Divider>
             <Button
-              class="button external"
+              class="button external spacer"
               label="Log in with Google"
               icon="pi pi-google"
             />
             <Button
-              class="button external"
+              class="button external spacer"
               label="Log in with Facebook"
               icon="pi pi-facebook"
             />
@@ -85,10 +125,15 @@ function createAccount() {
 .contentContainer {
   display: flex;
   flex-direction: column;
-  gap: 20px;
 }
 .createContainer {
   display: flex;
+}
+.spacer {
+  margin-top: 20px;
+}
+.doubleSpacer {
+  margin-block: 20px;
 }
 .createButton {
   color: white;

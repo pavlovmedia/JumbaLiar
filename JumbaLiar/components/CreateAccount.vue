@@ -80,7 +80,7 @@ function cancel() {
             <small
               v-if="getUsernameStatus() == 'p-invalid'"
               class="warning"
-              id="email-help"
+              id="username-help"
             >
               Username is taken!
             </small>
@@ -102,7 +102,7 @@ function cancel() {
             <small
               v-if="getPasswordStatus() == 'p-invalid'"
               class="warning"
-              id="email-help"
+              id="password-help"
             >
               Password must match!
             </small>
