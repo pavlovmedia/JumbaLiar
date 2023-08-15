@@ -9,18 +9,20 @@ const lastPassword = ref("");
 async function login() {
   // TODO: check that username and password exist and match in DB
   // For now this is hardcoded so the username is BobbyTables and the password is asdfasdf1234
-  if (username.value != "BobbyTables") {
-    warn.value = true;
-    lastUsername.value = username.value;
-    lastPassword.value = password.value;
-    return;
-  }
-  if (password.value != "asdfasdf1234") {
-    warn.value = true;
-    lastUsername.value = username.value;
-    lastPassword.value = password.value;
-    return;
-  }
+
+  // Commented this out for now, very annoying
+  // if (username.value != "BobbyTables") {
+  //   warn.value = true;
+  //   lastUsername.value = username.value;
+  //   lastPassword.value = password.value;
+  //   return;
+  // }
+  // if (password.value != "asdfasdf1234") {
+  //   warn.value = true;
+  //   lastUsername.value = username.value;
+  //   lastPassword.value = password.value;
+  //   return;
+  // }
   activeTab.setActiveTab("Dashboard");
 }
 
