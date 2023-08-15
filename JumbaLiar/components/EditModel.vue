@@ -11,18 +11,12 @@ const color = ref(props.color);
 const data = ref(props.data);
 const title = props.create ? "Create Model" : "Update Model";
 const saveButton = props.create ? "Create" : "Update";
-const modelWarn = ref(false);
-const colorWarn = ref("");
 </script>
 
 <script lang="ts">
 export default {
   methods: {
     save(name: string, color: string, data: string) {
-      if (name.valueOf() == "") {
-        modelWarn.value = true;
-        return;
-      }
       this.$emit("save", this.create, name, color.toUpperCase(), data);
     },
     quit() {
@@ -42,9 +36,6 @@ export default {
           v-model="name"
           placeholder="Model Name"
         ></InputText>
-        <small v-if="modelWarn == true" class="warning" id="model-warn">
-          Model name can't be blank!
-        </small>
       </div>
       <div class="inputContainer">
         <InputMask
@@ -155,9 +146,6 @@ export default {
 }
 .center {
   justify-content: center;
-}
-.warning {
-  padding-left: 8px;
 }
 :deep(.p-card-title) {
   border-bottom-style: solid;

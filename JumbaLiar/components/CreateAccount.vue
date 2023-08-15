@@ -1,17 +1,22 @@
 <script setup lang="ts">
 import { activeTab } from "~/app.vue";
+enum error {
+  NONE,
+  BLANK,
+  INVALID,
+}
 const email = ref("");
 const username = ref("");
 const password = ref("");
 const confirmPassword = ref("");
-const emailFlag = ref(false);
-const usernameFlag = ref(false);
-const passwordFlag = ref(false);
+const emailFlag = ref(error.NONE);
+const usernameFlag = ref(error.NONE);
 const lastEmail = ref("");
 const lastUsername = ref("");
 
 function getEmailStatus() {
-  if (lastEmail.value == email.value && emailFlag.value) return "p-invalid";
+  if (lastEmail.value == email.value && emailFlag.value != error.NONE)
+    return "p-invalid";
   return true;
 }
 
@@ -26,22 +31,28 @@ function getPasswordStatus() {
 }
 
 async function create() {
+  let check = false;
   // Checks that the email is a valid email (I think, who knows with regex)
   let regex = new RegExp(
     "([-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*|'([]!#-[^-~ \t]|(\\[\t -~]))+')@[0-9A-Za-z]([0-9A-Za-z-]{0,61}[0-9A-Za-z])?(\.[0-9A-Za-z]([0-9A-Za-z-]{0,61}[0-9A-Za-z])?)+"
   );
-  if (!regex.test(email.value)) {
-    emailFlag.value = true;
+  if (email.value == "") {
+    emailFlag.value = error.BLANK;
     lastEmail.value = email.value;
-    return;
+    check = true;
+  } else if (!regex.test(email.value)) {
+    emailFlag.value = error.INVALID;
+    lastEmail.value = email.value;
+    check = true;
   }
   // TODO: await check if username exists
-
-  // Checks passwords match
-  if (password.value != confirmPassword.value) return;
+  if (username)
+    if (password.value != confirmPassword.value)
+      // Checks passwords match
+      return;
 
   // TODO: await backend create account call
-  activeTab.setActiveTab("Login");
+  if (!check) activeTab.setActiveTab("Login");
 }
 
 function cancel() {
