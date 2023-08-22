@@ -59,7 +59,7 @@ export default async function () {
     // NOTE: Column names are createdAt and updatedAt
     table.timestamps(true, true, true); 
     table.string('path');
-    // TODO: link to method
+    table.enu('method', ['GET', 'POST', 'PUT', 'PATCH', 'OPTIONS', 'DELETE'])
     // TODO: link to behavior[]
     table.boolean('hidden');
     table.boolean('locked');
