@@ -9,15 +9,20 @@ export class endpointsBackend {
   }
 
   async getFiltered(filters: endpointFilters) {
-    // TODO
-    return 0;
-    // await $fetch(this.path);
+    let all = await $fetch(this.path);
+    // TODO: update this to actually use the filters
+    return all;
   }
 
   async patch(data: endpointPatch) {
     return await $fetch(this.path, {
       method: "PATCH",
-      body: data,
+      body: {
+        filters: {
+          id: data.id,
+        },
+        update: data.data,
+      },
     });
   }
 
@@ -25,41 +30,34 @@ export class endpointsBackend {
     return await $fetch(this.path, {
       method: "POST",
       body: {
-        profileUsername: data.profileUsername,
-        body: data.data,
+        createdBy: data.profileUsername,
+        updatedBy: data.profileUsername,
+        path: data.data.path,
+        method: data.data.method,
+        hidden: data.data.hidden,
+        locked: data.data.locked,
       },
     });
   }
 
   async postMany(data: endpointCreate[]) {
     let target = this.path;
-    let count = 0;
+    let res = 0;
     data.forEach(async function (item) {
-      count += await $fetch(target, {
+      let a = await $fetch(target, {
         method: "POST",
-        body: item,
+        body: {
+          createdBy: item.profileUsername,
+          updatedBy: item.profileUsername,
+          path: item.data.path,
+          method: item.data.method,
+          hidden: item.data.hidden,
+          locked: item.data.locked,
+        },
       });
+      if (a == -1) res--;
     });
-    return count;
-  }
-
-  async put(data: endpointCreate) {
-    return await $fetch(this.path, {
-      method: "PUT",
-      body: data,
-    });
-  }
-
-  async putMany(data: endpointCreate[]) {
-    let target = this.path;
-    let count = 0;
-    data.forEach(async function (item) {
-      count += await $fetch(target, {
-        method: "PUT",
-        body: item,
-      });
-    });
-    return count;
+    return res;
   }
 
   async delete(id: string) {
@@ -71,13 +69,14 @@ export class endpointsBackend {
 
   async deleteMany(ids: string[]) {
     let target = this.path;
-    let count = 0;
+    let res = 0;
     ids.forEach(async function (id) {
-      count += await $fetch(target, {
+      let a = await $fetch(target, {
         method: "DELETE",
         body: { id: id },
       });
+      if (a == -1) res--;
     });
-    return count;
+    return res;
   }
 }

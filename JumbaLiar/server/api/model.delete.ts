@@ -1,46 +1,11 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient({
-  log: [
-    { level: "warn", emit: "event" },
-    { level: "info", emit: "event" },
-    { level: "error", emit: "event" },
-  ],
-});
-
-// debugging
-prisma.$on("warn", (e) => {
-  console.log(e);
-});
-
-prisma.$on("info", (e) => {
-  console.log(e);
-});
-
-prisma.$on("error", (e) => {
-  console.log(e);
-});
+import db from "~/db";
 
 export default defineEventHandler(async (event) => {
-  const data = await readBody(event);
-  // TODO: Currently doesn't return anything for a bad request
-  // TODO: Is the first if statement unnecessary?
-  if (data != null) {
-    if ("id" in data) {
-      try {
-        await prisma.model.delete({
-          where: {
-            id: data.id,
-          },
-        });
-        return 0;
-      } catch (error) {
-        // Same as above comment
-        return -1;
-      }
-    } else {
-      return -1;
-    }
+  try {
+    const body = await readBody(event);
+    let res = await db("Model").where(body).del();
+    return res;
+  } catch (error) {
+    return -1;
   }
-  return -1;
 });

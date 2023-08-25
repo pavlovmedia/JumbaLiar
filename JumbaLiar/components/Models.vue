@@ -16,10 +16,13 @@ const id = ref("");
 update();
 
 function formatDate(date: string) {
-  var day = date.charAt(8) == "0" ? date.charAt(9) : date.substring(8, 10);
-  var month = date.charAt(5) == "0" ? date.charAt(6) : date.substring(5, 7);
-  var year = date.substring(0, 4);
-  return month + "/" + day + "/" + year;
+  return (
+    date.substring(5, 7) +
+    "/" +
+    date.substring(8, 10) +
+    "/" +
+    date.substring(0, 4)
+  );
 }
 
 async function update() {
@@ -82,8 +85,8 @@ async function save(
   ) {
     await BE.model.patch({
       id: id.value,
-      profileUsername: "BobbyTables", // TODO: Un-hardcode this
       data: {
+        profileUsername: "BobbyTables", // TODO: Un-hardcode this
         label: newLabel,
         type: newType,
         data: newData,
@@ -280,11 +283,11 @@ function deleteString() {
           style="padding: 12px"
         >
           <template #body="slotProps">
-            {{ formatDate(slotProps.data.updatedOn) }}
+            {{ formatDate(slotProps.data.updatedAt) }}
           </template>
         </Column>
         <Column
-          field="profileUpdatedByUsername"
+          field="updatedBy"
           header="Updated By"
           sortable
           style="padding: 12px"

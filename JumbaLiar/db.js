@@ -1,13 +1,13 @@
-import knex from 'knex'
+import knex from 'knex';
 
 export default knex({
   client: 'mysql',
   version: '5.7',
   connection: {
-    host: import.meta.env.VITE_DB_HOST,
+    host: '127.0.0.1',
     port: 3306,
-    user: import.meta.env.VITE_DB_USER,
-    password: import.meta.env.VITE_DB_PASSWORD,
+    user: 'root',
+    password: 'example',
     database: 'jumbaliar'
   },
 })

@@ -2,22 +2,39 @@ import { modelCreate, modelFilters, modelPatch } from "./types";
 
 export class modelsBackend {
   path: string = "/api/model";
-  constructor() {}
+  constructor() {
+    // this.configDB();
+  }
+
+  // This function was used to set up most of the schema. It probably shouldn't be used in the future in favor of a DB dump
+  async configDB() {
+    try {
+      let res = await $fetch("/api/util", { method: "post" });
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async getAll() {
     return await $fetch(this.path);
   }
 
   async getFiltered(filters: modelFilters) {
-    // TODO
-    return 0;
-    // await $fetch(this.path);
+    let all = await $fetch(this.path);
+    // TODO: update this to actually use the filters
+    return all;
   }
 
   async patch(data: modelPatch) {
     return await $fetch(this.path, {
       method: "PATCH",
-      body: data,
+      body: {
+        filters: {
+          id: data.id,
+        },
+        update: data.data,
+      },
     });
   }
 
@@ -25,41 +42,32 @@ export class modelsBackend {
     return await $fetch(this.path, {
       method: "POST",
       body: {
-        profileUsername: data.profileUsername,
-        body: data.data,
+        createdBy: data.profileUsername,
+        updatedBy: data.profileUsername,
+        label: data.data.label,
+        type: data.data.type,
+        data: data.data.data,
       },
     });
   }
 
   async postMany(data: modelCreate[]) {
     let target = this.path;
-    let count = 0;
+    let res = 0;
     data.forEach(async function (item) {
-      count += await $fetch(target, {
+      let a = await $fetch(target, {
         method: "POST",
-        body: item,
+        body: {
+          createdBy: item.profileUsername,
+          updatedBy: item.profileUsername,
+          label: item.data.label,
+          type: item.data.type,
+          data: item.data.data,
+        },
       });
+      if (a == -1) res--;
     });
-    return count;
-  }
-
-  async put(data: modelCreate) {
-    return await $fetch(this.path, {
-      method: "PUT",
-      body: data,
-    });
-  }
-
-  async putMany(data: modelCreate[]) {
-    let target = this.path;
-    let count = 0;
-    data.forEach(async function (item) {
-      count += await $fetch(target, {
-        method: "PUT",
-        body: item,
-      });
-    });
-    return count;
+    return res;
   }
 
   async delete(id: string) {
@@ -71,13 +79,14 @@ export class modelsBackend {
 
   async deleteMany(ids: string[]) {
     let target = this.path;
-    let count = 0;
+    let res = 0;
     ids.forEach(async function (id) {
-      count += await $fetch(target, {
+      let a = await $fetch(target, {
         method: "DELETE",
         body: { id: id },
       });
+      if (a == -1) res--;
     });
-    return count;
+    return res;
   }
 }

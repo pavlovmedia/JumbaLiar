@@ -1,58 +1,11 @@
-import { PrismaClient, Prisma } from "@prisma/client";
-
-const prisma = new PrismaClient({
-  log: [
-    { level: "warn", emit: "event" },
-    { level: "info", emit: "event" },
-    { level: "error", emit: "event" },
-  ],
-});
-
-// debugging
-prisma.$on("warn", (e) => {
-  console.log(e);
-});
-
-prisma.$on("info", (e) => {
-  console.log(e);
-});
-
-prisma.$on("error", (e) => {
-  // TODO: Modify this to raise some sort of error so it can be relayed back to the frontend
-  console.log(e);
-});
+import db from "~/db";
 
 export default defineEventHandler(async (event) => {
-  const data = await readBody(event);
-  // TODO: Currently doesn't return anything for a bad request
-  if (data != null) {
-    if ("body" in data && "profileUsername" in data) {
-      try {
-        var uniq: Prisma.ProfileWhereUniqueInput = {
-          username: data.profileUsername,
-        };
-        var user: Prisma.ProfileCreateNestedOneWithoutEndpointCreatedByProfileInput =
-          { connect: uniq };
-        var rq: Prisma.EndpointCreateInput;
-        rq = {
-          path: data.body.path,
-          method: data.body.method == undefined ? "GET" : data.body.method,
-          hidden: data.body.hidden == undefined ? false : true,
-          locked: data.body.locked == undefined ? false : true,
-          createdBy: user,
-          udpdatedBy: user,
-        };
-        await prisma.endpoint.create({ data: rq });
-        return 0;
-      } catch (error) {
-        // Errors are now caught here, nothing descriptive is done though
-        return -1;
-      }
-    } else {
-      // TODO: add more descriptive behavior?
-      return -58;
-    }
+  try {
+    const body = await readBody(event);
+    let res = await db("Endpoint").insert(body);
+    return res;
+  } catch (error) {
+    return -1;
   }
-  // TODO: add more descriptive behavior?
-  return -3;
 });

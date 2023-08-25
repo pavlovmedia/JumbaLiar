@@ -9,8 +9,8 @@ export interface modelFilters {
 
 export interface modelPatch {
   id: string;
-  profileUsername: string;
   data: {
+    profileUsername: string;
     label?: string;
     type?: string;
     data?: string;
@@ -37,8 +37,8 @@ export interface endpointFilters {
 
 export interface endpointPatch {
   id: string;
-  profileUsername: string;
   data: {
+    profileUsername: string;
     path?: string;
     method?: string;
     hidden?: boolean;
