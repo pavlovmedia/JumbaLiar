@@ -1,0 +1,30 @@
+Todo list:
+ - Schema 
+   - NO TABLES ARE LINKED. There are TODOs in /db-util.js that mark all of the
+     locations foreign keys need to be added
+   - No field to count model usages
+   - No table to count dashboard stats
+     - The Dashboard page is entierly hardcoded
+   - Models' data field is limited to 255 characters, this should be extended
+ - Models page
+   - Import buttons in update/create model page need to be updated
+ - Login page
+   - Username and login aren't checked right now, hardcoded in /components/Login.vue
+   - Log in with Google/Facebook buttons need to be implemented 
+   - Create an account doesn't send a query to the DB, no endpoints for it yet either
+
+Known bugs:
+ - Updating models or endpoints doesn't update the updatedBy field (may have 
+   been resolved, untested)
+ - Endpoints behaviors field does not exist in DB
+
+Other notes: 
+ - Only profile usernames have to be unique, not emails
+ - /server/api/util.* were used to set up/wipe the DB, otherwise not used. A 
+   remnant function from this is in /backend/modelsBackend.ts
+ - When requests fail the server endpoints return -1
+ - The GUI offers no way for the user to edit an Endpoint's locked property 
+   during creation or editing
+ - DB dumps exist in /Backups, use `jumbaliar.sql`. `jumbaliarOLD.sql` is a 
+   backup of the prisma DB and likely can be deleted
+ - Don't ask about the email validation regex
