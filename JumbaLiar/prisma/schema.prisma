@@ -1,0 +1,145 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  email                    String
+  password                 String
+  username                 String     @id
+  endpointCreatedByProfile Endpoint[] @relation("endpointCreatedBy")
+  endpointUpdatedByProfile Endpoint[] @relation("endpointUpdatedBy")
+  ModelCreatedByProfile    Model[]    @relation("modelCreatedBy")
+  ModelUpdatedByProfile    Model[]    @relation("modelUpdatedBy")
+}
+
+model Proxy {
+  baseURL     String       @id
+  color       String
+  label       String
+  ProxyConfig ProxyConfig?
+}
+
+model Model {
+  label                    String
+  type                     String
+  data                     String
+  id                       String           @id @default(uuid())
+  createdOn                DateTime         @default(now())
+  updatedOn                DateTime         @updatedAt
+  profileCreatedByUsername String
+  profileUpdatedByUsername String
+  createdBy                Profile          @relation("modelCreatedBy", fields: [profileCreatedByUsername], references: [username])
+  udpdatedBy               Profile          @relation("modelUpdatedBy", fields: [profileUpdatedByUsername], references: [username])
+  ModelDataConfig          ModelDataConfig?
+
+  @@index([profileCreatedByUsername], map: "Model_profileCreatedByUsername_fkey")
+  @@index([profileUpdatedByUsername], map: "Model_profileUpdatedByUsername_fkey")
+}
+
+model Endpoint {
+  path                     String
+  method                   Method
+  hidden                   Boolean
+  locked                   Boolean
+  id                       String     @id @default(uuid())
+  createdOn                DateTime   @default(now())
+  updatedOn                DateTime   @updatedAt
+  endpointUpdatedByProfile String
+  endpointCreatedByProfile String
+  behaviors                Behavior[]
+  createdBy                Profile    @relation("endpointCreatedBy", fields: [endpointCreatedByProfile], references: [username])
+  udpdatedBy               Profile    @relation("endpointUpdatedBy", fields: [endpointUpdatedByProfile], references: [username])
+
+  @@index([endpointCreatedByProfile], map: "Endpoint_endpointCreatedByProfile_fkey")
+  @@index([endpointUpdatedByProfile], map: "Endpoint_endpointUpdatedByProfile_fkey")
+}
+
+model Behavior {
+  action     Action    @id
+  endpointId String?
+  endpoint   Endpoint? @relation(fields: [endpointId], references: [id])
+  content    Content[]
+  selector   Filter[]  @relation("behaviorSelector")
+  trigger    Filter[]  @relation("behaviorTrigger")
+
+  @@index([endpointId], map: "Behavior_endpointId_fkey")
+}
+
+model Content {
+  source                  Source       @unique
+  proxyConfigProxyBaseURL String?
+  behaviorAction          Action
+  behavior                Behavior     @relation(fields: [behaviorAction], references: [action])
+  config                  ProxyConfig? @relation(fields: [proxyConfigProxyBaseURL], references: [proxyBaseURL])
+  filter                  Filter[]
+
+  @@index([behaviorAction], map: "Content_behaviorAction_fkey")
+  @@index([proxyConfigProxyBaseURL], map: "Content_proxyConfigProxyBaseURL_fkey")
+}
+
+model Filter {
+  type                   DataLookupType
+  field                  String?
+  value                  String
+  contentSource          Source
+  behaviorTriggerAction  Action
+  behaviorSelectorAction Action
+  behaviorSelector       Behavior       @relation("behaviorSelector", fields: [behaviorSelectorAction], references: [action])
+  behaviorTrigger        Behavior       @relation("behaviorTrigger", fields: [behaviorTriggerAction], references: [action])
+  content                Content        @relation(fields: [contentSource], references: [source])
+
+  @@unique([type, value])
+  @@index([behaviorSelectorAction], map: "Filter_behaviorSelectorAction_fkey")
+  @@index([behaviorTriggerAction], map: "Filter_behaviorTriggerAction_fkey")
+  @@index([contentSource], map: "Filter_contentSource_fkey")
+}
+
+model ProxyConfig {
+  path         String
+  proxyBaseURL String    @id
+  content      Content[]
+  proxyID      Proxy     @relation(fields: [proxyBaseURL], references: [baseURL])
+}
+
+model ModelDataConfig {
+  modelLabel String @id
+  modelId    Model  @relation(fields: [modelLabel], references: [id])
+}
+
+model StatusConfig {
+  status Int @id
+}
+
+enum Method {
+  GET
+  POST
+  PUT
+  PATCH
+  OPTIONS
+  DELETE
+}
+
+enum Action {
+  RESPOND
+  INSERT_DB
+  MUTATE_DB
+}
+
+enum Source {
+  PROXY
+  MODEL_DATA
+  PAYLOAD
+  INJECT
+  STATUS_CODE
+}
+
+enum DataLookupType {
+  INDEX
+  FIELD
+}
