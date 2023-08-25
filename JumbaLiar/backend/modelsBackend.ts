@@ -33,7 +33,12 @@ export class modelsBackend {
         filters: {
           id: data.id,
         },
-        update: data.data,
+        update: {
+          updatedBy: data.data.profileUsername,
+          label: data.data.label,
+          type: data.data.type,
+          data: data.data.data,
+        },
       },
     });
   }
