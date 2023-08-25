@@ -18,15 +18,12 @@ export class modelsBackend {
 
   async getAll() {
     return await $fetch(this.path);
-    // if (res == -1) {
-    //   return [];
-    // }
-    // return res;
   }
 
   async getFiltered(filters: modelFilters) {
     let all = await $fetch(this.path);
     // TODO: update this to actually use the filters
+    return all;
   }
 
   async patch(data: modelPatch) {
@@ -42,7 +39,7 @@ export class modelsBackend {
   }
 
   async post(data: modelCreate) {
-    let a = await $fetch(this.path, {
+    return await $fetch(this.path, {
       method: "POST",
       body: {
         createdBy: data.profileUsername,
@@ -52,41 +49,26 @@ export class modelsBackend {
         data: data.data.data,
       },
     });
-    console.log(a);
-    // return a;
-    return -1;
   }
 
   async postMany(data: modelCreate[]) {
     let target = this.path;
-    let count = 0;
+    let res = 0;
     data.forEach(async function (item) {
-      count += await $fetch(target, {
+      let a = await $fetch(target, {
         method: "POST",
-        body: item,
+        body: {
+          createdBy: item.profileUsername,
+          updatedBy: item.profileUsername,
+          label: item.data.label,
+          type: item.data.type,
+          data: item.data.data,
+        },
       });
+      if (a == -1) res--;
     });
-    return count;
+    return res;
   }
-
-  // async put(data: modelCreate) {
-  //   return await $fetch(this.path, {
-  //     method: "PUT",
-  //     body: data,
-  //   });
-  // }
-
-  // async putMany(data: modelCreate[]) {
-  //   let target = this.path;
-  //   let count = 0;
-  //   data.forEach(async function (item) {
-  //     count += await $fetch(target, {
-  //       method: "PUT",
-  //       body: item,
-  //     });
-  //   });
-  //   return count;
-  // }
 
   async delete(id: string) {
     return await $fetch(this.path, {
@@ -97,13 +79,14 @@ export class modelsBackend {
 
   async deleteMany(ids: string[]) {
     let target = this.path;
-    let count = 0;
+    let res = 0;
     ids.forEach(async function (id) {
-      count += await $fetch(target, {
+      let a = await $fetch(target, {
         method: "DELETE",
         body: { id: id },
       });
+      if (a == -1) res--;
     });
-    return count;
+    return res;
   }
 }

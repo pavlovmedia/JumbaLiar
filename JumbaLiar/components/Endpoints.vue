@@ -12,10 +12,13 @@ const deleteWarn = ref(false);
 update();
 
 function formatDate(date: string) {
-  var day = date.charAt(8) == "0" ? date.charAt(9) : date.substring(8, 10);
-  var month = date.charAt(5) == "0" ? date.charAt(6) : date.substring(5, 7);
-  var year = date.substring(0, 4);
-  return month + "/" + day + "/" + year;
+  return (
+    date.substring(5, 7) +
+    "/" +
+    date.substring(8, 10) +
+    "/" +
+    date.substring(0, 4)
+  );
 }
 
 async function update() {
@@ -187,18 +190,18 @@ function quit() {
               style="padding: 12px"
             ></Column>
             <Column
-              field="updatedOn"
+              field="updatedAt"
               header="Updated On"
               sortable
               class="column"
               style="padding: 12px"
             >
               <template #body="slotProps">
-                {{ formatDate(slotProps.data.updatedOn) }}
+                {{ formatDate(slotProps.data.updatedAt) }}
               </template>
             </Column>
             <Column
-              field="endpointUpdatedByProfile"
+              field="updatedBy"
               header="Updated By"
               sortable
               class="column"
